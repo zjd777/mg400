@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<package format="3">
+
+  <name>chessboard_detector</name>
+
+  <version>0.0.1</version>
+
+  <description>
+    Chessboard detector for ROS2 hand-eye calibration
+  </description>
+
+  <maintainer email="zzz@example.com">
+    zzz
+  </maintainer>
+
+  <license>MIT</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <depend>rclpy</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>cv_bridge</depend>
+  <depend>tf2_ros</depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+
+</package>
