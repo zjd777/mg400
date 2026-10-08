@@ -1,0 +1,124 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-b7ca8abb0ef9cc9f16c4.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "mg400_node",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "joint_command_publisher_gui::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-joint_command_publisher_gui-97ff95da5ec1ca797741.json",
+					"name" : "joint_command_publisher_gui",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "joint_command_publisher_gui_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-joint_command_publisher_gui_autogen-0a0b508c4212f7cd312b.json",
+					"name" : "joint_command_publisher_gui_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "joint_state_publisher_gui::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-joint_state_publisher_gui-6058df098c6e2d4683e4.json",
+					"name" : "joint_state_publisher_gui",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "joint_state_publisher_gui_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-joint_state_publisher_gui_autogen-f2f0d70e5c57a2801829.json",
+					"name" : "joint_state_publisher_gui_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "mg400_node::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-mg400_node-a6b080e4c42bbb594b9a.json",
+					"name" : "mg400_node",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "mg400_node_exec::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-mg400_node_exec-b350047f85458aa19309.json",
+					"name" : "mg400_node_exec",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "mg400_node_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-mg400_node_uninstall-e4cb568eec3b6a6241fb.json",
+					"name" : "mg400_node_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-c11dd06134ba341df2e6.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/root/ros2_ws/build/mg400_node",
+		"source" : "/root/ros2_ws/src/MG400_ROS2/mg400_node"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

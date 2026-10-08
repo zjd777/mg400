@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/test_mg400_kinematics.dir/test/test_mg400_kinematics.cpp.o -o test_mg400_kinematics  -Wl,-rpath,/root/ros2_ws/build/mg400_common gtest/libgtest_main.a gtest/libgtest.a libmg400_common.so -pthread 

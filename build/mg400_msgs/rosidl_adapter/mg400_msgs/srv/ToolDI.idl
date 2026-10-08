@@ -1,0 +1,18 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from mg400_msgs/srv/ToolDI.srv
+// generated code does not contain a copyright notice
+
+#include "mg400_msgs/msg/ToolDIIndex.idl"
+
+module mg400_msgs {
+  module srv {
+    struct ToolDI_Request {
+      mg400_msgs::msg::ToolDIIndex index;
+    };
+    struct ToolDI_Response {
+      uint8 result;
+
+      int32 error_id;
+    };
+  };
+};

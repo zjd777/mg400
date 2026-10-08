@@ -1,0 +1,1 @@
+/root/ros2_ws/build/easy_handeye2_msgs/rosidl_generator_c/easy_handeye2_msgs/srv/detail/take_sample__type_support.h

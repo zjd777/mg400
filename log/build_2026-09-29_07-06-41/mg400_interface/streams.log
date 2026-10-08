@@ -1,0 +1,68 @@
+[0.012s] Invoking command in '/root/ros2_ws/build/mg400_interface': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /root/ros2_ws/build/mg400_interface -- -j16 -l16
+[0.054s] [35m[1mConsolidate compiler generated dependencies of target gtest_main[0m
+[0.054s] [35m[1mConsolidate compiler generated dependencies of target gtest[0m
+[0.055s] [35m[1mConsolidate compiler generated dependencies of target gmock[0m
+[0.056s] [35m[1mConsolidate compiler generated dependencies of target gmock_main[0m
+[0.063s] [35m[1mConsolidate compiler generated dependencies of target mg400_interface[0m
+[0.068s] [ 11%] Built target gtest
+[0.068s] [ 11%] Built target gtest_main
+[0.071s] [ 20%] Built target gmock
+[0.071s] [ 26%] Built target gmock_main
+[0.110s] [ 58%] Built target mg400_interface
+[0.122s] [35m[1mConsolidate compiler generated dependencies of target test_response_parser[0m
+[0.122s] [35m[1mConsolidate compiler generated dependencies of target test_error_msg_generator[0m
+[0.122s] [35m[1mConsolidate compiler generated dependencies of target show_realtime_data[0m
+[0.122s] [35m[1mConsolidate compiler generated dependencies of target test_dashboard_commander[0m
+[0.123s] [35m[1mConsolidate compiler generated dependencies of target commander_check[0m
+[0.123s] [35m[1mConsolidate compiler generated dependencies of target test_motion_commander[0m
+[0.123s] [35m[1mConsolidate compiler generated dependencies of target test_joint_handler[0m
+[0.139s] [ 64%] Built target test_response_parser
+[0.144s] [ 76%] Built target test_error_msg_generator
+[0.144s] [ 76%] Built target test_dashboard_commander
+[0.146s] [ 88%] Built target show_realtime_data
+[0.146s] [ 88%] Built target test_motion_commander
+[0.146s] [ 94%] Built target commander_check
+[0.148s] [100%] Built target test_joint_handler
+[0.160s] Invoked command in '/root/ros2_ws/build/mg400_interface' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /root/ros2_ws/build/mg400_interface -- -j16 -l16
+[0.161s] Invoking command in '/root/ros2_ws/build/mg400_interface': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /root/ros2_ws/build/mg400_interface
+[0.169s] -- Install configuration: ""
+[0.170s] -- Execute custom install script
+[0.170s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/command_utils.hpp
+[0.171s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/commander/dashboard_commander.hpp
+[0.171s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/commander/motion_commander.hpp
+[0.171s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/commander/response_parser.hpp
+[0.171s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/error_msg_generator.hpp
+[0.171s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/joint_handler.hpp
+[0.171s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/mg400_interface.hpp
+[0.171s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/tcp_interface/dashboard_tcp_interface.hpp
+[0.171s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/tcp_interface/motion_tcp_interface.hpp
+[0.171s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/tcp_interface/realtime_data.hpp
+[0.171s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/tcp_interface/realtime_feedback_tcp_interface.hpp
+[0.171s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/tcp_interface/tcp_socket_handler.hpp
+[0.172s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/environment/library_path.sh
+[0.172s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/environment/library_path.dsv
+[0.172s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/lib/libmg400_interface.a
+[0.172s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/lib/mg400_interface/show_realtime_data
+[0.173s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/lib/mg400_interface/commander_check
+[0.173s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/resources/README.md
+[0.173s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/resources/alarm_controller.json
+[0.173s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/resources/alarm_servo.json
+[0.173s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/ament_index/resource_index/package_run_dependencies/mg400_interface
+[0.174s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/ament_index/resource_index/parent_prefix_path/mg400_interface
+[0.174s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/environment/ament_prefix_path.sh
+[0.174s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/environment/ament_prefix_path.dsv
+[0.174s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/environment/path.sh
+[0.174s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/environment/path.dsv
+[0.175s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/local_setup.bash
+[0.175s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/local_setup.sh
+[0.175s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/local_setup.zsh
+[0.175s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/local_setup.dsv
+[0.175s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/mg400_interface/package.dsv
+[0.185s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/ament_index/resource_index/packages/mg400_interface
+[0.186s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/cmake/ament_cmake_export_dependencies-extras.cmake
+[0.186s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/cmake/ament_cmake_export_include_directories-extras.cmake
+[0.186s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/cmake/ament_cmake_export_libraries-extras.cmake
+[0.186s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/cmake/mg400_interfaceConfig.cmake
+[0.186s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/cmake/mg400_interfaceConfig-version.cmake
+[0.186s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/package.xml
+[0.189s] Invoked command in '/root/ros2_ws/build/mg400_interface' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /root/ros2_ws/build/mg400_interface

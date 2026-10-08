@@ -1,0 +1,1 @@
+/root/ros2_ws/build/mg400_msgs/rosidl_generator_py/mg400_msgs/srv/_joint_mov_j.py

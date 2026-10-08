@@ -1,0 +1,51 @@
+// generated from rosidl_adapter/resource/action.idl.em
+// with input from mg400_msgs/action/MovJIO.action
+// generated code does not contain a copyright notice
+
+#include "geometry_msgs/msg/PoseStamped.idl"
+#include "mg400_msgs/msg/DOIndex.idl"
+#include "mg400_msgs/msg/DOStatus.idl"
+#include "mg400_msgs/msg/DistanceMode.idl"
+#include "mg400_msgs/msg/ErrorID.idl"
+
+module mg400_msgs {
+  module action {
+    @verbatim (language="comment", text=
+      "goal definition")
+    struct MovJIO_Goal {
+      geometry_msgs::msg::PoseStamped pose;
+
+      mg400_msgs::msg::DistanceMode mode;
+
+      int32 distance;
+
+      mg400_msgs::msg::DOIndex index;
+
+      mg400_msgs::msg::DOStatus status;
+
+      boolean set_speed_j;
+
+      uint8 speed_j;
+
+      boolean set_acc_j;
+
+      uint8 acc_j;
+
+      boolean set_cp;
+
+      uint8 cp;
+    };
+    @verbatim (language="comment", text=
+      "result definition")
+    struct MovJIO_Result {
+      boolean result;
+
+      mg400_msgs::msg::ErrorID error_id;
+    };
+    @verbatim (language="comment", text=
+      "feedback definition")
+    struct MovJIO_Feedback {
+      geometry_msgs::msg::PoseStamped current_pose;
+    };
+  };
+};

@@ -1,0 +1,23 @@
+{
+  "package_name": "easy_handeye2_msgs",
+  "non_idl_tuples": [
+    "/root/ros2_ws/third_party/easy_handeye2/easy_handeye2_msgs:msg/HandeyeCalibration.msg",
+    "/root/ros2_ws/third_party/easy_handeye2/easy_handeye2_msgs:msg/HandeyeCalibrationParameters.msg",
+    "/root/ros2_ws/third_party/easy_handeye2/easy_handeye2_msgs:msg/Sample.msg",
+    "/root/ros2_ws/third_party/easy_handeye2/easy_handeye2_msgs:msg/SampleList.msg",
+    "/root/ros2_ws/third_party/easy_handeye2/easy_handeye2_msgs:msg/TargetPoseList.msg",
+    "/root/ros2_ws/third_party/easy_handeye2/easy_handeye2_msgs:srv/calibration/ListAlgorithms.srv",
+    "/root/ros2_ws/third_party/easy_handeye2/easy_handeye2_msgs:srv/calibration/SetAlgorithm.srv",
+    "/root/ros2_ws/third_party/easy_handeye2/easy_handeye2_msgs:srv/calibration/ComputeCalibration.srv",
+    "/root/ros2_ws/third_party/easy_handeye2/easy_handeye2_msgs:srv/calibration/SaveCalibration.srv",
+    "/root/ros2_ws/third_party/easy_handeye2/easy_handeye2_msgs:srv/calibration/RemoveSample.srv",
+    "/root/ros2_ws/third_party/easy_handeye2/easy_handeye2_msgs:srv/calibration/TakeSample.srv",
+    "/root/ros2_ws/third_party/easy_handeye2/easy_handeye2_msgs:srv/calibration/SaveSamples.srv",
+    "/root/ros2_ws/third_party/easy_handeye2/easy_handeye2_msgs:srv/calibration/LoadSamples.srv",
+    "/root/ros2_ws/third_party/easy_handeye2/easy_handeye2_msgs:srv/robot_movements/CheckStartingPose.srv",
+    "/root/ros2_ws/third_party/easy_handeye2/easy_handeye2_msgs:srv/robot_movements/EnumerateTargetPoses.srv",
+    "/root/ros2_ws/third_party/easy_handeye2/easy_handeye2_msgs:srv/robot_movements/SelectTargetPose.srv",
+    "/root/ros2_ws/third_party/easy_handeye2/easy_handeye2_msgs:srv/robot_movements/PlanToSelectedTargetPose.srv",
+    "/root/ros2_ws/third_party/easy_handeye2/easy_handeye2_msgs:srv/robot_movements/ExecutePlan.srv"
+  ]
+}

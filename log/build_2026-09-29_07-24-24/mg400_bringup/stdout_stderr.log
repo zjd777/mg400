@@ -1,0 +1,36 @@
+running develop
+Removing /root/ros2_ws/install/mg400_bringup/lib/python3.10/site-packages/mg400-bringup.egg-link (link to .)
+running egg_info
+writing ../../../build/mg400_bringup/mg400_bringup.egg-info/PKG-INFO
+writing dependency_links to ../../../build/mg400_bringup/mg400_bringup.egg-info/dependency_links.txt
+writing entry points to ../../../build/mg400_bringup/mg400_bringup.egg-info/entry_points.txt
+writing requirements to ../../../build/mg400_bringup/mg400_bringup.egg-info/requires.txt
+writing top-level names to ../../../build/mg400_bringup/mg400_bringup.egg-info/top_level.txt
+reading manifest file '../../../build/mg400_bringup/mg400_bringup.egg-info/SOURCES.txt'
+writing manifest file '../../../build/mg400_bringup/mg400_bringup.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /root/ros2_ws/build/mg400_bringup/build
+creating /root/ros2_ws/build/mg400_bringup/build/lib
+creating /root/ros2_ws/build/mg400_bringup/build/lib/mg400_bringup
+copying mg400_bringup/__init__.py -> /root/ros2_ws/build/mg400_bringup/build/lib/mg400_bringup
+running install
+running install_lib
+creating /root/ros2_ws/install/mg400_bringup/lib/python3.10/site-packages/mg400_bringup
+copying /root/ros2_ws/build/mg400_bringup/build/lib/mg400_bringup/__init__.py -> /root/ros2_ws/install/mg400_bringup/lib/python3.10/site-packages/mg400_bringup
+byte-compiling /root/ros2_ws/install/mg400_bringup/lib/python3.10/site-packages/mg400_bringup/__init__.py to __init__.cpython-310.pyc
+running install_data
+copying resource/mg400_bringup -> /root/ros2_ws/install/mg400_bringup/share/ament_index/resource_index/packages
+copying package.xml -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup
+copying launch/mg400.launch.py -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/launch
+copying launch/display.launch.py -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/launch
+copying launch/joy.launch.py -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/launch
+copying launch/rsp.launch.py -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/launch
+copying launch/main.launch.py -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/launch
+copying launch/rviz.launch.py -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/launch
+copying rviz/mg400.rviz -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/rviz
+copying rviz/display.rviz -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/rviz
+running install_egg_info
+Copying ../../../build/mg400_bringup/mg400_bringup.egg-info to /root/ros2_ws/install/mg400_bringup/lib/python3.10/site-packages/mg400_bringup-1.4.1-py3.10.egg-info
+running install_scripts
+writing list of installed files to '/root/ros2_ws/build/mg400_bringup/install.log'

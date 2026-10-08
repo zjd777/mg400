@@ -1,0 +1,6 @@
+Invoking command in '/root/ros2_ws/build/mg400_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /root/ros2_ws/src/MG400_ROS2/mg400_msgs -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/root/ros2_ws/install/mg400_msgs
+Invoked command in '/root/ros2_ws/build/mg400_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /root/ros2_ws/src/MG400_ROS2/mg400_msgs -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/root/ros2_ws/install/mg400_msgs
+Invoking command in '/root/ros2_ws/build/mg400_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /root/ros2_ws/build/mg400_msgs -- -j16 -l16
+Invoked command in '/root/ros2_ws/build/mg400_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /root/ros2_ws/build/mg400_msgs -- -j16 -l16
+Invoking command in '/root/ros2_ws/build/mg400_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /root/ros2_ws/build/mg400_msgs
+Invoked command in '/root/ros2_ws/build/mg400_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /root/ros2_ws/build/mg400_msgs

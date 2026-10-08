@@ -1,0 +1,31 @@
+[35m[1mConsolidate compiler generated dependencies of target display_node_exec[0m
+[35m[1mConsolidate compiler generated dependencies of target display_node[0m
+[100%] Built target display_node
+[100%] Built target display_node_exec
+-- Install configuration: ""
+-- Execute custom install script
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/lib/p9n_example/display_node_exec
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/include/p9n_example/display_node.hpp
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/environment/library_path.sh
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/environment/library_path.dsv
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/lib/libdisplay_node.so
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/launch/display.launch.py
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/ament_index/resource_index/package_run_dependencies/p9n_example
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/ament_index/resource_index/parent_prefix_path/p9n_example
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/environment/ament_prefix_path.sh
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/environment/ament_prefix_path.dsv
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/environment/path.sh
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/environment/path.dsv
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/local_setup.bash
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/local_setup.sh
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/local_setup.zsh
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/local_setup.dsv
+-- Symlinking: /root/ros2_ws/install/p9n_example/share/p9n_example/package.dsv
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/ament_index/resource_index/packages/p9n_example
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/ament_index/resource_index/rclcpp_components/p9n_example
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/cmake/ament_cmake_export_dependencies-extras.cmake
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/cmake/ament_cmake_export_include_directories-extras.cmake
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/cmake/ament_cmake_export_libraries-extras.cmake
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/cmake/p9n_exampleConfig.cmake
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/cmake/p9n_exampleConfig-version.cmake
+-- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/package.xml

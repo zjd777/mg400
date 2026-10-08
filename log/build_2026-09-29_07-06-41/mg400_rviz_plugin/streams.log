@@ -1,0 +1,34 @@
+[0.014s] Invoking command in '/root/ros2_ws/build/mg400_rviz_plugin': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_interface/lib:/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /root/ros2_ws/build/mg400_rviz_plugin -- -j16 -l16
+[0.064s] [ 16%] [34m[1mAutomatic MOC for target mg400_rviz_plugin[0m
+[0.083s] [ 16%] Built target mg400_rviz_plugin_autogen
+[0.096s] [35m[1mConsolidate compiler generated dependencies of target mg400_rviz_plugin[0m
+[0.133s] [100%] Built target mg400_rviz_plugin
+[0.143s] Invoked command in '/root/ros2_ws/build/mg400_rviz_plugin' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_interface/lib:/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /root/ros2_ws/build/mg400_rviz_plugin -- -j16 -l16
+[0.145s] Invoking command in '/root/ros2_ws/build/mg400_rviz_plugin': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_interface/lib:/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /root/ros2_ws/build/mg400_rviz_plugin
+[0.151s] -- Install configuration: ""
+[0.152s] -- Execute custom install script
+[0.152s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/share/mg400_rviz_plugin//plugins_description.xml
+[0.152s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/include/mg400_rviz_plugin/panel_mg400_controller.hpp
+[0.152s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/share/mg400_rviz_plugin/environment/library_path.sh
+[0.152s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/share/mg400_rviz_plugin/environment/library_path.dsv
+[0.152s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/lib/libmg400_rviz_plugin.so
+[0.153s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/share/ament_index/resource_index/package_run_dependencies/mg400_rviz_plugin
+[0.153s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/share/ament_index/resource_index/parent_prefix_path/mg400_rviz_plugin
+[0.153s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/share/mg400_rviz_plugin/environment/ament_prefix_path.sh
+[0.153s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/share/mg400_rviz_plugin/environment/ament_prefix_path.dsv
+[0.153s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/share/mg400_rviz_plugin/environment/path.sh
+[0.153s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/share/mg400_rviz_plugin/environment/path.dsv
+[0.153s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/share/mg400_rviz_plugin/local_setup.bash
+[0.153s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/share/mg400_rviz_plugin/local_setup.sh
+[0.154s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/share/mg400_rviz_plugin/local_setup.zsh
+[0.154s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/share/mg400_rviz_plugin/local_setup.dsv
+[0.154s] -- Symlinking: /root/ros2_ws/install/mg400_rviz_plugin/share/mg400_rviz_plugin/package.dsv
+[0.164s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/share/ament_index/resource_index/packages/mg400_rviz_plugin
+[0.164s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/share/ament_index/resource_index/rviz_common__pluginlib__plugin/mg400_rviz_plugin
+[0.165s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/share/mg400_rviz_plugin/cmake/ament_cmake_export_dependencies-extras.cmake
+[0.165s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/share/mg400_rviz_plugin/cmake/ament_cmake_export_include_directories-extras.cmake
+[0.165s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/share/mg400_rviz_plugin/cmake/ament_cmake_export_libraries-extras.cmake
+[0.165s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/share/mg400_rviz_plugin/cmake/mg400_rviz_pluginConfig.cmake
+[0.165s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/share/mg400_rviz_plugin/cmake/mg400_rviz_pluginConfig-version.cmake
+[0.165s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_rviz_plugin/share/mg400_rviz_plugin/package.xml
+[0.168s] Invoked command in '/root/ros2_ws/build/mg400_rviz_plugin' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_interface/lib:/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /root/ros2_ws/build/mg400_rviz_plugin

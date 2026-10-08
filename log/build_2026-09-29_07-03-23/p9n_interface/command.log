@@ -1,0 +1,6 @@
+Invoking command in '/root/ros2_ws/build/p9n_interface': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /root/ros2_ws/src/PlayStation-JoyInterface-ROS2/p9n_interface -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/root/ros2_ws/install/p9n_interface
+Invoked command in '/root/ros2_ws/build/p9n_interface' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /root/ros2_ws/src/PlayStation-JoyInterface-ROS2/p9n_interface -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/root/ros2_ws/install/p9n_interface
+Invoking command in '/root/ros2_ws/build/p9n_interface': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /root/ros2_ws/build/p9n_interface -- -j16 -l16
+Invoked command in '/root/ros2_ws/build/p9n_interface' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /root/ros2_ws/build/p9n_interface -- -j16 -l16
+Invoking command in '/root/ros2_ws/build/p9n_interface': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /root/ros2_ws/build/p9n_interface
+Invoked command in '/root/ros2_ws/build/p9n_interface' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /root/ros2_ws/build/p9n_interface

@@ -1,0 +1,97 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-594bacf7872dfd783272.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "mg400_tools",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "command_queue_client::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-command_queue_client-3602e136268c5199693a.json",
+					"name" : "command_queue_client",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "mg400_kinematics_cli::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-mg400_kinematics_cli-8c9836d93665d4f181ab.json",
+					"name" : "mg400_kinematics_cli",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "mg400_tools_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-mg400_tools_uninstall-5199bff961debe7194b5.json",
+					"name" : "mg400_tools_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-bdbbd882851afee70ccc.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "validate_kinematics_with_solutions::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-validate_kinematics_with_solutions-088d2140505b27ec83c8.json",
+					"name" : "validate_kinematics_with_solutions",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/root/ros2_ws/build/mg400_tools",
+		"source" : "/root/ros2_ws/src/MG400_ROS2/mg400_tools"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

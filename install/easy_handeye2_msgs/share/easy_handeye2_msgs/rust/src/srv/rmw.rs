@@ -1,0 +1,1 @@
+/root/ros2_ws/build/easy_handeye2_msgs/rosidl_generator_rs/easy_handeye2_msgs/rust/src/srv/rmw.rs

@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_targets("TARGET_FILES" "/root/ros2_ws/build/mg400_plugin/libmg400_plugin_dashboard_api.so" "/root/ros2_ws/build/mg400_plugin/libmg400_plugin_motion_api.so" "TARGETS" "mg400_plugin_dashboard_api" "mg400_plugin_motion_api" "ARCHIVE_DESTINATION" "lib" "LIBRARY_DESTINATION" "lib" "RUNTIME_DESTINATION" "bin")

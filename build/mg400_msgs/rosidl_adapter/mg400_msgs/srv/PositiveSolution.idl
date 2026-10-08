@@ -1,0 +1,33 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from mg400_msgs/srv/PositiveSolution.srv
+// generated code does not contain a copyright notice
+
+
+module mg400_msgs {
+  module srv {
+    struct PositiveSolution_Request {
+      double j1;
+
+      double j2;
+
+      double j3;
+
+      double j4;
+
+      uint8 user;
+
+      uint8 tool;
+    };
+    struct PositiveSolution_Response {
+      int32 error_id;
+
+      double x;
+
+      double y;
+
+      double z;
+
+      double r;
+    };
+  };
+};

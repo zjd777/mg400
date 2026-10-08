@@ -1,0 +1,30 @@
+running develop
+Removing /root/ros2_ws/install/p9n_bringup/lib/python3.10/site-packages/p9n-bringup.egg-link (link to .)
+running egg_info
+writing ../../../build/p9n_bringup/p9n_bringup.egg-info/PKG-INFO
+writing dependency_links to ../../../build/p9n_bringup/p9n_bringup.egg-info/dependency_links.txt
+writing entry points to ../../../build/p9n_bringup/p9n_bringup.egg-info/entry_points.txt
+writing requirements to ../../../build/p9n_bringup/p9n_bringup.egg-info/requires.txt
+writing top-level names to ../../../build/p9n_bringup/p9n_bringup.egg-info/top_level.txt
+reading manifest file '../../../build/p9n_bringup/p9n_bringup.egg-info/SOURCES.txt'
+writing manifest file '../../../build/p9n_bringup/p9n_bringup.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /root/ros2_ws/build/p9n_bringup/build
+creating /root/ros2_ws/build/p9n_bringup/build/lib
+creating /root/ros2_ws/build/p9n_bringup/build/lib/p9n_bringup
+copying p9n_bringup/__init__.py -> /root/ros2_ws/build/p9n_bringup/build/lib/p9n_bringup
+running install
+running install_lib
+creating /root/ros2_ws/install/p9n_bringup/lib/python3.10/site-packages/p9n_bringup
+copying /root/ros2_ws/build/p9n_bringup/build/lib/p9n_bringup/__init__.py -> /root/ros2_ws/install/p9n_bringup/lib/python3.10/site-packages/p9n_bringup
+byte-compiling /root/ros2_ws/install/p9n_bringup/lib/python3.10/site-packages/p9n_bringup/__init__.py to __init__.cpython-310.pyc
+running install_data
+copying resource/p9n_bringup -> /root/ros2_ws/install/p9n_bringup/share/ament_index/resource_index/packages
+copying package.xml -> /root/ros2_ws/install/p9n_bringup/share/p9n_bringup
+copying launch/teleop_turtlesim.launch.py -> /root/ros2_ws/install/p9n_bringup/share/p9n_bringup/launch
+copying launch/teleop.launch.py -> /root/ros2_ws/install/p9n_bringup/share/p9n_bringup/launch
+running install_egg_info
+Copying ../../../build/p9n_bringup/p9n_bringup.egg-info to /root/ros2_ws/install/p9n_bringup/lib/python3.10/site-packages/p9n_bringup-1.1.1-py3.10.egg-info
+running install_scripts
+writing list of installed files to '/root/ros2_ws/build/p9n_bringup/install.log'

@@ -1,0 +1,30 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from mg400_msgs/srv/EnableRobot.srv
+// generated code does not contain a copyright notice
+
+
+module mg400_msgs {
+  module srv {
+    module EnableRobot_Request_Constants {
+      const int8 NO_PARAM = 0;
+      const int8 ONE_PARAM = 1;
+      const int8 FOUR_PARAM = 4;
+    };
+    struct EnableRobot_Request {
+      int8 num_of_params;
+
+      double load;
+
+      double center_x;
+
+      double center_y;
+
+      double center_z;
+    };
+    struct EnableRobot_Response {
+      boolean result;
+
+      int32 error_id;
+    };
+  };
+};

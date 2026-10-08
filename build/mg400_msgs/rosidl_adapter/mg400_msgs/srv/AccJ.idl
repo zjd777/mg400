@@ -1,0 +1,17 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from mg400_msgs/srv/AccJ.srv
+// generated code does not contain a copyright notice
+
+
+module mg400_msgs {
+  module srv {
+    struct AccJ_Request {
+      uint8 r;
+    };
+    struct AccJ_Response {
+      boolean result;
+
+      int32 error_id;
+    };
+  };
+};

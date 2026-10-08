@@ -1,0 +1,1 @@
+/root/ros2_ws/build/realsense2_camera_msgs/rosidl_generator_py/realsense2_camera_msgs/srv/_safety_interface_config_read_s.c

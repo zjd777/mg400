@@ -1,0 +1,27 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from mg400_msgs/srv/GetPose.srv
+// generated code does not contain a copyright notice
+
+
+module mg400_msgs {
+  module srv {
+    struct GetPose_Request {
+      uint8 structure_needs_at_least_one_member;
+    };
+    struct GetPose_Response {
+      int32 error_id;
+
+      double pose1;
+
+      double pose2;
+
+      double pose3;
+
+      double pose4;
+
+      double pose5;
+
+      double pose6;
+    };
+  };
+};

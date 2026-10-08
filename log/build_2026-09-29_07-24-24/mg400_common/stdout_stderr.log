@@ -1,0 +1,28 @@
+[ 37%] Built target gtest_main
+[ 50%] Built target mg400_common
+[ 75%] Built target gtest
+[100%] Built target test_mg400_kinematics
+-- Install configuration: ""
+-- Execute custom install script
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_common/include/mg400_common/kinematics.hpp
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_common/include/mg400_common/mg400_ik_util.hpp
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/environment/library_path.sh
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/environment/library_path.dsv
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_common/lib/libmg400_common.so
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/ament_index/resource_index/package_run_dependencies/mg400_common
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/ament_index/resource_index/parent_prefix_path/mg400_common
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/environment/ament_prefix_path.sh
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/environment/ament_prefix_path.dsv
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/environment/path.sh
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/environment/path.dsv
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/local_setup.bash
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/local_setup.sh
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/local_setup.zsh
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/local_setup.dsv
+-- Symlinking: /root/ros2_ws/install/mg400_common/share/mg400_common/package.dsv
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/ament_index/resource_index/packages/mg400_common
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/cmake/ament_cmake_export_include_directories-extras.cmake
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/cmake/ament_cmake_export_libraries-extras.cmake
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/cmake/mg400_commonConfig.cmake
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/cmake/mg400_commonConfig-version.cmake
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/package.xml

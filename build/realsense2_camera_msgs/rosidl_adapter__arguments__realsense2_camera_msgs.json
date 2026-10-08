@@ -1,0 +1,20 @@
+{
+  "package_name": "realsense2_camera_msgs",
+  "non_idl_tuples": [
+    "/root/ros2_ws/src/realsense-ros/realsense2_camera_msgs:msg/IMUInfo.msg",
+    "/root/ros2_ws/src/realsense-ros/realsense2_camera_msgs:msg/Extrinsics.msg",
+    "/root/ros2_ws/src/realsense-ros/realsense2_camera_msgs:msg/Metadata.msg",
+    "/root/ros2_ws/src/realsense-ros/realsense2_camera_msgs:msg/RGBD.msg",
+    "/root/ros2_ws/src/realsense-ros/realsense2_camera_msgs:srv/DeviceInfo.srv",
+    "/root/ros2_ws/src/realsense-ros/realsense2_camera_msgs:srv/SafetyPresetRead.srv",
+    "/root/ros2_ws/src/realsense-ros/realsense2_camera_msgs:srv/SafetyPresetWrite.srv",
+    "/root/ros2_ws/src/realsense-ros/realsense2_camera_msgs:srv/SafetyInterfaceConfigRead.srv",
+    "/root/ros2_ws/src/realsense-ros/realsense2_camera_msgs:srv/SafetyInterfaceConfigWrite.srv",
+    "/root/ros2_ws/src/realsense-ros/realsense2_camera_msgs:srv/CalibConfigRead.srv",
+    "/root/ros2_ws/src/realsense-ros/realsense2_camera_msgs:srv/CalibConfigWrite.srv",
+    "/root/ros2_ws/src/realsense-ros/realsense2_camera_msgs:srv/ApplicationConfigRead.srv",
+    "/root/ros2_ws/src/realsense-ros/realsense2_camera_msgs:srv/ApplicationConfigWrite.srv",
+    "/root/ros2_ws/src/realsense-ros/realsense2_camera_msgs:srv/HardwareMonitorCommandSend.srv",
+    "/root/ros2_ws/src/realsense-ros/realsense2_camera_msgs:action/TriggeredCalibration.action"
+  ]
+}

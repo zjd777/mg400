@@ -1,0 +1,2 @@
+/usr/bin/ar qc libp9n_interface.a CMakeFiles/p9n_interface.dir/src/p9n_interface.cpp.o
+/usr/bin/ranlib libp9n_interface.a

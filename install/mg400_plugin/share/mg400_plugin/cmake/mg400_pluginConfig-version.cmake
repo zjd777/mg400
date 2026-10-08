@@ -1,0 +1,1 @@
+/root/ros2_ws/build/mg400_plugin/ament_cmake_core/mg400_pluginConfig-version.cmake

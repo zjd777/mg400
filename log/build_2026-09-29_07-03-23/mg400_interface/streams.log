@@ -1,0 +1,139 @@
+[0.014s] Invoking command in '/root/ros2_ws/build/mg400_interface': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /root/ros2_ws/src/MG400_ROS2/mg400_interface -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/root/ros2_ws/install/mg400_interface
+[0.070s] -- The C compiler identification is GNU 11.4.0
+[0.129s] -- The CXX compiler identification is GNU 11.4.0
+[0.137s] -- Detecting C compiler ABI info
+[0.205s] -- Detecting C compiler ABI info - done
+[0.210s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.211s] -- Detecting C compile features
+[0.211s] -- Detecting C compile features - done
+[0.214s] -- Detecting CXX compiler ABI info
+[0.290s] -- Detecting CXX compiler ABI info - done
+[0.297s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.297s] -- Detecting CXX compile features
+[0.298s] -- Detecting CXX compile features - done
+[0.300s] -- Found ament_cmake_auto: 1.3.14 (/opt/ros/humble/share/ament_cmake_auto/cmake)
+[0.441s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.504s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.651s] -- Found rosidl_generator_c: 3.1.9 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.656s] -- Found rosidl_adapter: 3.1.9 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.664s] -- Found rosidl_generator_cpp: 3.1.9 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.675s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.690s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.812s] -- Found rmw_implementation_cmake: 6.1.3 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.815s] -- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[0.905s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[0.933s] -- Found FastRTPS: /opt/ros/humble/include  
+[0.979s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.990s] -- Looking for pthread.h
+[1.066s] -- Looking for pthread.h - found
+[1.066s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[1.143s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[1.144s] -- Found Threads: TRUE  
+[1.290s] -- Found eigen3_cmake_module: 0.1.1 (/opt/ros/humble/share/eigen3_cmake_module/cmake)
+[1.291s] -- Found Eigen3: TRUE (found version "3.4.0") 
+[1.291s] -- Ensuring Eigen3 include directory is part of orocos-kdl CMake target
+[1.299s] -- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[1.322s] -- Found gtest sources under '/opt/ros/humble/src/gtest_vendor': C++ tests using 'Google Test' will be built
+[1.329s] -- Found gmock sources under '/opt/ros/humble/src/gmock_vendor': C++ tests using 'Google Mock' will be built
+[1.332s] [0mIn this package, headers install destination is set to `include` by ament_auto_package. It is recommended to install `include/mg400_interface` instead and will be the default behavior of ament_auto_package from ROS 2 Kilted Kaiju. On distributions before Kilted, ament_auto_package behaves the same way when you use USE_SCOPED_HEADER_INSTALL_DIR option.[0m
+[1.341s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[1.341s] -- Configured cppcheck include dirs: /root/ros2_ws/src/MG400_ROS2/mg400_interface/include
+[1.341s] -- Configured cppcheck exclude dirs and/or files: 
+[1.344s] -- Added test 'lint_cmake' to check CMake code style
+[1.348s] -- Added test 'uncrustify' to check C / C++ code style
+[1.348s] -- Configured uncrustify additional arguments: 
+[1.349s] -- Added test 'xmllint' to check XML markup files
+[1.352s] -- Configuring done
+[1.400s] -- Generating done
+[1.415s] -- Build files have been written to: /root/ros2_ws/build/mg400_interface
+[1.427s] Invoked command in '/root/ros2_ws/build/mg400_interface' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /root/ros2_ws/src/MG400_ROS2/mg400_interface -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/root/ros2_ws/install/mg400_interface
+[1.429s] Invoking command in '/root/ros2_ws/build/mg400_interface': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /root/ros2_ws/build/mg400_interface -- -j16 -l16
+[1.484s] [  2%] [32mBuilding CXX object gtest/CMakeFiles/gtest.dir/src/gtest-all.cc.o[0m
+[1.484s] [  5%] [32mBuilding CXX object gtest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o[0m
+[1.484s] [  8%] [32mBuilding CXX object CMakeFiles/mg400_interface.dir/src/commander/dashboard_commander.cpp.o[0m
+[1.484s] [ 11%] [32mBuilding CXX object CMakeFiles/mg400_interface.dir/src/error_msg_generator.cpp.o[0m
+[1.485s] [ 14%] [32mBuilding CXX object gmock/CMakeFiles/gmock.dir/opt/ros/humble/src/gtest_vendor/src/gtest-all.cc.o[0m
+[1.485s] [ 17%] [32mBuilding CXX object CMakeFiles/mg400_interface.dir/src/joint_handler.cpp.o[0m
+[1.486s] [ 20%] [32mBuilding CXX object CMakeFiles/mg400_interface.dir/src/tcp_interface/motion_tcp_interface.cpp.o[0m
+[1.487s] [ 23%] [32mBuilding CXX object gmock/CMakeFiles/gmock.dir/src/gmock-all.cc.o[0m
+[1.487s] [ 26%] [32mBuilding CXX object CMakeFiles/mg400_interface.dir/src/commander/motion_commander.cpp.o[0m
+[1.487s] [ 29%] [32mBuilding CXX object CMakeFiles/mg400_interface.dir/src/tcp_interface/realtime_feedback_tcp_interface.cpp.o[0m
+[1.487s] [ 32%] [32mBuilding CXX object gmock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o[0m
+[1.487s] [ 35%] [32mBuilding CXX object CMakeFiles/mg400_interface.dir/src/commander/response_parser.cpp.o[0m
+[1.490s] [ 38%] [32mBuilding CXX object CMakeFiles/mg400_interface.dir/src/tcp_interface/tcp_socket_handler.cpp.o[0m
+[1.492s] [ 41%] [32mBuilding CXX object CMakeFiles/mg400_interface.dir/src/tcp_interface/dashboard_tcp_interface.cpp.o[0m
+[1.492s] [ 44%] [32mBuilding CXX object CMakeFiles/mg400_interface.dir/src/mg400_interface.cpp.o[0m
+[3.036s] [ 47%] [32m[1mLinking CXX static library libgtest_main.a[0m
+[3.269s] [ 47%] Built target gtest_main
+[3.784s] [ 50%] [32m[1mLinking CXX static library libgmock_main.a[0m
+[3.996s] [ 50%] Built target gmock_main
+[6.127s] [ 52%] [32m[1mLinking CXX static library libgtest.a[0m
+[6.128s] [ 55%] [32m[1mLinking CXX static library libgmock.a[0m
+[6.266s] [ 55%] Built target gtest
+[6.281s] [ 55%] Built target gmock
+[8.271s] [ 58%] [32m[1mLinking CXX static library libmg400_interface.a[0m
+[8.381s] [ 58%] Built target mg400_interface
+[8.401s] [ 67%] [32mBuilding CXX object CMakeFiles/test_error_msg_generator.dir/test/src/test_error_msg_generator.cpp.o[0m
+[8.401s] [ 67%] [32mBuilding CXX object CMakeFiles/show_realtime_data.dir/example/show_realtime_data.cpp.o[0m
+[8.401s] [ 67%] [32mBuilding CXX object CMakeFiles/commander_check.dir/example/commander_check.cpp.o[0m
+[8.401s] [ 70%] [32mBuilding CXX object CMakeFiles/test_dashboard_commander.dir/test/src/commander/test_dashboard_commander.cpp.o[0m
+[8.401s] [ 73%] [32mBuilding CXX object CMakeFiles/test_response_parser.dir/test/src/commander/test_response_parser.cpp.o[0m
+[8.401s] [ 76%] [32mBuilding CXX object CMakeFiles/test_joint_handler.dir/test/src/test_joint_handler.cpp.o[0m
+[8.402s] [ 79%] [32mBuilding CXX object CMakeFiles/test_motion_commander.dir/test/src/commander/test_motion_commander.cpp.o[0m
+[9.661s] [ 82%] [32m[1mLinking CXX executable test_response_parser[0m
+[10.001s] [ 82%] Built target test_response_parser
+[11.957s] [ 85%] [32m[1mLinking CXX executable show_realtime_data[0m
+[12.120s] [ 85%] Built target show_realtime_data
+[12.947s] [ 88%] [32m[1mLinking CXX executable test_error_msg_generator[0m
+[12.988s] [ 91%] [32m[1mLinking CXX executable commander_check[0m
+[13.184s] [ 91%] Built target test_error_msg_generator
+[13.255s] [ 94%] [32m[1mLinking CXX executable test_motion_commander[0m
+[13.262s] [ 94%] Built target commander_check
+[13.466s] [ 94%] Built target test_motion_commander
+[13.555s] [ 97%] [32m[1mLinking CXX executable test_dashboard_commander[0m
+[13.821s] [ 97%] Built target test_dashboard_commander
+[14.336s] [100%] [32m[1mLinking CXX executable test_joint_handler[0m
+[14.509s] [100%] Built target test_joint_handler
+[14.520s] Invoked command in '/root/ros2_ws/build/mg400_interface' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /root/ros2_ws/build/mg400_interface -- -j16 -l16
+[14.522s] Invoking command in '/root/ros2_ws/build/mg400_interface': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /root/ros2_ws/build/mg400_interface
+[14.528s] -- Install configuration: ""
+[14.528s] -- Execute custom install script
+[14.529s] -- Symlinking: /root/ros2_ws/install/mg400_interface/include/mg400_interface/command_utils.hpp
+[14.536s] -- Symlinking: /root/ros2_ws/install/mg400_interface/include/mg400_interface/commander/dashboard_commander.hpp
+[14.543s] -- Symlinking: /root/ros2_ws/install/mg400_interface/include/mg400_interface/commander/motion_commander.hpp
+[14.550s] -- Symlinking: /root/ros2_ws/install/mg400_interface/include/mg400_interface/commander/response_parser.hpp
+[14.558s] -- Symlinking: /root/ros2_ws/install/mg400_interface/include/mg400_interface/error_msg_generator.hpp
+[14.566s] -- Symlinking: /root/ros2_ws/install/mg400_interface/include/mg400_interface/joint_handler.hpp
+[14.574s] -- Symlinking: /root/ros2_ws/install/mg400_interface/include/mg400_interface/mg400_interface.hpp
+[14.582s] -- Symlinking: /root/ros2_ws/install/mg400_interface/include/mg400_interface/tcp_interface/dashboard_tcp_interface.hpp
+[14.589s] -- Symlinking: /root/ros2_ws/install/mg400_interface/include/mg400_interface/tcp_interface/motion_tcp_interface.hpp
+[14.597s] -- Symlinking: /root/ros2_ws/install/mg400_interface/include/mg400_interface/tcp_interface/realtime_data.hpp
+[14.605s] -- Symlinking: /root/ros2_ws/install/mg400_interface/include/mg400_interface/tcp_interface/realtime_feedback_tcp_interface.hpp
+[14.613s] -- Symlinking: /root/ros2_ws/install/mg400_interface/include/mg400_interface/tcp_interface/tcp_socket_handler.hpp
+[14.621s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/mg400_interface/environment/library_path.sh
+[14.627s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/mg400_interface/environment/library_path.dsv
+[14.634s] -- Symlinking: /root/ros2_ws/install/mg400_interface/lib/libmg400_interface.a
+[14.641s] -- Symlinking: /root/ros2_ws/install/mg400_interface/lib/mg400_interface/show_realtime_data
+[14.649s] -- Symlinking: /root/ros2_ws/install/mg400_interface/lib/mg400_interface/commander_check
+[14.656s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/mg400_interface/resources/README.md
+[14.664s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/mg400_interface/resources/alarm_controller.json
+[14.671s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/mg400_interface/resources/alarm_servo.json
+[14.679s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/ament_index/resource_index/package_run_dependencies/mg400_interface
+[14.686s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/ament_index/resource_index/parent_prefix_path/mg400_interface
+[14.692s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/mg400_interface/environment/ament_prefix_path.sh
+[14.701s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/mg400_interface/environment/ament_prefix_path.dsv
+[14.709s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/mg400_interface/environment/path.sh
+[14.715s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/mg400_interface/environment/path.dsv
+[14.723s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/mg400_interface/local_setup.bash
+[14.731s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/mg400_interface/local_setup.sh
+[14.739s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/mg400_interface/local_setup.zsh
+[14.747s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/mg400_interface/local_setup.dsv
+[14.755s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/mg400_interface/package.dsv
+[14.762s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/ament_index/resource_index/packages/mg400_interface
+[14.771s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/mg400_interface/cmake/ament_cmake_export_dependencies-extras.cmake
+[14.778s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/mg400_interface/cmake/ament_cmake_export_include_directories-extras.cmake
+[14.785s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/mg400_interface/cmake/ament_cmake_export_libraries-extras.cmake
+[14.794s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/mg400_interface/cmake/mg400_interfaceConfig.cmake
+[14.802s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/mg400_interface/cmake/mg400_interfaceConfig-version.cmake
+[14.810s] -- Symlinking: /root/ros2_ws/install/mg400_interface/share/mg400_interface/package.xml
+[14.821s] Invoked command in '/root/ros2_ws/build/mg400_interface' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /root/ros2_ws/build/mg400_interface

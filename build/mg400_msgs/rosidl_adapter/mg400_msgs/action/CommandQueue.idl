@@ -1,0 +1,34 @@
+// generated from rosidl_adapter/resource/action.idl.em
+// with input from mg400_msgs/action/CommandQueue.action
+// generated code does not contain a copyright notice
+
+#include "geometry_msgs/msg/PoseStamped.idl"
+#include "mg400_msgs/msg/Command.idl"
+#include "mg400_msgs/msg/ErrorID.idl"
+
+module mg400_msgs {
+  module action {
+    @verbatim (language="comment", text=
+      "goal definition")
+    struct CommandQueue_Goal {
+      sequence<mg400_msgs::msg::Command> commands;
+    };
+    @verbatim (language="comment", text=
+      "result definition")
+    struct CommandQueue_Result {
+      boolean result;
+
+      mg400_msgs::msg::ErrorID error_id;
+    };
+    typedef double double__4[4];
+    @verbatim (language="comment", text=
+      "feedback definition")
+    struct CommandQueue_Feedback {
+      geometry_msgs::msg::PoseStamped current_pose;
+
+      @verbatim (language="comment", text=
+        "Current joint angles in radian")
+      double__4 current_angles;
+    };
+  };
+};

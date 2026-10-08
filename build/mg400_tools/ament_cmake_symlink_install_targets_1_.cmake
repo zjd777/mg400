@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_targets("TARGET_FILES" "/root/ros2_ws/build/mg400_tools/command_queue_client" "/root/ros2_ws/build/mg400_tools/validate_kinematics_with_solutions" "/root/ros2_ws/build/mg400_tools/mg400_kinematics_cli" "TARGETS" "command_queue_client" "validate_kinematics_with_solutions" "mg400_kinematics_cli" "DESTINATION" "lib/mg400_tools")

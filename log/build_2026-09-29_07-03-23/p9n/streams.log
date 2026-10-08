@@ -1,0 +1,44 @@
+[0.017s] Invoking command in '/root/ros2_ws/build/p9n': AMENT_PREFIX_PATH=/root/ros2_ws/install/p9n_bringup:/root/ros2_ws/install/p9n_test:/root/ros2_ws/install/p9n_node:/root/ros2_ws/install/p9n_example:/root/ros2_ws/install/p9n_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/p9n_test:/root/ros2_ws/install/p9n_node:/root/ros2_ws/install/p9n_example:/root/ros2_ws/install/p9n_interface:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/p9n_test/lib:/root/ros2_ws/install/p9n_node/lib:/root/ros2_ws/install/p9n_example/lib:/root/ros2_ws/install/p9n_interface/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/build/p9n_bringup:/root/ros2_ws/install/p9n_bringup/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/cmake /root/ros2_ws/src/PlayStation-JoyInterface-ROS2/p9n -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/root/ros2_ws/install/p9n
+[0.071s] -- The C compiler identification is GNU 11.4.0
+[0.122s] -- The CXX compiler identification is GNU 11.4.0
+[0.129s] -- Detecting C compiler ABI info
+[0.196s] -- Detecting C compiler ABI info - done
+[0.201s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.201s] -- Detecting C compile features
+[0.202s] -- Detecting C compile features - done
+[0.204s] -- Detecting CXX compiler ABI info
+[0.282s] -- Detecting CXX compiler ABI info - done
+[0.288s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.288s] -- Detecting CXX compile features
+[0.289s] -- Detecting CXX compile features - done
+[0.292s] -- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.422s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.479s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.514s] -- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[0.589s] -- Added test 'lint_cmake' to check CMake code style
+[0.590s] -- Added test 'xmllint' to check XML markup files
+[0.591s] -- Configuring done
+[0.594s] -- Generating done
+[0.595s] -- Build files have been written to: /root/ros2_ws/build/p9n
+[0.599s] Invoked command in '/root/ros2_ws/build/p9n' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/p9n_bringup:/root/ros2_ws/install/p9n_test:/root/ros2_ws/install/p9n_node:/root/ros2_ws/install/p9n_example:/root/ros2_ws/install/p9n_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/p9n_test:/root/ros2_ws/install/p9n_node:/root/ros2_ws/install/p9n_example:/root/ros2_ws/install/p9n_interface:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/p9n_test/lib:/root/ros2_ws/install/p9n_node/lib:/root/ros2_ws/install/p9n_example/lib:/root/ros2_ws/install/p9n_interface/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/build/p9n_bringup:/root/ros2_ws/install/p9n_bringup/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/cmake /root/ros2_ws/src/PlayStation-JoyInterface-ROS2/p9n -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/root/ros2_ws/install/p9n
+[0.601s] Invoking command in '/root/ros2_ws/build/p9n': AMENT_PREFIX_PATH=/root/ros2_ws/install/p9n_bringup:/root/ros2_ws/install/p9n_test:/root/ros2_ws/install/p9n_node:/root/ros2_ws/install/p9n_example:/root/ros2_ws/install/p9n_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/p9n_test:/root/ros2_ws/install/p9n_node:/root/ros2_ws/install/p9n_example:/root/ros2_ws/install/p9n_interface:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/p9n_test/lib:/root/ros2_ws/install/p9n_node/lib:/root/ros2_ws/install/p9n_example/lib:/root/ros2_ws/install/p9n_interface/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/build/p9n_bringup:/root/ros2_ws/install/p9n_bringup/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/cmake --build /root/ros2_ws/build/p9n -- -j16 -l16
+[0.640s] Invoked command in '/root/ros2_ws/build/p9n' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/p9n_bringup:/root/ros2_ws/install/p9n_test:/root/ros2_ws/install/p9n_node:/root/ros2_ws/install/p9n_example:/root/ros2_ws/install/p9n_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/p9n_test:/root/ros2_ws/install/p9n_node:/root/ros2_ws/install/p9n_example:/root/ros2_ws/install/p9n_interface:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/p9n_test/lib:/root/ros2_ws/install/p9n_node/lib:/root/ros2_ws/install/p9n_example/lib:/root/ros2_ws/install/p9n_interface/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/build/p9n_bringup:/root/ros2_ws/install/p9n_bringup/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/cmake --build /root/ros2_ws/build/p9n -- -j16 -l16
+[0.641s] Invoking command in '/root/ros2_ws/build/p9n': AMENT_PREFIX_PATH=/root/ros2_ws/install/p9n_bringup:/root/ros2_ws/install/p9n_test:/root/ros2_ws/install/p9n_node:/root/ros2_ws/install/p9n_example:/root/ros2_ws/install/p9n_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/p9n_test:/root/ros2_ws/install/p9n_node:/root/ros2_ws/install/p9n_example:/root/ros2_ws/install/p9n_interface:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/p9n_test/lib:/root/ros2_ws/install/p9n_node/lib:/root/ros2_ws/install/p9n_example/lib:/root/ros2_ws/install/p9n_interface/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/build/p9n_bringup:/root/ros2_ws/install/p9n_bringup/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/cmake --install /root/ros2_ws/build/p9n
+[0.648s] -- Install configuration: ""
+[0.648s] -- Execute custom install script
+[0.649s] -- Symlinking: /root/ros2_ws/install/p9n/share/ament_index/resource_index/package_run_dependencies/p9n
+[0.658s] -- Symlinking: /root/ros2_ws/install/p9n/share/ament_index/resource_index/parent_prefix_path/p9n
+[0.667s] -- Symlinking: /root/ros2_ws/install/p9n/share/p9n/environment/ament_prefix_path.sh
+[0.676s] -- Symlinking: /root/ros2_ws/install/p9n/share/p9n/environment/ament_prefix_path.dsv
+[0.685s] -- Symlinking: /root/ros2_ws/install/p9n/share/p9n/environment/path.sh
+[0.693s] -- Symlinking: /root/ros2_ws/install/p9n/share/p9n/environment/path.dsv
+[0.702s] -- Symlinking: /root/ros2_ws/install/p9n/share/p9n/local_setup.bash
+[0.710s] -- Symlinking: /root/ros2_ws/install/p9n/share/p9n/local_setup.sh
+[0.719s] -- Symlinking: /root/ros2_ws/install/p9n/share/p9n/local_setup.zsh
+[0.726s] -- Symlinking: /root/ros2_ws/install/p9n/share/p9n/local_setup.dsv
+[0.734s] -- Symlinking: /root/ros2_ws/install/p9n/share/p9n/package.dsv
+[0.743s] -- Symlinking: /root/ros2_ws/install/p9n/share/ament_index/resource_index/packages/p9n
+[0.752s] -- Symlinking: /root/ros2_ws/install/p9n/share/p9n/cmake/p9nConfig.cmake
+[0.760s] -- Symlinking: /root/ros2_ws/install/p9n/share/p9n/cmake/p9nConfig-version.cmake
+[0.767s] -- Symlinking: /root/ros2_ws/install/p9n/share/p9n/package.xml
+[0.777s] Invoked command in '/root/ros2_ws/build/p9n' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/p9n_bringup:/root/ros2_ws/install/p9n_test:/root/ros2_ws/install/p9n_node:/root/ros2_ws/install/p9n_example:/root/ros2_ws/install/p9n_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/p9n_test:/root/ros2_ws/install/p9n_node:/root/ros2_ws/install/p9n_example:/root/ros2_ws/install/p9n_interface:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/p9n_test/lib:/root/ros2_ws/install/p9n_node/lib:/root/ros2_ws/install/p9n_example/lib:/root/ros2_ws/install/p9n_interface/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/build/p9n_bringup:/root/ros2_ws/install/p9n_bringup/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/cmake --install /root/ros2_ws/build/p9n

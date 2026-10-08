@@ -1,0 +1,83 @@
+[0.014s] Invoking command in '/root/ros2_ws/build/mg400_joy': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_interface/lib:/root/ros2_ws/install/p9n_interface/lib:/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /root/ros2_ws/src/MG400_ROS2/mg400_joy -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/root/ros2_ws/install/mg400_joy
+[0.060s] -- The C compiler identification is GNU 11.4.0
+[0.105s] -- The CXX compiler identification is GNU 11.4.0
+[0.111s] -- Detecting C compiler ABI info
+[0.169s] -- Detecting C compiler ABI info - done
+[0.176s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.176s] -- Detecting C compile features
+[0.176s] -- Detecting C compile features - done
+[0.178s] -- Detecting CXX compiler ABI info
+[0.247s] -- Detecting CXX compiler ABI info - done
+[0.252s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.252s] -- Detecting CXX compile features
+[0.253s] -- Detecting CXX compile features - done
+[0.255s] -- Found ament_cmake_auto: 1.3.14 (/opt/ros/humble/share/ament_cmake_auto/cmake)
+[0.390s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.450s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.573s] -- Found rosidl_generator_c: 3.1.9 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.578s] -- Found rosidl_adapter: 3.1.9 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.587s] -- Found rosidl_generator_cpp: 3.1.9 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.598s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.613s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.656s] -- Found rmw_implementation_cmake: 6.1.3 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.659s] -- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[0.744s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[0.772s] -- Found FastRTPS: /opt/ros/humble/include  
+[0.813s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.826s] -- Looking for pthread.h
+[0.894s] -- Looking for pthread.h - found
+[0.894s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[0.960s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[0.961s] -- Found Threads: TRUE  
+[1.182s] -- Found eigen3_cmake_module: 0.1.1 (/opt/ros/humble/share/eigen3_cmake_module/cmake)
+[1.184s] -- Found Eigen3: TRUE (found version "3.4.0") 
+[1.184s] -- Ensuring Eigen3 include directory is part of orocos-kdl CMake target
+[1.197s] -- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[1.214s] [0mIn this package, headers install destination is set to `include` by ament_auto_package. It is recommended to install `include/mg400_joy` instead and will be the default behavior of ament_auto_package from ROS 2 Kilted Kaiju. On distributions before Kilted, ament_auto_package behaves the same way when you use USE_SCOPED_HEADER_INSTALL_DIR option.[0m
+[1.220s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[1.220s] -- Configured cppcheck include dirs: /root/ros2_ws/src/MG400_ROS2/mg400_joy/include
+[1.220s] -- Configured cppcheck exclude dirs and/or files: 
+[1.221s] -- Added test 'lint_cmake' to check CMake code style
+[1.222s] -- Added test 'uncrustify' to check C / C++ code style
+[1.222s] -- Configured uncrustify additional arguments: 
+[1.222s] -- Added test 'xmllint' to check XML markup files
+[1.226s] -- Configuring done
+[1.262s] -- Generating done
+[1.268s] -- Build files have been written to: /root/ros2_ws/build/mg400_joy
+[1.279s] Invoked command in '/root/ros2_ws/build/mg400_joy' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_interface/lib:/root/ros2_ws/install/p9n_interface/lib:/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /root/ros2_ws/src/MG400_ROS2/mg400_joy -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/root/ros2_ws/install/mg400_joy
+[1.280s] Invoking command in '/root/ros2_ws/build/mg400_joy': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_interface/lib:/root/ros2_ws/install/p9n_interface/lib:/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /root/ros2_ws/build/mg400_joy -- -j16 -l16
+[1.331s] [ 25%] [32mBuilding CXX object CMakeFiles/mg400_joy_interface_node_exec.dir/rclcpp_components/node_main_mg400_joy_interface_node_exec.cpp.o[0m
+[1.333s] [ 50%] [32mBuilding CXX object CMakeFiles/mg400_joy_interface_node.dir/src/mg400_joy_interface_node.cpp.o[0m
+[5.419s] [ 75%] [32m[1mLinking CXX executable mg400_joy_interface_node_exec[0m
+[5.955s] [ 75%] Built target mg400_joy_interface_node_exec
+[23.003s] [100%] [32m[1mLinking CXX shared library libmg400_joy_interface_node.so[0m
+[23.891s] [100%] Built target mg400_joy_interface_node
+[23.966s] Invoked command in '/root/ros2_ws/build/mg400_joy' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_interface/lib:/root/ros2_ws/install/p9n_interface/lib:/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /root/ros2_ws/build/mg400_joy -- -j16 -l16
+[24.000s] Invoking command in '/root/ros2_ws/build/mg400_joy': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_interface/lib:/root/ros2_ws/install/p9n_interface/lib:/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /root/ros2_ws/build/mg400_joy
+[24.011s] -- Install configuration: ""
+[24.012s] -- Execute custom install script
+[24.013s] -- Symlinking: /root/ros2_ws/install/mg400_joy/lib/mg400_joy/mg400_joy_interface_node_exec
+[24.027s] -- Symlinking: /root/ros2_ws/install/mg400_joy/include/mg400_joy/mg400_joy_interface_node.hpp
+[24.039s] -- Symlinking: /root/ros2_ws/install/mg400_joy/share/mg400_joy/environment/library_path.sh
+[24.052s] -- Symlinking: /root/ros2_ws/install/mg400_joy/share/mg400_joy/environment/library_path.dsv
+[24.065s] -- Symlinking: /root/ros2_ws/install/mg400_joy/lib/libmg400_joy_interface_node.so
+[24.078s] -- Symlinking: /root/ros2_ws/install/mg400_joy/share/ament_index/resource_index/package_run_dependencies/mg400_joy
+[24.091s] -- Symlinking: /root/ros2_ws/install/mg400_joy/share/ament_index/resource_index/parent_prefix_path/mg400_joy
+[24.103s] -- Symlinking: /root/ros2_ws/install/mg400_joy/share/mg400_joy/environment/ament_prefix_path.sh
+[24.117s] -- Symlinking: /root/ros2_ws/install/mg400_joy/share/mg400_joy/environment/ament_prefix_path.dsv
+[24.131s] -- Symlinking: /root/ros2_ws/install/mg400_joy/share/mg400_joy/environment/path.sh
+[24.145s] -- Symlinking: /root/ros2_ws/install/mg400_joy/share/mg400_joy/environment/path.dsv
+[24.159s] -- Symlinking: /root/ros2_ws/install/mg400_joy/share/mg400_joy/local_setup.bash
+[24.173s] -- Symlinking: /root/ros2_ws/install/mg400_joy/share/mg400_joy/local_setup.sh
+[24.187s] -- Symlinking: /root/ros2_ws/install/mg400_joy/share/mg400_joy/local_setup.zsh
+[24.201s] -- Symlinking: /root/ros2_ws/install/mg400_joy/share/mg400_joy/local_setup.dsv
+[24.214s] -- Symlinking: /root/ros2_ws/install/mg400_joy/share/mg400_joy/package.dsv
+[24.228s] -- Symlinking: /root/ros2_ws/install/mg400_joy/share/ament_index/resource_index/packages/mg400_joy
+[24.243s] -- Symlinking: /root/ros2_ws/install/mg400_joy/share/ament_index/resource_index/rclcpp_components/mg400_joy
+[24.257s] -- Symlinking: /root/ros2_ws/install/mg400_joy/share/mg400_joy/cmake/ament_cmake_export_dependencies-extras.cmake
+[24.271s] -- Symlinking: /root/ros2_ws/install/mg400_joy/share/mg400_joy/cmake/ament_cmake_export_include_directories-extras.cmake
+[24.284s] -- Symlinking: /root/ros2_ws/install/mg400_joy/share/mg400_joy/cmake/ament_cmake_export_libraries-extras.cmake
+[24.298s] -- Symlinking: /root/ros2_ws/install/mg400_joy/share/mg400_joy/cmake/mg400_joyConfig.cmake
+[24.312s] -- Symlinking: /root/ros2_ws/install/mg400_joy/share/mg400_joy/cmake/mg400_joyConfig-version.cmake
+[24.326s] -- Symlinking: /root/ros2_ws/install/mg400_joy/share/mg400_joy/package.xml
+[24.354s] Invoked command in '/root/ros2_ws/build/mg400_joy' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_interface/lib:/root/ros2_ws/install/p9n_interface/lib:/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /root/ros2_ws/build/mg400_joy

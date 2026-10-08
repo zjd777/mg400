@@ -1,0 +1,80 @@
+[0.012s] Invoking command in '/root/ros2_ws/build/p9n_node': AMENT_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/p9n_interface/lib:${LD_LIBRARY_PATH} /usr/bin/cmake /root/ros2_ws/src/PlayStation-JoyInterface-ROS2/p9n_node -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/root/ros2_ws/install/p9n_node
+[0.059s] -- The C compiler identification is GNU 11.4.0
+[0.106s] -- The CXX compiler identification is GNU 11.4.0
+[0.112s] -- Detecting C compiler ABI info
+[0.172s] -- Detecting C compiler ABI info - done
+[0.178s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.179s] -- Detecting C compile features
+[0.179s] -- Detecting C compile features - done
+[0.182s] -- Detecting CXX compiler ABI info
+[0.250s] -- Detecting CXX compiler ABI info - done
+[0.258s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.258s] -- Detecting CXX compile features
+[0.258s] -- Detecting CXX compile features - done
+[0.261s] -- Found ament_cmake_auto: 1.3.14 (/opt/ros/humble/share/ament_cmake_auto/cmake)
+[0.386s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.442s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.576s] -- Found rosidl_generator_c: 3.1.9 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.581s] -- Found rosidl_adapter: 3.1.9 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.588s] -- Found rosidl_generator_cpp: 3.1.9 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.599s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.610s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.666s] -- Found rmw_implementation_cmake: 6.1.3 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.668s] -- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[0.749s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[0.778s] -- Found FastRTPS: /opt/ros/humble/include  
+[0.819s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.828s] -- Looking for pthread.h
+[0.891s] -- Looking for pthread.h - found
+[0.891s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[0.957s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[0.958s] -- Found Threads: TRUE  
+[1.037s] -- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[1.051s] [0mIn this package, headers install destination is set to `include` by ament_auto_package. It is recommended to install `include/p9n_node` instead and will be the default behavior of ament_auto_package from ROS 2 Kilted Kaiju. On distributions before Kilted, ament_auto_package behaves the same way when you use USE_SCOPED_HEADER_INSTALL_DIR option.[0m
+[1.056s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[1.056s] -- Configured cppcheck include dirs: /root/ros2_ws/src/PlayStation-JoyInterface-ROS2/p9n_node/include
+[1.056s] -- Configured cppcheck exclude dirs and/or files: 
+[1.057s] -- Added test 'lint_cmake' to check CMake code style
+[1.058s] -- Added test 'uncrustify' to check C / C++ code style
+[1.058s] -- Configured uncrustify additional arguments: 
+[1.058s] -- Added test 'xmllint' to check XML markup files
+[1.061s] -- Configuring done
+[1.085s] -- Generating done
+[1.090s] -- Build files have been written to: /root/ros2_ws/build/p9n_node
+[1.098s] Invoked command in '/root/ros2_ws/build/p9n_node' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/p9n_interface/lib:${LD_LIBRARY_PATH} /usr/bin/cmake /root/ros2_ws/src/PlayStation-JoyInterface-ROS2/p9n_node -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/root/ros2_ws/install/p9n_node
+[1.099s] Invoking command in '/root/ros2_ws/build/p9n_node': AMENT_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/p9n_interface/lib:${LD_LIBRARY_PATH} /usr/bin/cmake --build /root/ros2_ws/build/p9n_node -- -j16 -l16
+[1.147s] [ 50%] [32mBuilding CXX object CMakeFiles/p9n_node_teleop_twist_joy_node.dir/src/teleop_twist_joy_node.cpp.o[0m
+[1.148s] [ 50%] [32mBuilding CXX object CMakeFiles/teleop_twist_joy_node_exec.dir/rclcpp_components/node_main_teleop_twist_joy_node_exec.cpp.o[0m
+[4.728s] [ 75%] [32m[1mLinking CXX executable teleop_twist_joy_node_exec[0m
+[4.873s] [ 75%] Built target teleop_twist_joy_node_exec
+[12.352s] [100%] [32m[1mLinking CXX shared library libp9n_node_teleop_twist_joy_node.so[0m
+[13.525s] [100%] Built target p9n_node_teleop_twist_joy_node
+[13.550s] Invoked command in '/root/ros2_ws/build/p9n_node' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/p9n_interface/lib:${LD_LIBRARY_PATH} /usr/bin/cmake --build /root/ros2_ws/build/p9n_node -- -j16 -l16
+[13.551s] Invoking command in '/root/ros2_ws/build/p9n_node': AMENT_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/p9n_interface/lib:${LD_LIBRARY_PATH} /usr/bin/cmake --install /root/ros2_ws/build/p9n_node
+[13.560s] -- Install configuration: ""
+[13.560s] -- Execute custom install script
+[13.561s] -- Symlinking: /root/ros2_ws/install/p9n_node/lib/p9n_node/teleop_twist_joy_node_exec
+[13.592s] -- Symlinking: /root/ros2_ws/install/p9n_node/include/p9n_node/teleop_twist_joy_node.hpp
+[13.619s] -- Symlinking: /root/ros2_ws/install/p9n_node/share/p9n_node/environment/library_path.sh
+[13.634s] -- Symlinking: /root/ros2_ws/install/p9n_node/share/p9n_node/environment/library_path.dsv
+[13.660s] -- Symlinking: /root/ros2_ws/install/p9n_node/lib/libp9n_node_teleop_twist_joy_node.so
+[13.685s] -- Symlinking: /root/ros2_ws/install/p9n_node/share/ament_index/resource_index/package_run_dependencies/p9n_node
+[13.711s] -- Symlinking: /root/ros2_ws/install/p9n_node/share/ament_index/resource_index/parent_prefix_path/p9n_node
+[13.725s] -- Symlinking: /root/ros2_ws/install/p9n_node/share/p9n_node/environment/ament_prefix_path.sh
+[13.738s] -- Symlinking: /root/ros2_ws/install/p9n_node/share/p9n_node/environment/ament_prefix_path.dsv
+[13.753s] -- Symlinking: /root/ros2_ws/install/p9n_node/share/p9n_node/environment/path.sh
+[13.767s] -- Symlinking: /root/ros2_ws/install/p9n_node/share/p9n_node/environment/path.dsv
+[13.782s] -- Symlinking: /root/ros2_ws/install/p9n_node/share/p9n_node/local_setup.bash
+[13.804s] -- Symlinking: /root/ros2_ws/install/p9n_node/share/p9n_node/local_setup.sh
+[13.826s] -- Symlinking: /root/ros2_ws/install/p9n_node/share/p9n_node/local_setup.zsh
+[13.850s] -- Symlinking: /root/ros2_ws/install/p9n_node/share/p9n_node/local_setup.dsv
+[13.869s] -- Symlinking: /root/ros2_ws/install/p9n_node/share/p9n_node/package.dsv
+[13.885s] -- Symlinking: /root/ros2_ws/install/p9n_node/share/ament_index/resource_index/packages/p9n_node
+[13.924s] -- Symlinking: /root/ros2_ws/install/p9n_node/share/ament_index/resource_index/rclcpp_components/p9n_node
+[13.961s] -- Symlinking: /root/ros2_ws/install/p9n_node/share/p9n_node/cmake/ament_cmake_export_dependencies-extras.cmake
+[13.987s] -- Symlinking: /root/ros2_ws/install/p9n_node/share/p9n_node/cmake/ament_cmake_export_include_directories-extras.cmake
+[14.016s] -- Symlinking: /root/ros2_ws/install/p9n_node/share/p9n_node/cmake/ament_cmake_export_libraries-extras.cmake
+[14.048s] -- Symlinking: /root/ros2_ws/install/p9n_node/share/p9n_node/cmake/p9n_nodeConfig.cmake
+[14.072s] -- Symlinking: /root/ros2_ws/install/p9n_node/share/p9n_node/cmake/p9n_nodeConfig-version.cmake
+[14.088s] -- Symlinking: /root/ros2_ws/install/p9n_node/share/p9n_node/package.xml
+[14.121s] Invoked command in '/root/ros2_ws/build/p9n_node' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/p9n_interface/lib:${LD_LIBRARY_PATH} /usr/bin/cmake --install /root/ros2_ws/build/p9n_node

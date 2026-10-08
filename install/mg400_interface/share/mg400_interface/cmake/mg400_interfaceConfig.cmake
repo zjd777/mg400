@@ -1,0 +1,1 @@
+/root/ros2_ws/build/mg400_interface/ament_cmake_core/mg400_interfaceConfig.cmake

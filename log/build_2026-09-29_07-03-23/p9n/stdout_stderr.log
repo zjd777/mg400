@@ -1,0 +1,38 @@
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)
+-- Added test 'lint_cmake' to check CMake code style
+-- Added test 'xmllint' to check XML markup files
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /root/ros2_ws/build/p9n
+-- Install configuration: ""
+-- Execute custom install script
+-- Symlinking: /root/ros2_ws/install/p9n/share/ament_index/resource_index/package_run_dependencies/p9n
+-- Symlinking: /root/ros2_ws/install/p9n/share/ament_index/resource_index/parent_prefix_path/p9n
+-- Symlinking: /root/ros2_ws/install/p9n/share/p9n/environment/ament_prefix_path.sh
+-- Symlinking: /root/ros2_ws/install/p9n/share/p9n/environment/ament_prefix_path.dsv
+-- Symlinking: /root/ros2_ws/install/p9n/share/p9n/environment/path.sh
+-- Symlinking: /root/ros2_ws/install/p9n/share/p9n/environment/path.dsv
+-- Symlinking: /root/ros2_ws/install/p9n/share/p9n/local_setup.bash
+-- Symlinking: /root/ros2_ws/install/p9n/share/p9n/local_setup.sh
+-- Symlinking: /root/ros2_ws/install/p9n/share/p9n/local_setup.zsh
+-- Symlinking: /root/ros2_ws/install/p9n/share/p9n/local_setup.dsv
+-- Symlinking: /root/ros2_ws/install/p9n/share/p9n/package.dsv
+-- Symlinking: /root/ros2_ws/install/p9n/share/ament_index/resource_index/packages/p9n
+-- Symlinking: /root/ros2_ws/install/p9n/share/p9n/cmake/p9nConfig.cmake
+-- Symlinking: /root/ros2_ws/install/p9n/share/p9n/cmake/p9nConfig-version.cmake
+-- Symlinking: /root/ros2_ws/install/p9n/share/p9n/package.xml

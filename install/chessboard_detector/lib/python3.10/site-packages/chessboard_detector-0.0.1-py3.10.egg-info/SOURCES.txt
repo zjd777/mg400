@@ -1,0 +1,14 @@
+package.xml
+setup.cfg
+setup.py
+../../build/chessboard_detector/chessboard_detector.egg-info/PKG-INFO
+../../build/chessboard_detector/chessboard_detector.egg-info/SOURCES.txt
+../../build/chessboard_detector/chessboard_detector.egg-info/dependency_links.txt
+../../build/chessboard_detector/chessboard_detector.egg-info/entry_points.txt
+../../build/chessboard_detector/chessboard_detector.egg-info/requires.txt
+../../build/chessboard_detector/chessboard_detector.egg-info/top_level.txt
+../../build/chessboard_detector/chessboard_detector.egg-info/zip-safe
+chessboard_detector/__init__.py
+chessboard_detector/node.py
+launch/chessboard_detector.launch.py
+resource/chessboard_detector

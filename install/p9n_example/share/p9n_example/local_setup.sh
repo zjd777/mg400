@@ -1,0 +1,1 @@
+/root/ros2_ws/build/p9n_example/ament_cmake_environment_hooks/local_setup.sh

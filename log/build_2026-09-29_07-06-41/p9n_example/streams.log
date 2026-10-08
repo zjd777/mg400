@@ -1,0 +1,35 @@
+[0.029s] Invoking command in '/root/ros2_ws/build/p9n_example': AMENT_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/p9n_interface/lib:${LD_LIBRARY_PATH} /usr/bin/cmake --build /root/ros2_ws/build/p9n_example -- -j16 -l16
+[0.068s] [35m[1mConsolidate compiler generated dependencies of target display_node_exec[0m
+[0.068s] [35m[1mConsolidate compiler generated dependencies of target display_node[0m
+[0.087s] [100%] Built target display_node
+[0.087s] [100%] Built target display_node_exec
+[0.096s] Invoked command in '/root/ros2_ws/build/p9n_example' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/p9n_interface/lib:${LD_LIBRARY_PATH} /usr/bin/cmake --build /root/ros2_ws/build/p9n_example -- -j16 -l16
+[0.097s] Invoking command in '/root/ros2_ws/build/p9n_example': AMENT_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/p9n_interface/lib:${LD_LIBRARY_PATH} /usr/bin/cmake --install /root/ros2_ws/build/p9n_example
+[0.103s] -- Install configuration: ""
+[0.104s] -- Execute custom install script
+[0.104s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/lib/p9n_example/display_node_exec
+[0.105s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/include/p9n_example/display_node.hpp
+[0.105s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/environment/library_path.sh
+[0.105s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/environment/library_path.dsv
+[0.105s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/lib/libdisplay_node.so
+[0.106s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/launch/display.launch.py
+[0.106s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/ament_index/resource_index/package_run_dependencies/p9n_example
+[0.106s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/ament_index/resource_index/parent_prefix_path/p9n_example
+[0.107s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/environment/ament_prefix_path.sh
+[0.107s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/environment/ament_prefix_path.dsv
+[0.107s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/environment/path.sh
+[0.107s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/environment/path.dsv
+[0.107s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/local_setup.bash
+[0.108s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/local_setup.sh
+[0.108s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/local_setup.zsh
+[0.108s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/local_setup.dsv
+[0.108s] -- Symlinking: /root/ros2_ws/install/p9n_example/share/p9n_example/package.dsv
+[0.116s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/ament_index/resource_index/packages/p9n_example
+[0.116s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/ament_index/resource_index/rclcpp_components/p9n_example
+[0.116s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/cmake/ament_cmake_export_dependencies-extras.cmake
+[0.117s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/cmake/ament_cmake_export_include_directories-extras.cmake
+[0.117s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/cmake/ament_cmake_export_libraries-extras.cmake
+[0.117s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/cmake/p9n_exampleConfig.cmake
+[0.117s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/cmake/p9n_exampleConfig-version.cmake
+[0.118s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/package.xml
+[0.120s] Invoked command in '/root/ros2_ws/build/p9n_example' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/p9n_interface/lib:${LD_LIBRARY_PATH} /usr/bin/cmake --install /root/ros2_ws/build/p9n_example

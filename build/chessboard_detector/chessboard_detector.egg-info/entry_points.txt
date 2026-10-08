@@ -1,0 +1,3 @@
+[console_scripts]
+chessboard_detector = chessboard_detector.node:main
+

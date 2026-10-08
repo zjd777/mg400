@@ -1,0 +1,20 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from mg400_msgs/msg/CollisionLevel.msg
+// generated code does not contain a copyright notice
+
+
+module mg400_msgs {
+  module msg {
+    module CollisionLevel_Constants {
+      const uint8 OFF = 0;
+      const uint8 LEVEL1 = 1;
+      const uint8 LEVEL2 = 2;
+      const uint8 LEVEL3 = 3;
+      const uint8 LEVEL4 = 4;
+      const uint8 LEVEL5 = 5;
+    };
+    struct CollisionLevel {
+      uint8 level;
+    };
+  };
+};

@@ -1,0 +1,70 @@
+[0.012s] Invoking command in '/root/ros2_ws/build/mg400_plugin': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_plugin_base:/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_plugin_base:/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_interface/lib:/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /root/ros2_ws/build/mg400_plugin -- -j16 -l16
+[0.075s] [35m[1mConsolidate compiler generated dependencies of target mg400_plugin_dashboard_api[0m
+[0.195s] [ 75%] Built target mg400_plugin_dashboard_api
+[0.213s] [35m[1mConsolidate compiler generated dependencies of target mg400_plugin_motion_api[0m
+[0.265s] [100%] Built target mg400_plugin_motion_api
+[0.276s] Invoked command in '/root/ros2_ws/build/mg400_plugin' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_plugin_base:/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_plugin_base:/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_interface/lib:/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /root/ros2_ws/build/mg400_plugin -- -j16 -l16
+[0.277s] Invoking command in '/root/ros2_ws/build/mg400_plugin': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_plugin_base:/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_plugin_base:/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_interface/lib:/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /root/ros2_ws/build/mg400_plugin
+[0.284s] -- Install configuration: ""
+[0.284s] -- Execute custom install script
+[0.284s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/share/mg400_plugin//dashboard_api_plugins.xml
+[0.284s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/share/mg400_plugin//motion_api_plugins.xml
+[0.285s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/acc_j.hpp
+[0.285s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/acc_l.hpp
+[0.285s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/arch.hpp
+[0.285s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/clear_error.hpp
+[0.285s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/cp.hpp
+[0.285s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/di.hpp
+[0.285s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/disable_robot.hpp
+[0.286s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/do.hpp
+[0.286s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/emergency_stop.hpp
+[0.286s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/enable_robot.hpp
+[0.286s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/get_angle.hpp
+[0.286s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/get_error_id.hpp
+[0.286s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/get_pose.hpp
+[0.286s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/inverse_solution.hpp
+[0.286s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/pay_load.hpp
+[0.286s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/positive_solution.hpp
+[0.287s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/reset_robot.hpp
+[0.287s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/robot_mode.hpp
+[0.287s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/set_collision_level.hpp
+[0.287s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/speed_factor.hpp
+[0.287s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/speed_j.hpp
+[0.287s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/speed_l.hpp
+[0.287s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/tool.hpp
+[0.287s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/tool_di.hpp
+[0.287s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/tool_do_execute.hpp
+[0.287s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/dashboard_api/user.hpp
+[0.288s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/motion_api/command_queue.hpp
+[0.288s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/motion_api/joint_mov_j.hpp
+[0.288s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/motion_api/mov_j.hpp
+[0.288s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/motion_api/mov_jio.hpp
+[0.288s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/motion_api/mov_l.hpp
+[0.288s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/motion_api/mov_lio.hpp
+[0.288s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/motion_api/move_jog.hpp
+[0.288s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/plugin_utils.hpp
+[0.288s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/include/mg400_plugin/tf_manager.hpp
+[0.289s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/share/mg400_plugin/environment/library_path.sh
+[0.289s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/share/mg400_plugin/environment/library_path.dsv
+[0.289s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/lib/libmg400_plugin_dashboard_api.so
+[0.289s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/lib/libmg400_plugin_motion_api.so
+[0.289s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/share/ament_index/resource_index/package_run_dependencies/mg400_plugin
+[0.289s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/share/ament_index/resource_index/parent_prefix_path/mg400_plugin
+[0.290s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/share/mg400_plugin/environment/ament_prefix_path.sh
+[0.290s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/share/mg400_plugin/environment/ament_prefix_path.dsv
+[0.290s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/share/mg400_plugin/environment/path.sh
+[0.290s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/share/mg400_plugin/environment/path.dsv
+[0.290s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/share/mg400_plugin/local_setup.bash
+[0.290s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/share/mg400_plugin/local_setup.sh
+[0.291s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/share/mg400_plugin/local_setup.zsh
+[0.291s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/share/mg400_plugin/local_setup.dsv
+[0.291s] -- Symlinking: /root/ros2_ws/install/mg400_plugin/share/mg400_plugin/package.dsv
+[0.299s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/share/ament_index/resource_index/packages/mg400_plugin
+[0.299s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/share/ament_index/resource_index/mg400_plugin_base__pluginlib__plugin/mg400_plugin
+[0.299s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/share/mg400_plugin/cmake/ament_cmake_export_dependencies-extras.cmake
+[0.300s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/share/mg400_plugin/cmake/ament_cmake_export_include_directories-extras.cmake
+[0.300s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/share/mg400_plugin/cmake/ament_cmake_export_libraries-extras.cmake
+[0.300s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/share/mg400_plugin/cmake/mg400_pluginConfig.cmake
+[0.300s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/share/mg400_plugin/cmake/mg400_pluginConfig-version.cmake
+[0.300s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_plugin/share/mg400_plugin/package.xml
+[0.302s] Invoked command in '/root/ros2_ws/build/mg400_plugin' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_plugin_base:/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_plugin_base:/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_interface/lib:/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /root/ros2_ws/build/mg400_plugin

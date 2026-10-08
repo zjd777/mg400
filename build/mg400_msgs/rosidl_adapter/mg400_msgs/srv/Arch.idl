@@ -1,0 +1,18 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from mg400_msgs/srv/Arch.srv
+// generated code does not contain a copyright notice
+
+#include "mg400_msgs/msg/Arch.idl"
+
+module mg400_msgs {
+  module srv {
+    struct Arch_Request {
+      mg400_msgs::msg::Arch index;
+    };
+    struct Arch_Response {
+      boolean result;
+
+      int32 error_id;
+    };
+  };
+};

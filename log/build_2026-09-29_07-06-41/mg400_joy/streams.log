@@ -1,0 +1,34 @@
+[0.016s] Invoking command in '/root/ros2_ws/build/mg400_joy': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_interface/lib:/root/ros2_ws/install/p9n_interface/lib:/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /root/ros2_ws/build/mg400_joy -- -j16 -l16
+[0.059s] [35m[1mConsolidate compiler generated dependencies of target mg400_joy_interface_node_exec[0m
+[0.059s] [35m[1mConsolidate compiler generated dependencies of target mg400_joy_interface_node[0m
+[0.079s] [ 50%] Built target mg400_joy_interface_node_exec
+[0.086s] [100%] Built target mg400_joy_interface_node
+[0.097s] Invoked command in '/root/ros2_ws/build/mg400_joy' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_interface/lib:/root/ros2_ws/install/p9n_interface/lib:/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /root/ros2_ws/build/mg400_joy -- -j16 -l16
+[0.098s] Invoking command in '/root/ros2_ws/build/mg400_joy': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_interface/lib:/root/ros2_ws/install/p9n_interface/lib:/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /root/ros2_ws/build/mg400_joy
+[0.104s] -- Install configuration: ""
+[0.105s] -- Execute custom install script
+[0.105s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/lib/mg400_joy/mg400_joy_interface_node_exec
+[0.105s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/include/mg400_joy/mg400_joy_interface_node.hpp
+[0.106s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/share/mg400_joy/environment/library_path.sh
+[0.106s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/share/mg400_joy/environment/library_path.dsv
+[0.106s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/lib/libmg400_joy_interface_node.so
+[0.107s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/share/ament_index/resource_index/package_run_dependencies/mg400_joy
+[0.107s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/share/ament_index/resource_index/parent_prefix_path/mg400_joy
+[0.107s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/share/mg400_joy/environment/ament_prefix_path.sh
+[0.107s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/share/mg400_joy/environment/ament_prefix_path.dsv
+[0.107s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/share/mg400_joy/environment/path.sh
+[0.107s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/share/mg400_joy/environment/path.dsv
+[0.107s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/share/mg400_joy/local_setup.bash
+[0.107s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/share/mg400_joy/local_setup.sh
+[0.107s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/share/mg400_joy/local_setup.zsh
+[0.108s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/share/mg400_joy/local_setup.dsv
+[0.108s] -- Symlinking: /root/ros2_ws/install/mg400_joy/share/mg400_joy/package.dsv
+[0.116s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/share/ament_index/resource_index/packages/mg400_joy
+[0.116s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/share/ament_index/resource_index/rclcpp_components/mg400_joy
+[0.116s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/share/mg400_joy/cmake/ament_cmake_export_dependencies-extras.cmake
+[0.116s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/share/mg400_joy/cmake/ament_cmake_export_include_directories-extras.cmake
+[0.116s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/share/mg400_joy/cmake/ament_cmake_export_libraries-extras.cmake
+[0.116s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/share/mg400_joy/cmake/mg400_joyConfig.cmake
+[0.116s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/share/mg400_joy/cmake/mg400_joyConfig-version.cmake
+[0.116s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_joy/share/mg400_joy/package.xml
+[0.118s] Invoked command in '/root/ros2_ws/build/mg400_joy' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_common:/opt/ros/humble LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_interface/lib:/root/ros2_ws/install/p9n_interface/lib:/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /root/ros2_ws/build/mg400_joy

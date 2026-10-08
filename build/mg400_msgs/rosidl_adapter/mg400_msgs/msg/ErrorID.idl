@@ -1,0 +1,17 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from mg400_msgs/msg/ErrorID.msg
+// generated code does not contain a copyright notice
+
+#include "mg400_msgs/msg/IDArray.idl"
+
+module mg400_msgs {
+  module msg {
+    typedef mg400_msgs::msg::IDArray mg400_msgs__msg__IDArray;
+    typedef mg400_msgs__msg__IDArray mg400_msgs__msg__IDArray__5[5];
+    struct ErrorID {
+      mg400_msgs::msg::IDArray controller;
+
+      mg400_msgs__msg__IDArray__5 servo;
+    };
+  };
+};

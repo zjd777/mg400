@@ -1,0 +1,35 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from mg400_msgs/msg/MoveJog.msg
+// generated code does not contain a copyright notice
+
+
+module mg400_msgs {
+  module msg {
+    module MoveJog_Constants {
+      const string J1_NEGATIVE = "j1-";
+      const string J1_POSITIVE = "j1+";
+      const string J2_NEGATIVE = "j2-";
+      const string J2_POSITIVE = "j2+";
+      const string J3_NEGATIVE = "j3-";
+      const string J3_POSITIVE = "j3+";
+      const string J4_NEGATIVE = "j4-";
+      const string J4_POSITIVE = "j4+";
+      const string X_NEGATIVE = "X-";
+      const string X_POSITIVE = "X+";
+      const string Y_NEGATIVE = "Y-";
+      const string Y_POSITIVE = "Y+";
+      const string Z_NEGATIVE = "Z-";
+      const string Z_POSITIVE = "Z+";
+      const string RX_NEGATIVE = "Rx-";
+      const string RX_POSITIVE = "Rx+";
+      const string RY_NEGATIVE = "Ry-";
+      const string RY_POSITIVE = "Ry+";
+      const string RZ_NEGATIVE = "Rz-";
+      const string RZ_POSITIVE = "Rz+";
+      const string STOP = "";
+    };
+    struct MoveJog {
+      string jog_mode;
+    };
+  };
+};

@@ -1,0 +1,21 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from mg400_msgs/srv/DO.srv
+// generated code does not contain a copyright notice
+
+#include "mg400_msgs/msg/DOIndex.idl"
+#include "mg400_msgs/msg/DOStatus.idl"
+
+module mg400_msgs {
+  module srv {
+    struct DO_Request {
+      mg400_msgs::msg::DOIndex index;
+
+      mg400_msgs::msg::DOStatus status;
+    };
+    struct DO_Response {
+      boolean result;
+
+      int32 error_id;
+    };
+  };
+};

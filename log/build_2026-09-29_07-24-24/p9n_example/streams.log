@@ -1,0 +1,33 @@
+[0.031s] Invoking command in '/root/ros2_ws/build/p9n_example': CMAKE_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/p9n:/root/ros2_ws/install/p9n_test:/root/ros2_ws/install/p9n_node:/root/ros2_ws/install/p9n_example:/root/ros2_ws/install/mg400:/root/ros2_ws/install/mg400_joy:/root/ros2_ws/install/mg400_tools:/root/ros2_ws/install/mg400_rviz_plugin:/root/ros2_ws/install/mg400_node:/root/ros2_ws/install/mg400_plugin:/root/ros2_ws/install/mg400_plugin_base:/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_description:/root/ros2_ws/install/mg400_common:/root/ros2_ws/install/p9n_bringup:/root/ros2_ws/install/mg400_bringup:/opt/ros/humble /usr/bin/cmake --build /root/ros2_ws/build/p9n_example -- -j16 -l16
+[0.090s] [100%] Built target display_node
+[0.090s] [100%] Built target display_node_exec
+[0.100s] Invoked command in '/root/ros2_ws/build/p9n_example' returned '0': CMAKE_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/p9n:/root/ros2_ws/install/p9n_test:/root/ros2_ws/install/p9n_node:/root/ros2_ws/install/p9n_example:/root/ros2_ws/install/mg400:/root/ros2_ws/install/mg400_joy:/root/ros2_ws/install/mg400_tools:/root/ros2_ws/install/mg400_rviz_plugin:/root/ros2_ws/install/mg400_node:/root/ros2_ws/install/mg400_plugin:/root/ros2_ws/install/mg400_plugin_base:/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_description:/root/ros2_ws/install/mg400_common:/root/ros2_ws/install/p9n_bringup:/root/ros2_ws/install/mg400_bringup:/opt/ros/humble /usr/bin/cmake --build /root/ros2_ws/build/p9n_example -- -j16 -l16
+[0.102s] Invoking command in '/root/ros2_ws/build/p9n_example': CMAKE_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/p9n:/root/ros2_ws/install/p9n_test:/root/ros2_ws/install/p9n_node:/root/ros2_ws/install/p9n_example:/root/ros2_ws/install/mg400:/root/ros2_ws/install/mg400_joy:/root/ros2_ws/install/mg400_tools:/root/ros2_ws/install/mg400_rviz_plugin:/root/ros2_ws/install/mg400_node:/root/ros2_ws/install/mg400_plugin:/root/ros2_ws/install/mg400_plugin_base:/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_description:/root/ros2_ws/install/mg400_common:/root/ros2_ws/install/p9n_bringup:/root/ros2_ws/install/mg400_bringup:/opt/ros/humble /usr/bin/cmake --install /root/ros2_ws/build/p9n_example
+[0.110s] -- Install configuration: ""
+[0.112s] -- Execute custom install script
+[0.112s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/lib/p9n_example/display_node_exec
+[0.112s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/include/p9n_example/display_node.hpp
+[0.112s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/environment/library_path.sh
+[0.112s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/environment/library_path.dsv
+[0.112s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/lib/libdisplay_node.so
+[0.112s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/launch/display.launch.py
+[0.112s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/ament_index/resource_index/package_run_dependencies/p9n_example
+[0.113s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/ament_index/resource_index/parent_prefix_path/p9n_example
+[0.113s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/environment/ament_prefix_path.sh
+[0.113s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/environment/ament_prefix_path.dsv
+[0.113s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/environment/path.sh
+[0.113s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/environment/path.dsv
+[0.113s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/local_setup.bash
+[0.113s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/local_setup.sh
+[0.114s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/local_setup.zsh
+[0.114s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/local_setup.dsv
+[0.114s] -- Symlinking: /root/ros2_ws/install/p9n_example/share/p9n_example/package.dsv
+[0.122s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/ament_index/resource_index/packages/p9n_example
+[0.122s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/ament_index/resource_index/rclcpp_components/p9n_example
+[0.122s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/cmake/ament_cmake_export_dependencies-extras.cmake
+[0.123s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/cmake/ament_cmake_export_include_directories-extras.cmake
+[0.123s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/cmake/ament_cmake_export_libraries-extras.cmake
+[0.123s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/cmake/p9n_exampleConfig.cmake
+[0.123s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/cmake/p9n_exampleConfig-version.cmake
+[0.123s] -- Up-to-date symlink: /root/ros2_ws/install/p9n_example/share/p9n_example/package.xml
+[0.148s] Invoked command in '/root/ros2_ws/build/p9n_example' returned '0': CMAKE_PREFIX_PATH=/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/p9n:/root/ros2_ws/install/p9n_test:/root/ros2_ws/install/p9n_node:/root/ros2_ws/install/p9n_example:/root/ros2_ws/install/mg400:/root/ros2_ws/install/mg400_joy:/root/ros2_ws/install/mg400_tools:/root/ros2_ws/install/mg400_rviz_plugin:/root/ros2_ws/install/mg400_node:/root/ros2_ws/install/mg400_plugin:/root/ros2_ws/install/mg400_plugin_base:/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_description:/root/ros2_ws/install/mg400_common:/root/ros2_ws/install/p9n_bringup:/root/ros2_ws/install/mg400_bringup:/opt/ros/humble /usr/bin/cmake --install /root/ros2_ws/build/p9n_example

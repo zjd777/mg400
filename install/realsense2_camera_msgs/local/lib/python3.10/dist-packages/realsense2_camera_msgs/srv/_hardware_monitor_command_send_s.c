@@ -1,0 +1,1 @@
+/root/ros2_ws/build/realsense2_camera_msgs/rosidl_generator_py/realsense2_camera_msgs/srv/_hardware_monitor_command_send_s.c

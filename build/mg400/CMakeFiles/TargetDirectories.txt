@@ -1,0 +1,9 @@
+/root/ros2_ws/build/mg400/CMakeFiles/uninstall.dir
+/root/ros2_ws/build/mg400/CMakeFiles/mg400_uninstall.dir
+/root/ros2_ws/build/mg400/CMakeFiles/test.dir
+/root/ros2_ws/build/mg400/CMakeFiles/edit_cache.dir
+/root/ros2_ws/build/mg400/CMakeFiles/rebuild_cache.dir
+/root/ros2_ws/build/mg400/CMakeFiles/list_install_components.dir
+/root/ros2_ws/build/mg400/CMakeFiles/install.dir
+/root/ros2_ws/build/mg400/CMakeFiles/install/local.dir
+/root/ros2_ws/build/mg400/CMakeFiles/install/strip.dir

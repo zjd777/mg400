@@ -1,0 +1,18 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from mg400_msgs/srv/User.srv
+// generated code does not contain a copyright notice
+
+#include "mg400_msgs/msg/User.idl"
+
+module mg400_msgs {
+  module srv {
+    struct User_Request {
+      mg400_msgs::msg::User user;
+    };
+    struct User_Response {
+      boolean result;
+
+      int32 error_id;
+    };
+  };
+};

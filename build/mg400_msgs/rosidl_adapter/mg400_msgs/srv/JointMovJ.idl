@@ -1,0 +1,25 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from mg400_msgs/srv/JointMovJ.srv
+// generated code does not contain a copyright notice
+
+
+module mg400_msgs {
+  module srv {
+    struct JointMovJ_Request {
+      double j1;
+
+      double j2;
+
+      double j3;
+
+      double j4;
+
+      double j5;
+
+      double j6;
+    };
+    struct JointMovJ_Response {
+      int32 error_id;
+    };
+  };
+};

@@ -1,0 +1,32 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from mg400_msgs/msg/MovJIO.msg
+// generated code does not contain a copyright notice
+
+#include "geometry_msgs/msg/PoseStamped.idl"
+#include "mg400_msgs/msg/DOIndex.idl"
+#include "mg400_msgs/msg/DOStatus.idl"
+#include "mg400_msgs/msg/DistanceMode.idl"
+
+module mg400_msgs {
+  module msg {
+    struct MovJIO {
+      geometry_msgs::msg::PoseStamped pose;
+
+      mg400_msgs::msg::DistanceMode mode;
+
+      int32 distance;
+
+      mg400_msgs::msg::DOIndex index;
+
+      mg400_msgs::msg::DOStatus status;
+
+      boolean set_speed_j;
+
+      uint8 speed_j;
+
+      boolean set_acc_j;
+
+      uint8 acc_j;
+    };
+  };
+};

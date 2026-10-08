@@ -1,0 +1,1 @@
+/root/ros2_ws/build/mg400_rviz_plugin/ament_cmake_core/mg400_rviz_pluginConfig-version.cmake

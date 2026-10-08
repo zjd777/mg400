@@ -1,0 +1,33 @@
+[0.771s] Invoking command in '/root/ros2_ws/build/mg400_bringup': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_node:/root/ros2_ws/install/mg400_plugin:/root/ros2_ws/install/mg400_plugin_base:/root/ros2_ws/install/mg400_joy:/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_description:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_node:/root/ros2_ws/install/mg400_plugin:/root/ros2_ws/install/mg400_plugin_base:/root/ros2_ws/install/mg400_joy:/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_description:/root/ros2_ws/install/mg400_common LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_node/lib:/root/ros2_ws/install/mg400_plugin/lib:/root/ros2_ws/install/mg400_joy/lib:/root/ros2_ws/install/mg400_interface/lib:/root/ros2_ws/install/p9n_interface/lib:/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/build/mg400_bringup/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/root/ros2_ws/install/mg400_bringup/lib/python3.10/site-packages:/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /root/ros2_ws/build/mg400_bringup/build --no-deps symlink_data
+[0.960s] running develop
+[1.055s] running egg_info
+[1.056s] creating mg400_bringup.egg-info
+[1.056s] writing mg400_bringup.egg-info/PKG-INFO
+[1.056s] writing dependency_links to mg400_bringup.egg-info/dependency_links.txt
+[1.056s] writing entry points to mg400_bringup.egg-info/entry_points.txt
+[1.056s] writing requirements to mg400_bringup.egg-info/requires.txt
+[1.056s] writing top-level names to mg400_bringup.egg-info/top_level.txt
+[1.056s] writing manifest file 'mg400_bringup.egg-info/SOURCES.txt'
+[1.057s] reading manifest file 'mg400_bringup.egg-info/SOURCES.txt'
+[1.058s] writing manifest file 'mg400_bringup.egg-info/SOURCES.txt'
+[1.059s] running build_ext
+[1.059s] Creating /root/ros2_ws/install/mg400_bringup/lib/python3.10/site-packages/mg400-bringup.egg-link (link to .)
+[1.060s] 
+[1.060s] Installed /root/ros2_ws/build/mg400_bringup
+[1.060s] running symlink_data
+[1.060s] creating /root/ros2_ws/install/mg400_bringup/share/ament_index
+[1.060s] creating /root/ros2_ws/install/mg400_bringup/share/ament_index/resource_index
+[1.060s] creating /root/ros2_ws/install/mg400_bringup/share/ament_index/resource_index/packages
+[1.060s] symbolically linking /root/ros2_ws/build/mg400_bringup/resource/mg400_bringup -> /root/ros2_ws/install/mg400_bringup/share/ament_index/resource_index/packages
+[1.060s] symbolically linking /root/ros2_ws/build/mg400_bringup/package.xml -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup
+[1.061s] creating /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/launch
+[1.061s] symbolically linking /root/ros2_ws/build/mg400_bringup/launch/mg400.launch.py -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/launch
+[1.061s] symbolically linking /root/ros2_ws/build/mg400_bringup/launch/display.launch.py -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/launch
+[1.061s] symbolically linking /root/ros2_ws/build/mg400_bringup/launch/joy.launch.py -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/launch
+[1.061s] symbolically linking /root/ros2_ws/build/mg400_bringup/launch/rsp.launch.py -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/launch
+[1.061s] symbolically linking /root/ros2_ws/build/mg400_bringup/launch/main.launch.py -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/launch
+[1.061s] symbolically linking /root/ros2_ws/build/mg400_bringup/launch/rviz.launch.py -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/launch
+[1.061s] creating /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/rviz
+[1.061s] symbolically linking /root/ros2_ws/build/mg400_bringup/rviz/mg400.rviz -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/rviz
+[1.061s] symbolically linking /root/ros2_ws/build/mg400_bringup/rviz/display.rviz -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/rviz
+[1.086s] Invoked command in '/root/ros2_ws/build/mg400_bringup' returned '0': AMENT_PREFIX_PATH=/root/ros2_ws/install/mg400_node:/root/ros2_ws/install/mg400_plugin:/root/ros2_ws/install/mg400_plugin_base:/root/ros2_ws/install/mg400_joy:/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_description:/root/ros2_ws/install/mg400_common:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ros2_ws/install/mg400_node:/root/ros2_ws/install/mg400_plugin:/root/ros2_ws/install/mg400_plugin_base:/root/ros2_ws/install/mg400_joy:/root/ros2_ws/install/mg400_interface:/root/ros2_ws/install/p9n_interface:/root/ros2_ws/install/mg400_msgs:/root/ros2_ws/install/mg400_description:/root/ros2_ws/install/mg400_common LD_LIBRARY_PATH=/root/ros2_ws/install/mg400_node/lib:/root/ros2_ws/install/mg400_plugin/lib:/root/ros2_ws/install/mg400_joy/lib:/root/ros2_ws/install/mg400_interface/lib:/root/ros2_ws/install/p9n_interface/lib:/root/ros2_ws/install/mg400_msgs/lib:/root/ros2_ws/install/mg400_common/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ros2_ws/build/mg400_bringup/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/root/ros2_ws/install/mg400_bringup/lib/python3.10/site-packages:/root/ros2_ws/install/mg400_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /root/ros2_ws/build/mg400_bringup/build --no-deps symlink_data

@@ -1,0 +1,3 @@
+---
+mg400_msgs/ErrorID error_ids
+int32 error_id

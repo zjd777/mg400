@@ -1,0 +1,25 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from mg400_msgs/msg/MovJ.msg
+// generated code does not contain a copyright notice
+
+#include "geometry_msgs/msg/PoseStamped.idl"
+
+module mg400_msgs {
+  module msg {
+    struct MovJ {
+      geometry_msgs::msg::PoseStamped pose;
+
+      boolean set_speed_j;
+
+      uint8 speed_j;
+
+      boolean set_acc_j;
+
+      uint8 acc_j;
+
+      boolean set_cp;
+
+      uint8 cp;
+    };
+  };
+};

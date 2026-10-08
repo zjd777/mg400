@@ -1,0 +1,25 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from mg400_msgs/msg/RobotMode.msg
+// generated code does not contain a copyright notice
+
+
+module mg400_msgs {
+  module msg {
+    module RobotMode_Constants {
+      const uint64 INIT = 1;
+      const uint64 BRAKE_OPEN = 2;
+      const uint64 DISABLED = 4;
+      const uint64 ENABLE = 5;
+      const uint64 BACKDRIVE = 6;
+      const uint64 RUNNING = 7;
+      const uint64 RECORDING = 8;
+      const uint64 ERROR = 9;
+      const uint64 PAUSE = 10;
+      const uint64 JOG = 11;
+      const uint64 INVALID = 12;
+    };
+    struct RobotMode {
+      uint64 robot_mode;
+    };
+  };
+};

@@ -1,0 +1,55 @@
+[0.031s] Invoking command in '/root/ros2_ws/build/mg400_common': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/root/ros2_ws/install/p9n_bringup:/root/ros2_ws/install/mg400_bringup:/opt/ros/humble /usr/bin/cmake /root/ros2_ws/src/MG400_ROS2/mg400_common -DCMAKE_INSTALL_PREFIX=/root/ros2_ws/install/mg400_common
+[0.046s] -- Found ament_cmake_auto: 1.3.14 (/opt/ros/humble/share/ament_cmake_auto/cmake)
+[0.151s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.231s] -- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[0.232s] -- Found ament_cmake_gtest: 1.3.14 (/opt/ros/humble/share/ament_cmake_gtest/cmake)
+[0.237s] -- Found gtest sources under '/opt/ros/humble/src/gtest_vendor': C++ tests using 'Google Test' will be built
+[0.239s] [0mIn this package, headers install destination is set to `include` by ament_auto_package. It is recommended to install `include/mg400_common` instead and will be the default behavior of ament_auto_package from ROS 2 Kilted Kaiju. On distributions before Kilted, ament_auto_package behaves the same way when you use USE_SCOPED_HEADER_INSTALL_DIR option.[0m
+[0.244s] -- Added test 'copyright' to check source files copyright and LICENSE
+[0.245s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[0.245s] -- Configured cppcheck include dirs: /root/ros2_ws/src/MG400_ROS2/mg400_common/include
+[0.245s] -- Configured cppcheck exclude dirs and/or files: 
+[0.246s] -- Added test 'lint_cmake' to check CMake code style
+[0.247s] -- Added test 'uncrustify' to check C / C++ code style
+[0.247s] -- Configured uncrustify additional arguments: 
+[0.248s] -- Added test 'xmllint' to check XML markup files
+[0.250s] -- Configuring done
+[0.260s] -- Generating done
+[0.264s] -- Build files have been written to: /root/ros2_ws/build/mg400_common
+[0.268s] Invoked command in '/root/ros2_ws/build/mg400_common' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/root/ros2_ws/install/p9n_bringup:/root/ros2_ws/install/mg400_bringup:/opt/ros/humble /usr/bin/cmake /root/ros2_ws/src/MG400_ROS2/mg400_common -DCMAKE_INSTALL_PREFIX=/root/ros2_ws/install/mg400_common
+[0.269s] Invoking command in '/root/ros2_ws/build/mg400_common': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/root/ros2_ws/install/p9n_bringup:/root/ros2_ws/install/mg400_bringup:/opt/ros/humble /usr/bin/cmake --build /root/ros2_ws/build/mg400_common -- -j16 -l16
+[0.309s] [35m[1mConsolidate compiler generated dependencies of target gtest[0m
+[0.309s] [35m[1mConsolidate compiler generated dependencies of target gtest_main[0m
+[0.310s] [35m[1mConsolidate compiler generated dependencies of target mg400_common[0m
+[0.326s] [ 75%] Built target gtest
+[0.326s] [ 75%] Built target gtest_main
+[0.326s] [ 75%] Built target mg400_common
+[0.337s] [35m[1mConsolidate compiler generated dependencies of target test_mg400_kinematics[0m
+[0.356s] [100%] Built target test_mg400_kinematics
+[0.370s] Invoked command in '/root/ros2_ws/build/mg400_common' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/root/ros2_ws/install/p9n_bringup:/root/ros2_ws/install/mg400_bringup:/opt/ros/humble /usr/bin/cmake --build /root/ros2_ws/build/mg400_common -- -j16 -l16
+[0.371s] Invoking command in '/root/ros2_ws/build/mg400_common': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/root/ros2_ws/install/p9n_bringup:/root/ros2_ws/install/mg400_bringup:/opt/ros/humble /usr/bin/cmake --install /root/ros2_ws/build/mg400_common
+[0.379s] -- Install configuration: ""
+[0.379s] -- Execute custom install script
+[0.380s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_common/include/mg400_common/kinematics.hpp
+[0.380s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_common/include/mg400_common/mg400_ik_util.hpp
+[0.380s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/environment/library_path.sh
+[0.380s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/environment/library_path.dsv
+[0.380s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_common/lib/libmg400_common.so
+[0.380s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/ament_index/resource_index/package_run_dependencies/mg400_common
+[0.381s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/ament_index/resource_index/parent_prefix_path/mg400_common
+[0.381s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/environment/ament_prefix_path.sh
+[0.381s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/environment/ament_prefix_path.dsv
+[0.381s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/environment/path.sh
+[0.381s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/environment/path.dsv
+[0.381s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/local_setup.bash
+[0.381s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/local_setup.sh
+[0.381s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/local_setup.zsh
+[0.381s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/local_setup.dsv
+[0.382s] -- Symlinking: /root/ros2_ws/install/mg400_common/share/mg400_common/package.dsv
+[0.391s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/ament_index/resource_index/packages/mg400_common
+[0.391s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/cmake/ament_cmake_export_include_directories-extras.cmake
+[0.391s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/cmake/ament_cmake_export_libraries-extras.cmake
+[0.392s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/cmake/mg400_commonConfig.cmake
+[0.392s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/cmake/mg400_commonConfig-version.cmake
+[0.392s] -- Up-to-date symlink: /root/ros2_ws/install/mg400_common/share/mg400_common/package.xml
+[0.411s] Invoked command in '/root/ros2_ws/build/mg400_common' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/root/ros2_ws/install/p9n_bringup:/root/ros2_ws/install/mg400_bringup:/opt/ros/humble /usr/bin/cmake --install /root/ros2_ws/build/mg400_common

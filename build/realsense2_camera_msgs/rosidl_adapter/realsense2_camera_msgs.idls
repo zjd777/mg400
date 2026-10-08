@@ -1,0 +1,15 @@
+/root/ros2_ws/build/realsense2_camera_msgs/rosidl_adapter/realsense2_camera_msgs:msg/IMUInfo.idl
+/root/ros2_ws/build/realsense2_camera_msgs/rosidl_adapter/realsense2_camera_msgs:msg/Extrinsics.idl
+/root/ros2_ws/build/realsense2_camera_msgs/rosidl_adapter/realsense2_camera_msgs:msg/Metadata.idl
+/root/ros2_ws/build/realsense2_camera_msgs/rosidl_adapter/realsense2_camera_msgs:msg/RGBD.idl
+/root/ros2_ws/build/realsense2_camera_msgs/rosidl_adapter/realsense2_camera_msgs:srv/DeviceInfo.idl
+/root/ros2_ws/build/realsense2_camera_msgs/rosidl_adapter/realsense2_camera_msgs:srv/SafetyPresetRead.idl
+/root/ros2_ws/build/realsense2_camera_msgs/rosidl_adapter/realsense2_camera_msgs:srv/SafetyPresetWrite.idl
+/root/ros2_ws/build/realsense2_camera_msgs/rosidl_adapter/realsense2_camera_msgs:srv/SafetyInterfaceConfigRead.idl
+/root/ros2_ws/build/realsense2_camera_msgs/rosidl_adapter/realsense2_camera_msgs:srv/SafetyInterfaceConfigWrite.idl
+/root/ros2_ws/build/realsense2_camera_msgs/rosidl_adapter/realsense2_camera_msgs:srv/CalibConfigRead.idl
+/root/ros2_ws/build/realsense2_camera_msgs/rosidl_adapter/realsense2_camera_msgs:srv/CalibConfigWrite.idl
+/root/ros2_ws/build/realsense2_camera_msgs/rosidl_adapter/realsense2_camera_msgs:srv/ApplicationConfigRead.idl
+/root/ros2_ws/build/realsense2_camera_msgs/rosidl_adapter/realsense2_camera_msgs:srv/ApplicationConfigWrite.idl
+/root/ros2_ws/build/realsense2_camera_msgs/rosidl_adapter/realsense2_camera_msgs:srv/HardwareMonitorCommandSend.idl
+/root/ros2_ws/build/realsense2_camera_msgs/rosidl_adapter/realsense2_camera_msgs:action/TriggeredCalibration.idl

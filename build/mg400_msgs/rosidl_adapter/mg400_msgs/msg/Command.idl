@@ -1,0 +1,44 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from mg400_msgs/msg/Command.msg
+// generated code does not contain a copyright notice
+
+#include "mg400_msgs/msg/JointMovJ.idl"
+#include "mg400_msgs/msg/MovJ.idl"
+#include "mg400_msgs/msg/MovJIO.idl"
+#include "mg400_msgs/msg/MovL.idl"
+#include "mg400_msgs/msg/MovLIO.idl"
+
+module mg400_msgs {
+  module msg {
+    module Command_Constants {
+      const uint16 CT_MOV_J = 1;
+      const uint16 CT_MOV_L = 2;
+      const uint16 CT_JOINT_MOV_J = 3;
+      const uint16 CT_MOV_JIO = 4;
+      const uint16 CT_MOV_LIO = 5;
+      @verbatim (language="comment", text=
+        "uint16 CT_ARC = 6" "\n"        "uint16 CT_CIRCLE = 7" "\n"        "uint16 CT_MOVE_JOG = 8" "\n"        "uint16 CT_SYNC = 9" "\n"        "uint16 CT_REL_MOV_J_USER = 10" "\n"        "uint16 CT_REL_MOV_L_USER = 11" "\n"        "uint16 CT_REL_JOINT_MOV_J = 12" "\n"        "uint16 CT_REL_MOV_J_EXT = 13" "\n"        "uint16 CT_SYNC_ALL = 14")
+      const uint16 CT_TOOL_DO = 25;
+    };
+    @verbatim (language="comment", text=
+      "===============================================================================" "\n"
+      " List of command-type IDs" "\n"
+      " (Commented-out commands have not been implemented.)" "\n"
+      "===============================================================================")
+    struct Command {
+      @verbatim (language="comment", text=
+        "===============================================================================")
+      uint16 command_type;
+
+      mg400_msgs::msg::MovJ mov_j_params;
+
+      mg400_msgs::msg::MovL mov_l_params;
+
+      mg400_msgs::msg::JointMovJ joint_mov_j_params;
+
+      mg400_msgs::msg::MovJIO mov_jio_params;
+
+      mg400_msgs::msg::MovLIO mov_lio_params;
+    };
+  };
+};

@@ -1,0 +1,24 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from mg400_msgs/msg/Tool.msg
+// generated code does not contain a copyright notice
+
+
+module mg400_msgs {
+  module msg {
+    module Tool_Constants {
+      const uint8 TOOL0 = 0;
+      const uint8 TOOL1 = 1;
+      const uint8 TOOL2 = 2;
+      const uint8 TOOL3 = 3;
+      const uint8 TOOL4 = 4;
+      const uint8 TOOL5 = 5;
+      const uint8 TOOL6 = 6;
+      const uint8 TOOL7 = 7;
+      const uint8 TOOL8 = 8;
+      const uint8 TOOL9 = 9;
+    };
+    struct Tool {
+      uint8 tool;
+    };
+  };
+};

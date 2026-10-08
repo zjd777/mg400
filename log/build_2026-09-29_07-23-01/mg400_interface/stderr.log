@@ -1,0 +1,17 @@
+[0mIn this package, headers install destination is set to `include` by ament_auto_package. It is recommended to install `include/mg400_interface` instead and will be the default behavior of ament_auto_package from ROS 2 Kilted Kaiju. On distributions before Kilted, ament_auto_package behaves the same way when you use USE_SCOPED_HEADER_INSTALL_DIR option.[0m
+In file included from [01m[K/root/ros2_ws/src/MG400_ROS2/mg400_interface/src/error_msg_generator.cpp:16[m[K:
+[01m[K/root/ros2_ws/src/MG400_ROS2/mg400_interface/include/mg400_interface/error_msg_generator.hpp:24:10:[m[K [01;31m[Kfatal error: [m[Knlohmann/json.hpp: No such file or directory
+   24 | #include [01;31m[K<nlohmann/json.hpp>[m[K
+      |          [01;31m[K^~~~~~~~~~~~~~~~~~~[m[K
+compilation terminated.
+gmake[2]: *** [CMakeFiles/mg400_interface.dir/build.make:118: CMakeFiles/mg400_interface.dir/src/error_msg_generator.cpp.o] Error 1
+gmake[2]: *** Waiting for unfinished jobs....
+In file included from [01m[K/root/ros2_ws/src/MG400_ROS2/mg400_interface/include/mg400_interface/mg400_interface.hpp:29[m[K,
+                 from [01m[K/root/ros2_ws/src/MG400_ROS2/mg400_interface/src/mg400_interface.cpp:15[m[K:
+[01m[K/root/ros2_ws/src/MG400_ROS2/mg400_interface/include/mg400_interface/error_msg_generator.hpp:24:10:[m[K [01;31m[Kfatal error: [m[Knlohmann/json.hpp: No such file or directory
+   24 | #include [01;31m[K<nlohmann/json.hpp>[m[K
+      |          [01;31m[K^~~~~~~~~~~~~~~~~~~[m[K
+compilation terminated.
+gmake[2]: *** [CMakeFiles/mg400_interface.dir/build.make:146: CMakeFiles/mg400_interface.dir/src/mg400_interface.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:188: CMakeFiles/mg400_interface.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

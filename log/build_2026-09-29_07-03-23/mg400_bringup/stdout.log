@@ -1,0 +1,31 @@
+running develop
+running egg_info
+creating mg400_bringup.egg-info
+writing mg400_bringup.egg-info/PKG-INFO
+writing dependency_links to mg400_bringup.egg-info/dependency_links.txt
+writing entry points to mg400_bringup.egg-info/entry_points.txt
+writing requirements to mg400_bringup.egg-info/requires.txt
+writing top-level names to mg400_bringup.egg-info/top_level.txt
+writing manifest file 'mg400_bringup.egg-info/SOURCES.txt'
+reading manifest file 'mg400_bringup.egg-info/SOURCES.txt'
+writing manifest file 'mg400_bringup.egg-info/SOURCES.txt'
+running build_ext
+Creating /root/ros2_ws/install/mg400_bringup/lib/python3.10/site-packages/mg400-bringup.egg-link (link to .)
+
+Installed /root/ros2_ws/build/mg400_bringup
+running symlink_data
+creating /root/ros2_ws/install/mg400_bringup/share/ament_index
+creating /root/ros2_ws/install/mg400_bringup/share/ament_index/resource_index
+creating /root/ros2_ws/install/mg400_bringup/share/ament_index/resource_index/packages
+symbolically linking /root/ros2_ws/build/mg400_bringup/resource/mg400_bringup -> /root/ros2_ws/install/mg400_bringup/share/ament_index/resource_index/packages
+symbolically linking /root/ros2_ws/build/mg400_bringup/package.xml -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup
+creating /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/launch
+symbolically linking /root/ros2_ws/build/mg400_bringup/launch/mg400.launch.py -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/launch
+symbolically linking /root/ros2_ws/build/mg400_bringup/launch/display.launch.py -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/launch
+symbolically linking /root/ros2_ws/build/mg400_bringup/launch/joy.launch.py -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/launch
+symbolically linking /root/ros2_ws/build/mg400_bringup/launch/rsp.launch.py -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/launch
+symbolically linking /root/ros2_ws/build/mg400_bringup/launch/main.launch.py -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/launch
+symbolically linking /root/ros2_ws/build/mg400_bringup/launch/rviz.launch.py -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/launch
+creating /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/rviz
+symbolically linking /root/ros2_ws/build/mg400_bringup/rviz/mg400.rviz -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/rviz
+symbolically linking /root/ros2_ws/build/mg400_bringup/rviz/display.rviz -> /root/ros2_ws/install/mg400_bringup/share/mg400_bringup/rviz

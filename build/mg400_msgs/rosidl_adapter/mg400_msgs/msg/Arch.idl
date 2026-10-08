@@ -1,0 +1,24 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from mg400_msgs/msg/Arch.msg
+// generated code does not contain a copyright notice
+
+
+module mg400_msgs {
+  module msg {
+    module Arch_Constants {
+      const uint8 INDEX0 = 0;
+      const uint8 INDEX1 = 1;
+      const uint8 INDEX2 = 2;
+      const uint8 INDEX3 = 3;
+      const uint8 INDEX4 = 4;
+      const uint8 INDEX5 = 5;
+      const uint8 INDEX6 = 6;
+      const uint8 INDEX7 = 7;
+      const uint8 INDEX8 = 8;
+      const uint8 INDEX9 = 9;
+    };
+    struct Arch {
+      uint8 index;
+    };
+  };
+};

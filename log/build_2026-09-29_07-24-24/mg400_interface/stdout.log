@@ -1,0 +1,59 @@
+[ 11%] Built target gmock_main
+[ 11%] Built target gtest_main
+[ 26%] Built target gtest
+[ 26%] Built target gmock
+[ 58%] Built target mg400_interface
+[35m[1mConsolidate compiler generated dependencies of target test_response_parser[0m
+[35m[1mConsolidate compiler generated dependencies of target test_error_msg_generator[0m
+[35m[1mConsolidate compiler generated dependencies of target show_realtime_data[0m
+[35m[1mConsolidate compiler generated dependencies of target test_dashboard_commander[0m
+[35m[1mConsolidate compiler generated dependencies of target test_joint_handler[0m
+[35m[1mConsolidate compiler generated dependencies of target test_motion_commander[0m
+[35m[1mConsolidate compiler generated dependencies of target commander_check[0m
+[ 70%] Built target test_response_parser
+[ 70%] Built target test_error_msg_generator
+[ 82%] Built target show_realtime_data
+[ 82%] Built target test_dashboard_commander
+[ 88%] Built target test_motion_commander
+[ 94%] Built target test_joint_handler
+[100%] Built target commander_check
+-- Install configuration: ""
+-- Execute custom install script
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/command_utils.hpp
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/commander/dashboard_commander.hpp
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/commander/motion_commander.hpp
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/commander/response_parser.hpp
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/error_msg_generator.hpp
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/joint_handler.hpp
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/mg400_interface.hpp
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/tcp_interface/dashboard_tcp_interface.hpp
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/tcp_interface/motion_tcp_interface.hpp
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/tcp_interface/realtime_data.hpp
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/tcp_interface/realtime_feedback_tcp_interface.hpp
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/include/mg400_interface/tcp_interface/tcp_socket_handler.hpp
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/environment/library_path.sh
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/environment/library_path.dsv
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/lib/libmg400_interface.a
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/lib/mg400_interface/show_realtime_data
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/lib/mg400_interface/commander_check
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/resources/README.md
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/resources/alarm_controller.json
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/resources/alarm_servo.json
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/ament_index/resource_index/package_run_dependencies/mg400_interface
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/ament_index/resource_index/parent_prefix_path/mg400_interface
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/environment/ament_prefix_path.sh
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/environment/ament_prefix_path.dsv
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/environment/path.sh
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/environment/path.dsv
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/local_setup.bash
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/local_setup.sh
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/local_setup.zsh
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/local_setup.dsv
+-- Symlinking: /root/ros2_ws/install/mg400_interface/share/mg400_interface/package.dsv
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/ament_index/resource_index/packages/mg400_interface
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/cmake/ament_cmake_export_dependencies-extras.cmake
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/cmake/ament_cmake_export_include_directories-extras.cmake
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/cmake/ament_cmake_export_libraries-extras.cmake
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/cmake/mg400_interfaceConfig.cmake
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/cmake/mg400_interfaceConfig-version.cmake
+-- Up-to-date symlink: /root/ros2_ws/install/mg400_interface/share/mg400_interface/package.xml

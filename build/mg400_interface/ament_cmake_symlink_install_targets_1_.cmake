@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_targets("TARGET_FILES" "/root/ros2_ws/build/mg400_interface/show_realtime_data" "/root/ros2_ws/build/mg400_interface/commander_check" "TARGETS" "show_realtime_data" "commander_check" "DESTINATION" "lib/mg400_interface")

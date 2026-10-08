@@ -1,0 +1,4 @@
+source;share/mg400_joy/local_setup.bash
+source;share/mg400_joy/local_setup.dsv
+source;share/mg400_joy/local_setup.sh
+source;share/mg400_joy/local_setup.zsh

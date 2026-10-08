@@ -1,0 +1,1 @@
+/root/ros2_ws/build/mg400_msgs/rosidl_generator_rs/mg400_msgs/rust/build.rs

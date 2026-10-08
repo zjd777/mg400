@@ -1,0 +1,4 @@
+source;share/p9n_node/local_setup.bash
+source;share/p9n_node/local_setup.dsv
+source;share/p9n_node/local_setup.sh
+source;share/p9n_node/local_setup.zsh

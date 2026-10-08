@@ -1,0 +1,18 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from mg400_msgs/srv/SetCollisionLevel.srv
+// generated code does not contain a copyright notice
+
+#include "mg400_msgs/msg/CollisionLevel.idl"
+
+module mg400_msgs {
+  module srv {
+    struct SetCollisionLevel_Request {
+      mg400_msgs::msg::CollisionLevel level;
+    };
+    struct SetCollisionLevel_Response {
+      boolean result;
+
+      int32 error_id;
+    };
+  };
+};
