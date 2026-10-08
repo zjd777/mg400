@@ -1,0 +1,10 @@
+# goal definition
+mg400_msgs/Command[] commands
+---
+# result definition
+bool result
+mg400_msgs/ErrorID error_id
+---
+# feedback definition
+geometry_msgs/PoseStamped current_pose
+float64[4] current_angles # Current joint angles in radian

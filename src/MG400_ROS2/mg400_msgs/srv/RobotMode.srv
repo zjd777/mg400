@@ -1,0 +1,3 @@
+---
+mg400_msgs/RobotMode robot_mode
+int32 error_id

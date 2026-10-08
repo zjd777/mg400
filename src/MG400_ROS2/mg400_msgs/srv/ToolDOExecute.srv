@@ -1,0 +1,5 @@
+mg400_msgs/ToolDOIndex index
+mg400_msgs/DOStatus status
+---
+bool result
+int32 error_id

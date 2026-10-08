@@ -1,0 +1,126 @@
+commands:
+  - type: "JointMovJ"
+    speed_j: 50
+    acc_j: 50
+    cp: 0
+    angles_deg: [0.0, 0.0, 0.0, 0.0]
+
+  - type: "MovJ"
+    speed_j: 50
+    acc_j: 50
+    cp: 0
+    pos_m: [0.178, -0.222, 0.032]
+    yaw_deg: 0.0
+    frame_id: "mg400_origin_link"
+
+  - type: "MovJ"
+    speed_j: 50
+    acc_j: 50
+    cp: 0
+    pos_m: [0.178, 0.222, 0.032]
+    yaw_deg: 0.0
+    frame_id: "mg400_origin_link"
+
+  - type: "JointMovJ"
+    speed_j: 50
+    acc_j: 50
+    cp: 0
+    angles_deg: [0.0, 0.0, 0.0, 0.0]
+
+  - type: "MovL"
+    speed_l: 50
+    acc_l: 50
+    cp: 0
+    pos_m: [0.437, 0.0, 0.0]
+    yaw_deg: 0.0
+    frame_id: "mg400_origin_link"
+
+  - type: "MovL"
+    speed_l: 50
+    acc_l: 50
+    cp: 0
+    pos_m: [0.370, 0.0, 0.120]
+    yaw_deg: 0.0
+    frame_id: "mg400_origin_link"
+
+  - type: "JointMovJ"
+    speed_j: 50
+    acc_j: 50
+    cp: 0
+    angles_deg: [0.0, 0.0, 0.0, 0.0]
+
+  - type: "MovJIO"
+    speed_j: 50
+    acc_j: 50
+    # cp: 0
+    # ------------
+    # The cp options are temporarily commented out for the following reason:
+    # According to the MG400 manual, MovLIO and MovJIO accept the cp option,
+    # but MG400 firmware version 1.6 does not support it.
+    pos_m: [0.178, -0.222, 0.032]
+    yaw_deg: 0.0
+    frame_id: "mg400_origin_link"
+    distance_mode: "percentage"
+    distance: 50
+    index: 2
+    status: 1
+
+  - type: "MovJIO"
+    speed_j: 50
+    acc_j: 50
+    # cp: 0
+    # ------------
+    # The cp options are temporarily commented out for the following reason:
+    # According to the MG400 manual, MovLIO and MovJIO accept the cp option,
+    # but MG400 firmware version 1.6 does not support it.
+    pos_m: [0.178, 0.222, 0.032]
+    yaw_deg: 0.0
+    frame_id: "mg400_origin_link"
+    distance_mode: "percentage"
+    distance: 50
+    index: 2
+    status: 1
+
+  - type: "JointMovJ"
+    speed_j: 50
+    acc_j: 50
+    cp: 0
+    angles_deg: [0.0, 0.0, 0.0, 0.0]
+
+  - type: "MovLIO"
+    speed_l: 50
+    acc_l: 50
+    # cp: 0
+    # ------------
+    # The cp options are temporarily commented out for the following reason:
+    # According to the MG400 manual, MovLIO and MovJIO accept the cp option,
+    # but MG400 firmware version 1.6 does not support it.
+    pos_m: [0.437, 0.0, 0.0]
+    yaw_deg: 0.0
+    frame_id: "mg400_origin_link"
+    distance_mode: "percentage"
+    distance: 50
+    index: 2
+    status: 1
+
+  - type: "MovLIO"
+    speed_l: 50
+    acc_l: 50
+    # cp: 0
+    # ------------
+    # The cp options are temporarily commented out for the following reason:
+    # According to the MG400 manual, MovLIO and MovJIO accept the cp option,
+    # but MG400 firmware version 1.6 does not support it.
+    pos_m: [0.370, 0.0, 0.120]
+    yaw_deg: 0.0
+    frame_id: "mg400_origin_link"
+    distance_mode: "percentage"
+    distance: 50
+    index: 2
+    status: 1
+
+  - type: "JointMovJ"
+    speed_j: 50
+    acc_j: 50
+    cp: 0
+    angles_deg: [0.0, 0.0, 0.0, 0.0]

@@ -1,0 +1,548 @@
+// Copyright 2022 HarvestX Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+#include "mg400_interface/commander/dashboard_commander.hpp"
+
+namespace mg400_interface
+{
+using namespace std::chrono_literals;  // NOLINT
+
+namespace
+{
+
+std::vector<double> takePositiveSolutionPose(const DashboardResponse & response)
+{
+  const auto value_count = ResponseParser::countArrayElements(response.ret_val);
+  if (value_count == 4) {
+    return ResponseParser::takeCartesianPoseArray4(response.ret_val);
+  }
+  if (value_count == 6) {
+    const auto full_pose = ResponseParser::takeCartesianPoseArray(response.ret_val);
+    return {full_pose.at(0), full_pose.at(1), full_pose.at(2), full_pose.at(5)};
+  }
+  throw std::runtime_error("Unexpected PositiveSolution response length.");
+}
+
+std::vector<double> takeInverseSolutionJoints(const DashboardResponse & response)
+{
+  const auto value_count = ResponseParser::countArrayElements(response.ret_val);
+  if (value_count == 4) {
+    return ResponseParser::takeAngleArray4(response.ret_val);
+  }
+  if (value_count == 6) {
+    const auto full_joints = ResponseParser::takeAngleArray(response.ret_val);
+    return {full_joints.at(0), full_joints.at(1), full_joints.at(2), full_joints.at(3)};
+  }
+  throw std::runtime_error("Unexpected InverseSolution response length.");
+}
+
+bool isAcceptedLegacyFourAxisResponse(const DashboardResponse & response)
+{
+  return response.error_id == -1 &&
+         ResponseParser::countArrayElements(response.ret_val) == 4;
+}
+
+}  // namespace
+
+DashboardCommander::DashboardCommander(
+  DashboardTcpInterfaceBase * tcp_if,
+  const std::chrono::nanoseconds timeout)
+: tcp_if_(tcp_if),
+  clock_(std::make_shared<rclcpp::Clock>(RCL_STEADY_TIME)),
+  TIMEOUT(timeout)
+{
+}
+
+// DOBOT MG400 Official Command ---------------------------------------------
+void DashboardCommander::enableRobot(
+  const int8_t num_of_params,
+  const double load,
+  const double center_x,
+  const double center_y,
+  const double center_z) const
+{
+  if (num_of_params == 0) {
+    this->evaluateResponse(
+      this->sendAndWaitResponse("EnableRobot()"));
+  } else if (num_of_params == 1) {
+    static char buf[128];
+    const int cx = snprintf(buf, sizeof(buf), "EnableRobot(%.3lf)", load);
+    this->evaluateResponse(this->sendAndWaitResponse(std::string(buf, cx)));
+  } else if (num_of_params == 4) {
+    static char buf[128];
+    const int cx = snprintf(
+      buf, sizeof(buf), "EnableRobot(%.3lf,%.3lf,%.3lf,%.3lf)",
+      load, center_x, center_y, center_z);
+    this->evaluateResponse(this->sendAndWaitResponse(std::string(buf, cx)));
+  } else {
+    mg400_interface::DashboardResponse response;
+    response.error_id = -1;
+    response.ret_val = "Invalid number of parameters.";
+    response.func_name = "EnableRobot";
+    throw mg400_interface::DashboardCommandException(response);
+  }
+}
+
+void DashboardCommander::disableRobot() const
+{
+  this->evaluateResponse(
+    this->sendAndWaitResponse("DisableRobot()"));
+}
+
+void DashboardCommander::clearError() const
+{
+  this->evaluateResponse(
+    this->sendAndWaitResponse("ClearError()"));
+}
+
+void DashboardCommander::resetRobot() const
+{
+  this->evaluateResponse(
+    this->sendAndWaitResponse("ResetRobot()"));
+}
+
+void DashboardCommander::speedFactor(const int ratio) const
+{
+  static char buf[128];
+  const int cx = snprintf(buf, sizeof(buf), "SpeedFactor(%d)", ratio);
+  this->evaluateResponse(this->sendAndWaitResponse(std::string(buf, cx)));
+}
+
+void DashboardCommander::user(const User & user) const
+{
+  this->user(user.user);
+}
+
+void DashboardCommander::user(const User::_user_type & index) const
+{
+  static char buf[128];
+  const int cx = snprintf(buf, sizeof(buf), "User(%u)", index);
+  this->evaluateResponse(this->sendAndWaitResponse(std::string(buf, cx)));
+}
+
+void DashboardCommander::tool(const Tool & tool) const
+{
+  return this->tool(tool.tool);
+}
+
+void DashboardCommander::tool(const Tool::_tool_type & index) const
+{
+  static char buf[128];
+  const int cx = snprintf(buf, sizeof(buf), "Tool(%u)", index);
+  this->evaluateResponse(this->sendAndWaitResponse(std::string(buf, cx)));
+}
+
+uint64_t DashboardCommander::robotMode() const
+{
+  static DashboardResponse response;
+  ResponseParser::parseResponse(
+    this->sendAndWaitResponse("RobotMode()"), response);
+  if (response.error_id != 0) {
+    throw std::runtime_error("Dobot not return 0: " + std::to_string(response.error_id));
+  }
+  return static_cast<uint64_t>(ResponseParser::takeInt(response.ret_val));
+}
+
+void DashboardCommander::payLoad(
+  const double weight,
+  const double inertia) const
+{
+  static char buf[128];
+  const int cx = snprintf(
+    buf, sizeof(buf), "PayLoad(%.3lf,%.3lf)", weight, inertia);
+  this->evaluateResponse(this->sendAndWaitResponse(std::string(buf, cx)));
+}
+
+void DashboardCommander::DO(
+  const DOIndex & do_index, const DOStatus & do_status) const
+{
+  this->DO(do_index.index, do_status.status);
+}
+
+void DashboardCommander::DO(
+  const DOIndex::_index_type & do_index,
+  const DOStatus::_status_type & do_status) const
+{
+  static char buf[128];
+  const int cx = snprintf(buf, sizeof(buf), "DO(%u,%u)", do_index, do_status);
+  this->evaluateResponse(this->sendAndWaitResponse(std::string(buf, cx)));
+}
+
+void DashboardCommander::toolDOExecute(
+  const ToolDOIndex & tool_do_index, const DOStatus & do_status) const
+{
+  this->toolDOExecute(tool_do_index.index, do_status.status);
+}
+
+void DashboardCommander::toolDOExecute(
+  const ToolDOIndex::_index_type & tool_do_index,
+  const DOStatus::_status_type & do_status) const
+{
+  static char buf[128];
+  const int cx = snprintf(
+    buf, sizeof(buf), "ToolDOExecute(%u,%u)",
+    tool_do_index, do_status);
+  this->evaluateResponse(this->sendAndWaitResponse(std::string(buf, cx)));
+}
+
+int DashboardCommander::toolDI(const ToolDIIndex & tool_di_index) const
+{
+  return this->toolDI(tool_di_index.index);
+}
+
+int DashboardCommander::toolDI(const ToolDIIndex::_index_type & tool_di_index) const
+{
+  static char buf[128];
+  static DashboardResponse response;
+  const int cx = snprintf(buf, sizeof(buf), "ToolDI(%u)", tool_di_index);
+  ResponseParser::parseResponse(
+    this->sendAndWaitResponse(std::string(buf, cx)), response);
+  if (response.error_id != 0) {
+    throw std::runtime_error("Dobot not return 0: " + std::to_string(response.error_id));
+  }
+  return ResponseParser::takeInt(response.ret_val);
+}
+
+void DashboardCommander::accJ(const int R)
+{
+  static char buf[128];
+  const int cx = snprintf(buf, sizeof(buf), "AccJ(%d)", R);
+  this->evaluateResponse(this->sendAndWaitResponse(std::string(buf, cx)));
+}
+
+void DashboardCommander::accL(const int R)
+{
+  static char buf[128];
+  const int cx = snprintf(buf, sizeof(buf), "AccL(%d)", R);
+  this->evaluateResponse(this->sendAndWaitResponse(std::string(buf, cx)));
+}
+
+void DashboardCommander::speedJ(const int R)
+{
+  static char buf[128];
+  const int cx = snprintf(buf, sizeof(buf), "SpeedJ(%d)", R);
+  this->evaluateResponse(this->sendAndWaitResponse(std::string(buf, cx)));
+}
+
+void DashboardCommander::speedL(const int R)
+{
+  static char buf[128];
+  const int cx = snprintf(buf, sizeof(buf), "SpeedL(%d)", R);
+  this->evaluateResponse(this->sendAndWaitResponse(std::string(buf, cx)));
+}
+
+void DashboardCommander::arch(const ArchIndex & index)
+{
+  return this->arch(index.index);
+}
+
+void DashboardCommander::arch(const ArchIndex::_index_type & arch_index)
+{
+  static char buf[128];
+  const int cx = snprintf(buf, sizeof(buf), "Arch(%u)", arch_index);
+  this->evaluateResponse(this->sendAndWaitResponse(std::string(buf, cx)));
+}
+
+void DashboardCommander::cp(const int R)
+{
+  static char buf[128];
+  const int cx = snprintf(buf, sizeof(buf), "CP(%d)", R);
+  this->evaluateResponse(this->sendAndWaitResponse(std::string(buf, cx)));
+}
+/*
+bool DashboardCommander::runScript(const std::string & name)
+{
+  char buf[100];
+  snprintf(buf, sizeof(buf), "RunScript(%s)", name.c_str());
+  return this->sendCommand(buf);
+}
+
+bool DashboardCommander::stopScript()
+{
+  return this->sendCommand("StopScript()");
+}
+
+bool DashboardCommander::pauseScript()
+{
+  return this->sendCommand("PauseScript()");
+}
+
+bool DashboardCommander::continueScript()
+{
+  return this->sendCommand("ContinueScript()");
+}
+*/
+void DashboardCommander::setCollisionLevel(const CollisionLevel & level)
+{
+  this->setCollisionLevel(level.level);
+}
+
+void DashboardCommander::setCollisionLevel(
+  const CollisionLevel::_level_type & level)
+{
+  static char buf[128];
+  const int cx = snprintf(buf, sizeof(buf), "SetCollisionLevel(%u)", level);
+  this->evaluateResponse(this->sendAndWaitResponse(std::string(buf, cx)));
+}
+
+std::vector<double> DashboardCommander::getAngle()
+{
+  static DashboardResponse response;
+  ResponseParser::parseResponse(
+    this->sendAndWaitResponse("GetAngle()"), response);
+  if (response.error_id != 0) {
+    throw std::runtime_error("Dobot not return 0: " + std::to_string(response.error_id));
+  }
+  return ResponseParser::takeAngleArray(response.ret_val);
+}
+
+std::vector<double> DashboardCommander::getPose()
+{
+  static DashboardResponse response;
+  ResponseParser::parseResponse(
+    this->sendAndWaitResponse("GetPose()"), response);
+  if (response.error_id != 0) {
+    throw std::runtime_error("Dobot not return 0: " + std::to_string(response.error_id));
+  }
+  return ResponseParser::takePoseArray(response.ret_val);
+}
+
+std::vector<double> DashboardCommander::positiveSolution(
+  const double joint1, const double joint2, const double joint3,
+  const double joint4,
+  const User::_user_type & user, const Tool::_tool_type & tool)
+{
+  static char buf[256];
+  static DashboardResponse response;
+  const int cx = snprintf(
+    buf, sizeof(buf),
+    "PositiveSolution(%.6lf,%.6lf,%.6lf,%.6lf,%.6lf,%.6lf,%u,%u)",
+    rad2degree(joint1), rad2degree(joint2), rad2degree(joint3),
+    rad2degree(joint4), 0.0, 0.0,
+    user, tool);
+  ResponseParser::parseResponse(
+    this->sendAndWaitResponse(std::string(buf, cx)), response);
+  if (response.error_id != 0 && !isAcceptedLegacyFourAxisResponse(response)) {
+    throw DashboardCommandException(response);
+  }
+  return takePositiveSolutionPose(response);
+}
+
+std::vector<double> DashboardCommander::inverseSolution(
+  const double pose1, const double pose2, const double pose3,
+  const double pose4,
+  const User::_user_type & user, const Tool::_tool_type & tool)
+{
+  static char buf[256];
+  static DashboardResponse response;
+  const int cx = snprintf(
+    buf, sizeof(buf),
+    "InverseSolution(%.6lf,%.6lf,%.6lf,%.6lf,%.6lf,%.6lf,%u,%u)",
+    m2mm(pose1), m2mm(pose2), m2mm(pose3),
+    // MG400 4-axis pose r (j1 + j4) round-trips through the dashboard Rx slot.
+    rad2degree(pose4), 0.0, 0.0,
+    user, tool);
+  ResponseParser::parseResponse(
+    this->sendAndWaitResponse(std::string(buf, cx)), response);
+  if (response.error_id != 0 && !isAcceptedLegacyFourAxisResponse(response)) {
+    throw DashboardCommandException(response);
+  }
+  return takeInverseSolutionJoints(response);
+}
+
+void DashboardCommander::emergencyStop()
+{
+  this->evaluateResponse(this->sendAndWaitResponse("EmergencyStop()"));
+}
+/*
+int DashboardCommander::modbusCreate(
+  const std::string & ip, const int port,
+  const int slave_id, const int isRTU)
+{
+  std::lock_guard<std::mutex> lock_tcp_if_(this->mutex_tcp_if_);
+  char buf[100];
+  snprintf(
+    buf, sizeof(buf), "ModbusCreate(%s,%d,%d,%d)",
+    ip.c_str(), port, slave_id, isRTU);
+  this->tcp_if_->sendCommand(buf);
+  std::string res = this->tcp_if_->recvResponse();
+  int ret = ResponseParser::parseOneValue(res);
+  return ret;
+}
+
+bool DashboardCommander::modbusClose(const std::string & index)
+{
+  char buf[100];
+  snprintf(buf, sizeof(buf), "ModbusClose(%s)", index.c_str());
+  return sendCommand(buf);
+}
+
+std::vector<int> DashboardCommander::getInBits(
+  const int index, const int addr, const int count)
+{
+  std::lock_guard<std::mutex> lock_tcp_if_(this->mutex_tcp_if_);
+  char buf[100];
+  snprintf(
+    buf, sizeof(buf), "GetInBits(%d,%d,%d)",
+    index, addr, count);
+  this->tcp_if_->sendCommand(buf);
+  std::string res = this->tcp_if_->recvResponse();
+  return ResponseParser::parseArray(res, count);
+}
+
+std::vector<int> DashboardCommander::getInRegs(
+  const int index, const int addr,
+  const int count, const std::string & valType)
+{
+  std::lock_guard<std::mutex> lock_tcp_if_(this->mutex_tcp_if_);
+  char buf[100];
+  snprintf(
+    buf, sizeof(buf), "GetInRegs(%d,%d,%d,{%s})",
+    index, addr, count, valType.c_str());
+  this->tcp_if_->sendCommand(buf);
+  std::string res = this->tcp_if_->recvResponse();
+  std::vector<int> ret = ResponseParser::parseArray(res, count);
+  return ret;
+}
+
+std::vector<int> DashboardCommander::getCoils(
+  const int index, const int addr, const int count)
+{
+  std::lock_guard<std::mutex> lock_tcp_if_(this->mutex_tcp_if_);
+  char buf[100];
+  snprintf(
+    buf, sizeof(buf), "GetCoils(%d,%d,%d)",
+    index, addr, count);
+  this->tcp_if_->sendCommand(buf);
+  std::string res = this->tcp_if_->recvResponse();
+  std::vector<int> ret = ResponseParser::parseArray(res, count);
+  return ret;
+}
+
+int DashboardCommander::setCoils(
+  const int index, const int addr,
+  const int count, const std::string & valTab)
+{
+  std::lock_guard<std::mutex> lock_tcp_if_(this->mutex_tcp_if_);
+  char buf[100];
+  snprintf(
+    buf, sizeof(buf), "SetCoils(%d,%d,%d,{%s})",
+    index, addr, count, valTab.c_str());
+  this->tcp_if_->sendCommand(buf);
+  std::string res = this->tcp_if_->recvResponse();
+  int ret = ResponseParser::parseOnlyErrorID(res);
+  return ret;
+}
+
+std::vector<int> DashboardCommander::getHoldRegs(
+  const int index, const int addr,
+  const int count, const std::string & valType)
+{
+  std::lock_guard<std::mutex> lock_tcp_if_(this->mutex_tcp_if_);
+  char buf[100];
+  snprintf(
+    buf, sizeof(buf), "GetHoldRegs(%d,%d,%d,%s)",
+    index, addr, count, valType.c_str());
+  this->tcp_if_->sendCommand(buf);
+  std::string res = this->tcp_if_->recvResponse();
+  return ResponseParser::parseArray(res, count);
+}
+
+int DashboardCommander::setHoldRegs(
+  const int index, const int addr,
+  const int count, const std::string & valTab, const std::string & valType)
+{
+  std::lock_guard<std::mutex> lock_tcp_if_(this->mutex_tcp_if_);
+  char buf[100];
+  snprintf(
+    buf, sizeof(buf), "SetHoldRegs(%d,%d,%d,{%s},%s)",
+    index, addr, count, valTab.c_str(), valType.c_str());
+  this->tcp_if_->sendCommand(buf);
+  std::string res = this->tcp_if_->recvResponse();
+  return ResponseParser::parseOnlyErrorID(res);
+}
+*/
+
+std::array<std::vector<int>, 6> DashboardCommander::getErrorId() const
+{
+  static DashboardResponse response;
+  ResponseParser::parseResponse(
+    this->sendAndWaitResponse("GetErrorID()"), response);
+  if (response.error_id != 0) {
+    throw std::runtime_error("Dobot Not return 0: " + std::to_string(response.error_id));
+  }
+  return ResponseParser::takeErrorMessage(response.ret_val);
+}
+
+void DashboardCommander::convertToErrorIdMsg(
+  const std::array<std::vector<int>, 6> & error_id,
+  ErrorID & msg) const
+{
+  msg.controller.ids = error_id.at(0);
+  for (size_t i = 1; i < error_id.size(); ++i) {
+    msg.servo.at(i - 1).ids = error_id[i];
+  }
+}
+
+int DashboardCommander::DI(const DIIndex & do_index) const
+{
+  return this->DI(do_index.index);
+}
+
+int DashboardCommander::DI(const DIIndex::_index_type & di_index) const
+{
+  static DashboardResponse response;
+  static char buf[128];
+  const int cx = snprintf(buf, sizeof(buf), "DI(%u)", di_index);
+  ResponseParser::parseResponse(
+    this->sendAndWaitResponse(std::string(buf, cx)), response);
+  if (response.error_id != 0) {
+    throw std::runtime_error("Dobot Not return 0: " + std::to_string(response.error_id));
+  }
+  return ResponseParser::takeInt(response.ret_val);
+}
+// End DOBOT MG400 Official Command -----------------------------------------
+
+const rclcpp::Logger DashboardCommander::getLogger()
+{
+  return rclcpp::get_logger("DashboardCommander");
+}
+
+std::string DashboardCommander::sendAndWaitResponse(
+  const std::string & command) const
+{
+  std::lock_guard<std::mutex> lock_tcp_if_(this->mutex_tcp_if_);
+  this->tcp_if_->sendCommand(command);
+
+  const auto start = this->clock_->now();
+  const auto timeout = rclcpp::Duration(this->TIMEOUT);
+  while (this->clock_->now() - start < timeout) {
+    const std::string res = this->tcp_if_->recvResponse();
+    if (res.find(command) != std::string::npos) {
+      // Could find response candidates
+      return res;
+    }
+  }
+  throw std::runtime_error("Robot not responded.");
+}
+
+void DashboardCommander::evaluateResponse(const std::string & packet) const
+{
+  static DashboardResponse response;
+  ResponseParser::parseResponse(packet, response);
+  if (response.error_id != 0) {
+    throw DashboardCommandException(response);
+  }
+}
+}  // namespace mg400_interface

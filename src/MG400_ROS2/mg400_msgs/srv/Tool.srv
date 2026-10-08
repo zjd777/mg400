@@ -1,0 +1,4 @@
+mg400_msgs/Tool tool
+---
+bool result
+int32 error_id

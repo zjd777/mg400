@@ -1,0 +1,12 @@
+int8 NO_PARAM=0
+int8 ONE_PARAM=1
+int8 FOUR_PARAM=4
+
+int8 num_of_params
+float64 load
+float64 center_x
+float64 center_y
+float64 center_z
+---
+bool result
+int32 error_id

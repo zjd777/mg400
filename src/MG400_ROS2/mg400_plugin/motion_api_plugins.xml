@@ -1,0 +1,37 @@
+<library path="mg400_plugin_motion_api">
+  <class
+      type="mg400_plugin::MovJ"
+      base_class_type="mg400_plugin_base::MotionApiPluginBase">
+    <description>Execute MovJ</description>
+  </class>
+  <class
+      type="mg400_plugin::MovL"
+      base_class_type="mg400_plugin_base::MotionApiPluginBase">
+    <description>Execute MovL</description>
+  </class>
+  <class
+      type="mg400_plugin::MoveJog"
+      base_class_type="mg400_plugin_base::MotionApiPluginBase">
+    <description>Execute MoveJog</description>
+  </class>
+  <class
+      type="mg400_plugin::MovJIO"
+      base_class_type="mg400_plugin_base::MotionApiPluginBase">
+    <description>Execute MovJIO</description>
+  </class>
+  <class
+      type="mg400_plugin::MovLIO"
+      base_class_type="mg400_plugin_base::MotionApiPluginBase">
+    <description>Execute MovLIO</description>
+  </class>
+  <class
+      type="mg400_plugin::JointMovJ"
+      base_class_type="mg400_plugin_base::MotionApiPluginBase">
+    <description>Execute JointMovJ</description>
+  </class>
+  <class
+      type="mg400_plugin::CommandQueue"
+      base_class_type="mg400_plugin_base::MotionApiPluginBase">
+    <description>Execute Commands with queue</description>
+  </class>
+</library>
