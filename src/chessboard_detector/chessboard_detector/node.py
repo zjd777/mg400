@@ -19,7 +19,7 @@ class ChessboardDetector(Node):
         super().__init__('chessboard_detector')
 
         # =========================
-        # Parameters
+        # 参数：图像/内参话题、TF 帧名和棋盘格物理尺寸。
         # =========================
 
         self.declare_parameter('image_topic',
@@ -64,7 +64,7 @@ class ChessboardDetector(Node):
         )
 
         # =========================
-        # OpenCV / ROS
+        # OpenCV 图像桥接和 TF 发布器。
         # =========================
 
         self.bridge = CvBridge()
@@ -75,7 +75,7 @@ class ChessboardDetector(Node):
         self.tf_broadcaster = TransformBroadcaster(self)
 
         # =========================
-        # Subscribers
+        # 图像与内参分别订阅；收到内参前不会执行位姿估计。
         # =========================
 
         self.image_sub = self.create_subscription(
@@ -168,11 +168,11 @@ class ChessboardDetector(Node):
             return
 
         # --------------------------------------------------------
-        # Object points
+        # 构造棋盘角点在棋盘自身坐标系中的三维坐标。
         #
         # 3x3 inner corners
         #
-        # units: meters
+        # 单位：米。
         # --------------------------------------------------------
 
         objp = np.zeros(
@@ -192,7 +192,7 @@ class ChessboardDetector(Node):
         objp *= self.square_size
 
         # --------------------------------------------------------
-        # solvePnP
+        # 根据三维棋盘点和二维图像角点求 camera_optical -> chessboard。
         # --------------------------------------------------------
 
         success, rvec, tvec = cv2.solvePnP(
@@ -221,7 +221,7 @@ class ChessboardDetector(Node):
         )
 
         # --------------------------------------------------------
-        # Publish TF
+        # 使用图像时间戳发布 TF，避免与机械臂运动时刻错配。
         #
         # camera_color_optical_frame
         #              |

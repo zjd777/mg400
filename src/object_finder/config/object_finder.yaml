@@ -1,0 +1,74 @@
+object_finder:
+  ros__parameters:
+    topics.color: /camera/camera/color/image_raw
+    topics.depth: /camera/camera/aligned_depth_to_color/image_raw
+    topics.camera_info: /camera/camera/color/camera_info
+    topics.command: /object_finder/command
+    topics.status: /object_finder/status
+    topics.target_point: /object_finder/target_point
+    topics.joint_states: /mg400/joint_states
+
+    frames.base: mg400_origin_link
+    frames.flange: mg400_end_effector_flange
+
+    sync.queue_size: 10
+    sync.slop_sec: 0.08
+    sync.maximum_frame_age_sec: 1.0
+    sync.require_matching_frames: true
+
+    tf.timeout_sec: 1.0
+
+    depth.scale_16u: 0.001
+    depth.minimum_m: 0.10
+    depth.maximum_m: 2.0
+    depth.minimum_valid_ratio: 0.20
+    depth.minimum_valid_samples: 25
+    depth.roi_shrink_ratio: 0.20
+
+    # disabled：拒绝任务；fixed_bbox：坐标链路测试；qwen：预留真实模型。
+    vision.provider: disabled
+    vision.minimum_confidence: 0.60
+    vision.selection_policy: require_single
+    vision.fixed_bbox: [0.35, 0.35, 0.65, 0.65]
+    vision.qwen.model: ""
+    vision.qwen.base_url: ""
+    vision.qwen.api_key_env: DASHSCOPE_API_KEY
+    vision.qwen.timeout_sec: 30.0
+    vision.qwen.max_retries: 2
+
+    # 完成 TF、工作空间和物理间隙验证前，必须保持为 false。
+    motion.enabled: false
+    motion.final_standoff_m: 0.05
+    motion.approach_height_m: 0.15
+    motion.yaw_policy: radial
+    motion.fixed_yaw_rad: 0.0
+    motion.speed_j: 10
+    motion.acc_j: 10
+    motion.speed_l: 10
+    motion.acc_l: 10
+    motion.cp: 0
+    motion.action_server_timeout_sec: 3.0
+    motion.action_result_timeout_sec: 15.0
+
+    actions.mov_j: /mg400/mov_j
+    actions.mov_l: /mg400/mov_l
+    actions.joint_mov_j: /mg400/joint_mov_j
+
+    home.configured: false
+    home.mode: joint
+    home.joint_angles_rad: [0.0, 0.0, 0.0, 0.0]
+    # 四个物理关节 [J1, J2, J3, J4] 对应的驱动 URDF 关节名。
+    home.joint_names: [mg400_j1, mg400_j2_1, mg400_j4_2, mg400_j5]
+    home.pose: [0.0, 0.0, 0.0, 0.0]
+    home.joint_tolerance_rad: 0.035
+    home.position_tolerance_m: 0.01
+    home.yaw_tolerance_rad: 0.035
+    home.state_max_age_sec: 0.5
+    home.capture_state_tolerance_sec: 0.25
+
+    safety.workspace_configured: false
+    # 自定义安全工作区；程序还会强制检查官方 0.440 m 最大工作半径。
+    safety.workspace_bounds: [-0.40, 0.40, -0.40, 0.40, -0.10, 0.30]
+    safety.clearance_verified: false
+
+    terminal.enabled: true

@@ -1,3 +1,6 @@
+from glob import glob
+import os
+
 from setuptools import setup
 
 package_name = 'chessboard_detector'
@@ -18,8 +21,8 @@ setup(
             ['package.xml']
         ),
         (
-            'share/' + package_name + '/launch',
-            ['launch/chessboard_detector.launch.py']
+            os.path.join('share', package_name, 'launch'),
+            glob('launch/*.launch.py')
         ),
     ],
 
