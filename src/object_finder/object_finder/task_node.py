@@ -15,15 +15,16 @@ from cv_bridge import CvBridge
 from geometry_msgs.msg import PointStamped, PoseStamped
 from message_filters import ApproximateTimeSynchronizer, Subscriber
 from mg400_msgs.action import JointMovJ, MovJ, MovL
+from mg400_msgs.msg import RobotMode
 import rclpy
 from rclpy.action import ActionClient
 from rclpy.duration import Duration
-from rclpy.executors import MultiThreadedExecutor
+from rclpy.executors import ExternalShutdownException, MultiThreadedExecutor
 from rclpy.node import Node
 from rclpy.qos import qos_profile_sensor_data
 from rclpy.time import Time
 from sensor_msgs.msg import CameraInfo, Image, JointState
-from std_msgs.msg import String
+from std_msgs.msg import Bool, String
 from tf2_geometry_msgs import do_transform_point
 from tf2_ros import Buffer, TransformException, TransformListener
 
@@ -39,6 +40,7 @@ from .models import (
     SafetyError,
     VisionError,
 )
+from .readiness import ready_qos
 from .safety import (
     WorkspaceBounds,
     validate_height_parameters,
@@ -75,8 +77,10 @@ class JointStateSnapshot:
 class ObjectFinderNode(Node):
     """Coordinate perception and motion while enforcing safe defaults."""
 
-    def __init__(self) -> None:
-        super().__init__('object_finder')
+    def __init__(self, *, parameter_overrides=None) -> None:
+        super().__init__(
+            'object_finder', parameter_overrides=parameter_overrides,
+        )
         self._declare_parameters()
         # 先检查全部配置，再创建订阅和 Action 客户端，错误配置直接拒绝启动。
         self._validate_configuration()
@@ -89,9 +93,13 @@ class ObjectFinderNode(Node):
         self._latest_frame: Optional[FrameBundle] = None
         self._latest_joint_state: Optional[JointStateSnapshot] = None
         self._task_active = False
+        self._input_ready = False
+        self._latest_robot_mode: Optional[int] = None
+        self._robot_mode_received = 0.0
         self._motion_started_for_task = False
         self._shutdown_event = threading.Event()
         self._terminal_thread: Optional[threading.Thread] = None
+        self._task_thread: Optional[threading.Thread] = None
 
         self._base_frame = self._string_parameter('frames.base')
         # 保存历史 TF，确保使用“拍照时刻”而不是“开始运动后”的相机位姿。
@@ -102,7 +110,10 @@ class ObjectFinderNode(Node):
         self._status_publisher = self.create_publisher(
             String,
             self._string_parameter('topics.status'),
-            10,
+            ready_qos(),
+        )
+        self._ready_publisher = self.create_publisher(
+            Bool, self._string_parameter('topics.ready'), ready_qos(),
         )
         self._target_publisher = self.create_publisher(
             PointStamped,
@@ -127,6 +138,12 @@ class ObjectFinderNode(Node):
             self._joint_state_callback,
             qos_profile_sensor_data,
         )
+        self._robot_mode_subscription = self.create_subscription(
+            RobotMode,
+            self._string_parameter('topics.robot_mode'),
+            self._robot_mode_callback,
+            qos_profile_sensor_data,
+        )
 
         self._configure_rgbd_sync()
         self._vision_grounder = self._create_vision_grounder()
@@ -148,10 +165,24 @@ class ObjectFinderNode(Node):
             self._string_parameter('actions.joint_mov_j'),
         )
 
-        self._publish_status(
-            'IDLE',
-            '节点已启动。默认禁止真机运动，请等待同步 RGB-D 图像。',
+        if self._bool_parameter('motion.enabled'):
+            startup_message = (
+                '节点已启动，真机运动已启用；'
+                '请确认人员已离开工作区并保持急停可用。'
+            )
+        else:
+            startup_message = (
+                '节点已启动。真机运动未启用，请等待同步 RGB-D 图像。'
+            )
+        self._publish_status('IDLE', startup_message)
+        self._set_input_ready(False)
+        # 归位线程等待使能和状态；executor 必须继续处理 TF、关节和 Action 回调。
+        self._startup_thread = threading.Thread(
+            target=self._prepare_startup,
+            name='object_finder_startup',
+            daemon=True,
         )
+        self._startup_thread.start()
         if self._bool_parameter('terminal.enabled'):
             if sys.stdin.isatty():
                 self._terminal_thread = threading.Thread(
@@ -177,6 +208,8 @@ class ObjectFinderNode(Node):
             'topics.camera_info': '/camera/camera/color/camera_info',
             'topics.command': '/object_finder/command',
             'topics.status': '/object_finder/status',
+            'topics.ready': '/object_finder/ready',
+            'topics.robot_mode': '/mg400/robot_mode',
             'topics.target_point': '/object_finder/target_point',
             'topics.debug_image': '/object_finder/debug_image',
             'topics.joint_states': '/mg400/joint_states',
@@ -218,7 +251,7 @@ class ObjectFinderNode(Node):
             'motion.acc_l': 10,
             'motion.cp': 0,
             'motion.action_server_timeout_sec': 3.0,
-            'motion.action_result_timeout_sec': 15.0,
+            'motion.action_result_timeout_sec': 30.0,
             # MG400_ROS2 驱动提供的三个 Action 名称。
             'actions.mov_j': '/mg400/mov_j',
             'actions.mov_l': '/mg400/mov_l',
@@ -234,6 +267,10 @@ class ObjectFinderNode(Node):
                 'mg400_j5',
             ],
             'home.pose': [0.0, 0.0, 0.0, 0.0],
+            'home.auto_on_startup': True,
+            'home.startup_timeout_sec': 60.0,
+            'home.verify_timeout_sec': 5.0,
+            'home.settle_sec': 0.3,
             'home.joint_tolerance_rad': 0.035,
             'home.position_tolerance_m': 0.01,
             'home.yaw_tolerance_rad': 0.035,
@@ -263,6 +300,8 @@ class ObjectFinderNode(Node):
             'topics.camera_info',
             'topics.command',
             'topics.status',
+            'topics.ready',
+            'topics.robot_mode',
             'topics.target_point',
             'topics.debug_image',
             'topics.joint_states',
@@ -278,7 +317,7 @@ class ObjectFinderNode(Node):
 
         if self._int_parameter('sync.queue_size') < 1:
             raise SafetyError('sync.queue_size 必须大于等于 1。')
-        nonnegative_parameters = ('sync.slop_sec',)
+        nonnegative_parameters = ('sync.slop_sec', 'home.settle_sec')
         for name in nonnegative_parameters:
             value = self._float_parameter(name)
             if not math.isfinite(value) or value < 0.0:
@@ -294,6 +333,8 @@ class ObjectFinderNode(Node):
             'home.yaw_tolerance_rad',
             'home.state_max_age_sec',
             'home.capture_state_tolerance_sec',
+            'home.startup_timeout_sec',
+            'home.verify_timeout_sec',
         )
         for name in positive_parameters:
             value = self._float_parameter(name)
@@ -456,13 +497,222 @@ class ObjectFinderNode(Node):
                 received_monotonic=time.monotonic(),
             )
 
+    def _robot_mode_callback(self, message: RobotMode) -> None:
+        with self._joint_state_lock:
+            self._latest_robot_mode = int(message.robot_mode)
+            self._robot_mode_received = time.monotonic()
+
+    def _set_input_ready(self, ready: bool) -> None:
+        # 与输入桥共用的状态：归位和任务期间均不缓存新的找物指令。
+        self._input_ready = ready
+        self._ready_publisher.publish(Bool(data=ready))
+
+    def _require_robot_enabled(self) -> None:
+        with self._joint_state_lock:
+            mode = self._latest_robot_mode
+            age = time.monotonic() - self._robot_mode_received
+        if age > self._float_parameter('home.state_max_age_sec'):
+            raise SafetyError('MG400 实时模式已过期或尚未收到。')
+        if mode != RobotMode.ENABLE:
+            raise SafetyError(f'MG400 未处于空闲使能状态，robot_mode={mode}。')
+
+    def _home_reached(self) -> bool:
+        """Check the current measured Home pose, rejecting stale feedback."""
+        if self._string_parameter('home.mode') == 'joint':
+            with self._joint_state_lock:
+                snapshot = self._latest_joint_state
+            if snapshot is None or (
+                time.monotonic() - snapshot.received_monotonic
+                > self._float_parameter('home.state_max_age_sec')
+            ):
+                raise SafetyError('尚未收到新鲜的 Home 关节状态。')
+            message = snapshot.message
+            if len(message.name) != len(message.position):
+                raise SafetyError('JointState 关节名称与位置数量不一致。')
+            positions = dict(zip(message.name, message.position))
+            names = list(self.get_parameter('home.joint_names').value)
+            expected = list(self.get_parameter('home.joint_angles_rad').value)
+            if any(name not in positions for name in names):
+                raise SafetyError('JointState 缺少 Home 关节。')
+            return all(
+                math.isfinite(positions[name])
+                and self._angular_distance(positions[name], target)
+                <= self._float_parameter('home.joint_tolerance_rad')
+                for name, target in zip(names, expected)
+            )
+
+        try:
+            transform = self._tf_buffer.lookup_transform(
+                self._base_frame,
+                self._string_parameter('frames.flange'),
+                Time(),
+            )
+        except TransformException as error:
+            raise SafetyError(f'尚未获得当前法兰 TF：{error}') from error
+        stamp = Time.from_msg(transform.header.stamp).nanoseconds
+        age = (self.get_clock().now().nanoseconds - stamp) / 1e9
+        if abs(age) > self._float_parameter('home.state_max_age_sec'):
+            raise SafetyError(f'当前法兰 TF 已过期（{age:.2f} s）。')
+        expected = list(self.get_parameter('home.pose').value)
+        translation = transform.transform.translation
+        position_error = math.sqrt(sum(
+            (actual - target) ** 2
+            for actual, target in zip(
+                (translation.x, translation.y, translation.z), expected[:3],
+            )
+        ))
+        rotation = transform.transform.rotation
+        yaw = math.atan2(
+            2.0 * (rotation.w * rotation.z + rotation.x * rotation.y),
+            1.0 - 2.0 * (rotation.y ** 2 + rotation.z ** 2),
+        )
+        return (
+            math.isfinite(position_error)
+            and position_error <= self._float_parameter(
+                'home.position_tolerance_m'
+            )
+            and self._angular_distance(yaw, expected[3])
+            <= self._float_parameter('home.yaw_tolerance_rad')
+        )
+
+    def _wait_for_home(self, timeout_sec: float) -> None:
+        deadline = time.monotonic() + timeout_sec
+        last_error = '当前位置与 Home 不一致'
+        while not self._shutdown_event.is_set() and rclpy.ok():
+            try:
+                self._require_robot_enabled()
+                if self._home_reached():
+                    return
+            except SafetyError as error:
+                last_error = str(error)
+            if time.monotonic() >= deadline:
+                raise MotionError(f'Home 到位确认超时：{last_error}')
+            self._shutdown_event.wait(0.1)
+        raise MotionError('系统正在关闭，Home 确认已中止。')
+
+    def _wait_for_robot_idle(self) -> None:
+        # Action 结果和 robot_mode 分属不同话题，允许末尾 RUNNING -> ENABLE 延迟。
+        # 不能复用运动开始前的 ENABLE；必须有结果之后收到的新状态并稳定一小段时间。
+        minimum_received = time.monotonic()
+        deadline = time.monotonic() + self._float_parameter(
+            'home.verify_timeout_sec'
+        )
+        idle_since = None
+        last_error = '尚未收到运动结束后的空闲使能状态'
+        while not self._shutdown_event.is_set() and rclpy.ok():
+            try:
+                self._require_robot_enabled()
+                with self._joint_state_lock:
+                    received = self._robot_mode_received
+                if received > minimum_received:
+                    now = time.monotonic()
+                    if idle_since is None:
+                        idle_since = now
+                    elif now - idle_since >= 0.1:
+                        return
+            except SafetyError as error:
+                idle_since = None
+                last_error = str(error)
+                with self._joint_state_lock:
+                    mode = self._latest_robot_mode
+                if mode in {RobotMode.ERROR, RobotMode.DISABLED}:
+                    raise MotionError(f'运动结束后机械臂不可继续执行：{error}') from error
+            if time.monotonic() >= deadline:
+                raise MotionError(f'运动后等待空闲使能超时：{last_error}')
+            self._shutdown_event.wait(0.05)
+        raise MotionError('系统正在关闭，不再执行下一段运动。')
+
+    def _refresh_home_observation(self) -> None:
+        """Discard motion-time frames and wait for a fresh Home observation."""
+        if self._shutdown_event.wait(self._float_parameter('home.settle_sec')):
+            raise MotionError('系统正在关闭，已停止等待图像。')
+        # 必须在归位稳定后重新取图，不能复用移动中拍到的 RGB-D。
+        minimum_stamp = self.get_clock().now().nanoseconds
+        with self._frame_lock:
+            self._latest_frame = None
+        deadline = time.monotonic() + self._float_parameter(
+            'home.verify_timeout_sec'
+        )
+        last_error = '等待 Home 位置的新 RGB-D 图像'
+        while not self._shutdown_event.is_set() and rclpy.ok():
+            with self._frame_lock:
+                frame = self._latest_frame
+            if frame is not None and (
+                Time.from_msg(frame.depth.header.stamp).nanoseconds
+                >= minimum_stamp
+            ):
+                try:
+                    self._require_robot_enabled()
+                    self._validate_frame_bundle(frame)
+                    self._validate_observation_pose(frame)
+                    return
+                except SafetyError as error:
+                    last_error = str(error)
+            if time.monotonic() >= deadline:
+                raise SafetyError(f'归位后图像确认超时：{last_error}')
+            self._shutdown_event.wait(0.1)
+        raise MotionError('系统正在关闭，已停止等待图像。')
+
+    def _prepare_startup(self) -> None:
+        """Wait for enable, home if needed, then release both input modes."""
+        try:
+            if self._bool_parameter('motion.enabled'):
+                self._publish_status('WAITING_ENABLE', '等待 MG400 使能和法兰状态。')
+                deadline = time.monotonic() + self._float_parameter(
+                    'home.startup_timeout_sec'
+                )
+                at_home = False
+                while not self._shutdown_event.is_set() and rclpy.ok():
+                    try:
+                        self._require_robot_enabled()
+                        at_home = self._home_reached()
+                        break
+                    except SafetyError:
+                        with self._joint_state_lock:
+                            mode = self._latest_robot_mode
+                        if mode == RobotMode.ERROR:
+                            raise SafetyError('MG400 有报警，启动归位已停止。')
+                    if time.monotonic() >= deadline:
+                        raise SafetyError('等待 MG400 使能或新鲜法兰状态超时。')
+                    self._shutdown_event.wait(0.1)
+                if self._shutdown_event.is_set() or not rclpy.ok():
+                    return
+                if not at_home:
+                    if not self._bool_parameter('home.auto_on_startup'):
+                        raise SafetyError('未在 Home，且启动自动归位已关闭。')
+                    self._validate_action_servers()
+                    self._publish_status('HOMING', '未在 Home，正在低速归位。')
+                    self._send_home()
+                self._wait_for_home(
+                    self._float_parameter('home.verify_timeout_sec')
+                )
+                self._publish_status('HOME_REACHED', '已到 Home，等待相机稳定。')
+                self._refresh_home_observation()
+            self._publish_status('READY', '已准备好，等待下一条文字或语音指令。')
+            self._set_input_ready(True)
+        except Exception as error:
+            if self._shutdown_event.is_set() or not rclpy.ok():
+                return
+            self._set_input_ready(False)
+            self._publish_status(
+                'STARTUP_FAILED',
+                f'启动准备失败：{error}。输入未开放，请检查后重新启动。',
+            )
+
     def _command_callback(self, message: String) -> None:
         self._submit_task(message.data)
 
     def _terminal_loop(self) -> None:
         prompt = '\n请输入要寻找的物体（quit 退出输入）：'
-        print(prompt, end='', flush=True)
+        prompt_shown = False
         while rclpy.ok() and not self._shutdown_event.is_set():
+            if not self._input_ready:
+                prompt_shown = False
+                self._shutdown_event.wait(0.1)
+                continue
+            if not prompt_shown:
+                print(prompt, end='', flush=True)
+                prompt_shown = True
             try:
                 readable, _, _ = select.select(
                     [sys.stdin],
@@ -485,19 +735,23 @@ class ObjectFinderNode(Node):
                 self._publish_status('IDLE', '终端输入线程已退出。')
                 return
             self._submit_task(query)
-            print(prompt, end='', flush=True)
+            prompt_shown = False
 
     def stop_terminal_input(self) -> None:
-        """Stop and join the interruptible terminal input thread."""
+        """Stop workers before destroying their ROS publishers and clients."""
         self._shutdown_event.set()
-        if self._terminal_thread is not None:
+        for worker in (
+            self._terminal_thread, self._startup_thread, self._task_thread,
+        ):
+            if worker is None:
+                continue
             deadline = time.monotonic() + 1.0
-            while self._terminal_thread.is_alive():
+            while worker.is_alive():
                 remaining = deadline - time.monotonic()
                 if remaining <= 0.0:
-                    return
+                    break
                 try:
-                    self._terminal_thread.join(timeout=min(0.2, remaining))
+                    worker.join(timeout=min(0.2, remaining))
                 except KeyboardInterrupt:
                     # ros2 launch 可能在清理期间再转发一次 SIGINT。
                     continue
@@ -516,6 +770,9 @@ class ObjectFinderNode(Node):
                     '已有任务正在执行，本次命令未接收。',
                 )
                 return
+            if not self._input_ready:
+                self._publish_status('NOT_READY', '尚未在 Home 准备好，指令未接收。')
+                return
             # 在这里复制引用并冻结本次任务使用的观测帧。
             with self._frame_lock:
                 frame = self._latest_frame
@@ -524,6 +781,7 @@ class ObjectFinderNode(Node):
                     'WAITING_FRAME',
                     '尚未收到同步 RGB-D 图像，机械臂保持不动。',
                 )
+                self._set_input_ready(True)
                 return
             maximum_age = self._float_parameter(
                 'sync.maximum_frame_age_sec'
@@ -534,18 +792,22 @@ class ObjectFinderNode(Node):
                     'STALE_FRAME',
                     f'最近图像已过期（{age:.2f} s），机械臂保持不动。',
                 )
+                self._set_input_ready(True)
                 return
             self._task_active = True
+            self._set_input_ready(False)
 
-        threading.Thread(
+        self._task_thread = threading.Thread(
             target=self._run_task,
             args=(normalized_query, frame),
             name='object_finder_task',
             daemon=True,
-        ).start()
+        )
+        self._task_thread.start()
 
     def _run_task(self, query: str, frame: FrameBundle) -> None:
         self._motion_started_for_task = False
+        succeeded = False
         try:
             # 数据流：文字+彩色图定位二维目标，再由深度和 TF 算机器人坐标。
             self._publish_status('LOCALIZING', f'正在寻找：{query}')
@@ -623,6 +885,7 @@ class ObjectFinderNode(Node):
                 f'有效深度比例 {localized.valid_ratio:.1%}。',
             )
             self._execute_or_simulate_motion(query, base_point)
+            succeeded = True
         except ObjectFinderError as error:
             failure_action = (
                 '不再发送后续运动命令，请确认机械臂当前状态。'
@@ -645,9 +908,25 @@ class ObjectFinderNode(Node):
                 f'未预期错误：{error}。{failure_action}',
             )
         finally:
+            if self._shutdown_event.is_set() or not rclpy.ok():
+                return
+            # 运动失败时锁住输入，不自动继续归位；感知失败且仍在 Home 可重试。
+            ready = succeeded
+            if not self._motion_started_for_task and not succeeded:
+                try:
+                    if self._bool_parameter('motion.enabled'):
+                        self._require_robot_enabled()
+                        ready = self._home_reached()
+                    else:
+                        ready = True
+                except SafetyError:
+                    ready = False
             self._motion_started_for_task = False
             with self._task_lock:
                 self._task_active = False
+                self._set_input_ready(ready)
+            if ready:
+                self._publish_status('READY', '等待下一条文字或语音指令。')
 
     def _publish_debug_detection(
         self,
@@ -907,6 +1186,9 @@ class ObjectFinderNode(Node):
             workspace_configured
         )
         self._validate_home_configuration(workspace)
+        self._require_robot_enabled()
+        if not self._home_reached():
+            raise SafetyError('视觉推理期间机械臂离开了 Home，目标运动已取消。')
         self._validate_action_servers()
         approach_pose = self._make_pose(x, y, approach_z, yaw)
         target_pose = self._make_pose(x, y, final_z, yaw)
@@ -927,6 +1209,8 @@ class ObjectFinderNode(Node):
 
         self._publish_status('RETURNING_HOME', '正在返回观察位置。')
         self._send_home()
+        self._wait_for_home(self._float_parameter('home.verify_timeout_sec'))
+        self._refresh_home_observation()
         self._publish_status('SUCCEEDED', f'任务完成：{query}')
 
     def _validate_real_motion_configuration(
@@ -1097,6 +1381,9 @@ class ObjectFinderNode(Node):
         goal: Any,
         action_name: str,
     ) -> None:
+        if self._shutdown_event.is_set():
+            raise MotionError('系统正在关闭，不再发送运动命令。')
+        self._require_robot_enabled()
         server_timeout = self._float_parameter(
             'motion.action_server_timeout_sec'
         )
@@ -1129,6 +1416,7 @@ class ObjectFinderNode(Node):
                 f'{action_name} 返回执行失败；'
                 f'{self._format_action_error_ids(wrapped_result.result)}。'
             )
+        self._wait_for_robot_idle()
 
     @staticmethod
     def _format_action_error_ids(result: Any) -> str:
@@ -1146,15 +1434,18 @@ class ObjectFinderNode(Node):
                 entries.append(f'servo{index + 1}={servo_ids}')
         return ', '.join(entries) if entries else '错误码为空'
 
-    @staticmethod
-    def _wait_for_future(future, timeout_sec: float, name: str) -> None:
+    def _wait_for_future(self, future, timeout_sec: float, name: str) -> None:
         completed = threading.Event()
         future.add_done_callback(lambda unused: completed.set())
-        if not completed.wait(timeout_sec):
-            raise MotionError(
-                f'{name} 等待超时；当前驱动取消操作不能保证停止，'
-                '不再发送后续命令。'
-            )
+        deadline = time.monotonic() + timeout_sec
+        while not completed.wait(0.1):
+            if self._shutdown_event.is_set() or not rclpy.ok():
+                raise MotionError(f'系统正在关闭，停止等待 {name}。')
+            if time.monotonic() >= deadline:
+                raise MotionError(
+                    f'{name} 等待超时；当前驱动取消操作不能保证停止，'
+                    '不再发送后续命令。'
+                )
         if future.exception() is not None:
             raise MotionError(f'{name} 调用异常：{future.exception()}')
 
@@ -1195,7 +1486,7 @@ def main(args=None) -> None:
     executor.add_node(node)
     try:
         executor.spin()
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
     finally:
         # launch 和 rclpy 都可能转发 SIGINT，清理期间忽略重复信号。

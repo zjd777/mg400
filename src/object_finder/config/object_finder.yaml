@@ -9,6 +9,9 @@ object_finder:
     topics.camera_info: /camera/camera/color/camera_info
     topics.command: /object_finder/command
     topics.status: /object_finder/status
+    # true 表示已在 Home 准备好接收输入；归位、执行任务时为 false。
+    topics.ready: /object_finder/ready
+    topics.robot_mode: /mg400/robot_mode
     topics.target_point: /object_finder/target_point
     topics.debug_image: /object_finder/debug_image
     topics.joint_states: /mg400/joint_states
@@ -53,8 +56,9 @@ object_finder:
     vision.qwen.timeout_sec: 30.0
     vision.qwen.max_retries: 2
 
-    # 完成 TF、工作空间和物理间隙验证前，必须保持为 false。
-    motion.enabled: false
+    # 这里控制是否允许程序向 MG400 发送运动指令；机器人上使能由启动脚本负责。
+    # 现场已确认 Home、急停和 5 cm 悬停间隙，首次真机测试保持低速。
+    motion.enabled: true
     # 最终停在物体表面上方 5 cm；先到 15 cm 预接近点再垂直下降。
     motion.final_standoff_m: 0.05
     motion.approach_height_m: 0.15
@@ -62,29 +66,38 @@ object_finder:
     motion.yaw_policy: radial
     motion.fixed_yaw_rad: 0.0
     # 关节/直线运动的速度和加速度百分比，初次真机测试应保持低速。
-    motion.speed_j: 10
-    motion.acc_j: 10
-    motion.speed_l: 10
-    motion.acc_l: 10
+    motion.speed_j: 5
+    motion.acc_j: 5
+    motion.speed_l: 5
+    motion.acc_l: 5
     # CP 为连续轨迹过渡比例；0 表示不做连续过渡。
     motion.cp: 0
     # 分别限制等待 Action 服务和等待单段运动结果的时间。
     motion.action_server_timeout_sec: 3.0
-    motion.action_result_timeout_sec: 15.0
+    motion.action_result_timeout_sec: 30.0
 
     # MG400_ROS2 驱动 Action 名称，一般无需修改。
     actions.mov_j: /mg400/mov_j
     actions.mov_l: /mg400/mov_l
     actions.joint_mov_j: /mg400/joint_mov_j
 
-    # Home 同时作为固定拍照位和完成后的返回位；实测填写前保持 false。
-    home.configured: false
+    # Home 同时作为固定拍照位和返回位，对应 RViz x350 y0 z150 r0。
+    home.configured: true
     # joint 使用四关节角；pose 使用 [x, y, z, yaw]。
-    home.mode: joint
-    home.joint_angles_rad: [0.0, 0.0, 0.0, 0.0]
+    home.mode: pose
+    # 仅 home.mode=joint 时生效；本次 pose 模式不使用这组旧关节值。
+    home.joint_angles_rad: [-0.027543, 0.104821, -0.160177, 0.045780]
     # 四个物理关节 [J1, J2, J3, J4] 对应的驱动 URDF 关节名。
     home.joint_names: [mg400_j1, mg400_j2_1, mg400_j4_2, mg400_j5]
-    home.pose: [0.0, 0.0, 0.0, 0.0]
+    # mg400_origin_link 下的法兰 [x(m), y(m), z(m), yaw(rad)]。
+    home.pose: [0.350, 0.000, 0.150, 0.000]
+    # 使能后检查 Home，不在位时自动 MovJ 归位，归位成功才开放输入。
+    home.auto_on_startup: true
+    # 等待启动使能/状态的时间，以及每次运动后到位/新图像的确认时间。
+    home.startup_timeout_sec: 60.0
+    home.verify_timeout_sec: 5.0
+    # 到位后等待相机稳定，并丢弃移动期间的图像。
+    home.settle_sec: 0.3
     # 到位判断容差及关节状态新鲜度要求。
     home.joint_tolerance_rad: 0.035
     home.position_tolerance_m: 0.01
@@ -92,12 +105,13 @@ object_finder:
     home.state_max_age_sec: 0.5
     home.capture_state_tolerance_sec: 0.25
 
-    # 实测并填写自定义安全工作区后才能改为 true。
-    safety.workspace_configured: false
-    # 自定义安全工作区；程序还会强制检查官方 0.440 m 最大工作半径。
-    safety.workspace_bounds: [-0.40, 0.40, -0.40, 0.40, -0.10, 0.30]
-    # 仅在现场验证相机、法兰和环境不会碰撞后才可改为 true。
-    safety.clearance_verified: false
+    # 首次测试使用保守工作区，仅覆盖当前 Home 和已识别目标附近。
+    safety.workspace_configured: true
+    # 顺序为 [x_min, x_max, y_min, y_max, z_min, z_max]，单位为米。
+    # 程序还会额外强制检查 MG400 官方 0.440 m 最大工作半径。
+    safety.workspace_bounds: [0.25, 0.36, -0.10, 0.10, -0.11, 0.20]
+    # 用户已确认急停可用，且 5 cm 悬停时相机、法兰和线缆不会碰撞。
+    safety.clearance_verified: true
 
     # 直接 ros2 run 主节点时允许读 stdin；launch 模式会覆盖为 false。
     terminal.enabled: true

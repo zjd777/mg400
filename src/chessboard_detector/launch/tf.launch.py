@@ -11,7 +11,7 @@ def generate_launch_description():
         DeclareLaunchArgument('y', default_value='0.0'),
         DeclareLaunchArgument('z', default_value='-0.02'),
         DeclareLaunchArgument('roll', default_value='0.0'),
-        DeclareLaunchArgument('pitch', default_value='0.0'),
+        DeclareLaunchArgument('pitch', default_value='1.5707963'),
         DeclareLaunchArgument('yaw', default_value='3.1415926'),
         DeclareLaunchArgument(
             'parent_frame', default_value='mg400_link5'

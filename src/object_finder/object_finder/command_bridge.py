@@ -4,18 +4,25 @@ import math
 import signal
 
 import rclpy
+from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
-from std_msgs.msg import String
+from std_msgs.msg import Bool, String
+
+from .readiness import ready_qos
 
 
 class CommandBridge(Node):
     """Validate an input string before forwarding it as a find command."""
 
-    def __init__(self) -> None:
-        super().__init__('object_finder_command_bridge')
+    def __init__(self, *, parameter_overrides=None) -> None:
+        super().__init__(
+            'object_finder_command_bridge',
+            parameter_overrides=parameter_overrides,
+        )
         # input_topic 随文字/语音模式改变；output_topic 是任务节点的稳定入口。
         self.declare_parameter('input_topic', '/object_finder/text_input')
         self.declare_parameter('output_topic', '/object_finder/command')
+        self.declare_parameter('ready_topic', '/object_finder/ready')
         # source_name 仅用于日志；initial_command 用于无人工输入的联调测试。
         self.declare_parameter('source_name', '文字')
         self.declare_parameter('initial_command', '')
@@ -25,6 +32,7 @@ class CommandBridge(Node):
         self._input_topic = str(self.get_parameter('input_topic').value)
         self._output_topic = str(self.get_parameter('output_topic').value)
         self._source_name = str(self.get_parameter('source_name').value)
+        self._ready = False
         self._validate_parameters()
 
         # 输入源和任务节点解耦；以后替换 ASR 不需改动任务逻辑。
@@ -38,6 +46,13 @@ class CommandBridge(Node):
             self._input_topic,
             self._input_callback,
             10,
+        )
+        # 外部 ASR 可同样订阅 ready_topic，归位/执行期间暂停录音或识别。
+        self._ready_subscription = self.create_subscription(
+            Bool,
+            str(self.get_parameter('ready_topic').value),
+            self._ready_callback,
+            ready_qos(),
         )
 
         initial_command = str(
@@ -53,7 +68,7 @@ class CommandBridge(Node):
             )
 
         self.get_logger().info(
-            f'{self._source_name}输入已启用：'
+            f'{self._source_name}输入桥已启动（等待 Home 就绪）：'
             f'{self._input_topic} -> {self._output_topic}'
         )
 
@@ -69,12 +84,20 @@ class CommandBridge(Node):
     def _input_callback(self, message: String) -> None:
         self._forward(message.data)
 
+    def _ready_callback(self, message: Bool) -> None:
+        self._ready = message.data
+
     def _publish_initial_command(self) -> None:
+        if not self._ready:
+            return
         if self._initial_timer is not None:
             self._initial_timer.cancel()
         self._forward(self._initial_command)
 
     def _forward(self, raw_command: str) -> None:
+        if not self._ready:
+            self.get_logger().warning('尚未准备好或任务执行中，本次输入已忽略。')
+            return
         command = raw_command.strip()
         if not command:
             self.get_logger().warning('收到空指令，已忽略。')
@@ -82,10 +105,17 @@ class CommandBridge(Node):
         if len(command) > 500:
             self.get_logger().warning('指令超过 500 个字符，已拒绝。')
             return
+        try:
+            command.encode('utf-8')
+        except UnicodeEncodeError:
+            self.get_logger().warning('输入包含无效 UTF-8 字符，请重新输入。')
+            return
 
         output = String()
         output.data = command
         self._publisher.publish(output)
+        # 发布一条后关闭本地门控，等任务节点再次明确宣布 READY。
+        self._ready = False
         self.get_logger().info(
             f'已转发{self._source_name}指令：{command}'
         )
@@ -97,7 +127,7 @@ def main(args=None) -> None:
     node = CommandBridge()
     try:
         rclpy.spin(node)
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
     finally:
         # ros2 launch 可能向子进程重复转发 SIGINT。

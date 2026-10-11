@@ -46,7 +46,12 @@ setup(
             'object_finder_node = object_finder.task_node:main',
             'object_finder_command_bridge = '
             'object_finder.command_bridge:main',
+            'object_finder_enable_robot = '
+            'object_finder.enable_robot:main',
+            'object_finder_disable_robot = '
+            'object_finder.enable_robot:disable_main',
             'object_finder_text_input = object_finder.text_input:main',
+            'object_finder_voice_monitor = object_finder.text_input:voice_main',
         ],
     },
 )
