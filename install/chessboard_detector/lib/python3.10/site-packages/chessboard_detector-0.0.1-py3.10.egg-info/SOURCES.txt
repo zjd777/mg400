@@ -11,4 +11,5 @@ setup.py
 chessboard_detector/__init__.py
 chessboard_detector/node.py
 launch/chessboard_detector.launch.py
+launch/tf.launch.py
 resource/chessboard_detector

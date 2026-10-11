@@ -1,3 +1,5 @@
+"""object_finder 的 setuptools/ament_python 安装规则和 ROS 2 可执行入口."""
+
 from glob import glob
 import os
 
@@ -25,6 +27,10 @@ setup(
             os.path.join('share', package_name, 'config'),
             glob('config/*.yaml'),
         ),
+        (
+            os.path.join('share', package_name, 'rviz'),
+            glob('rviz/*.rviz'),
+        ),
         ('share/' + package_name, ['README.md']),
     ],
     install_requires=['setuptools'],
@@ -34,10 +40,13 @@ setup(
     description='Terminal-driven RGB-D object finding task for Dobot MG400.',
     license='Apache-2.0',
     tests_require=['pytest'],
+    scripts=glob('scripts/*.sh'),
     entry_points={
         'console_scripts': [
             'object_finder_node = object_finder.task_node:main',
+            'object_finder_command_bridge = '
+            'object_finder.command_bridge:main',
+            'object_finder_text_input = object_finder.text_input:main',
         ],
     },
 )
-

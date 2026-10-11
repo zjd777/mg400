@@ -1,4 +1,4 @@
-"""Robust aligned-depth localization utilities."""
+"""深度定位工具：筛选对齐深度、反投影目标像素并输出相机坐标系三维点."""
 
 from typing import Optional
 

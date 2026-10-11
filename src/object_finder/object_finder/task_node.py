@@ -1,12 +1,16 @@
-"""ROS 2 task coordinator for terminal-driven MG400 object finding."""
+"""找物任务主节点：同步 RGB-D、调用视觉模型、执行 TF 与安全检查并控制 MG400."""
 
 from dataclasses import dataclass
 import math
+import select
+import signal
+import sys
 import threading
 import time
 from typing import Any, Optional
 
 from action_msgs.msg import GoalStatus
+import cv2
 from cv_bridge import CvBridge
 from geometry_msgs.msg import PointStamped, PoseStamped
 from message_filters import ApproximateTimeSynchronizer, Subscriber
@@ -86,6 +90,8 @@ class ObjectFinderNode(Node):
         self._latest_joint_state: Optional[JointStateSnapshot] = None
         self._task_active = False
         self._motion_started_for_task = False
+        self._shutdown_event = threading.Event()
+        self._terminal_thread: Optional[threading.Thread] = None
 
         self._base_frame = self._string_parameter('frames.base')
         # 保存历史 TF，确保使用“拍照时刻”而不是“开始运动后”的相机位姿。
@@ -101,6 +107,12 @@ class ObjectFinderNode(Node):
         self._target_publisher = self.create_publisher(
             PointStamped,
             self._string_parameter('topics.target_point'),
+            10,
+        )
+        # 将最终选中的目标框发布给 RViz，方便人工核对模型结果。
+        self._debug_image_publisher = self.create_publisher(
+            Image,
+            self._string_parameter('topics.debug_image'),
             10,
         )
         self._command_subscription = self.create_subscription(
@@ -141,14 +153,23 @@ class ObjectFinderNode(Node):
             '节点已启动。默认禁止真机运动，请等待同步 RGB-D 图像。',
         )
         if self._bool_parameter('terminal.enabled'):
-            threading.Thread(
-                target=self._terminal_loop,
-                name='object_finder_terminal',
-                daemon=True,
-            ).start()
+            if sys.stdin.isatty():
+                self._terminal_thread = threading.Thread(
+                    target=self._terminal_loop,
+                    name='object_finder_terminal',
+                )
+                self._terminal_thread.start()
+            else:
+                self.get_logger().warning(
+                    '当前进程没有可交互标准输入，已禁用内置终端输入。'
+                    '请从另一终端向 command 话题发布指令，'
+                    '或使用 ros2 run 直接启动节点。'
+                )
 
     def _declare_parameters(self) -> None:
+        # 这里给出无 YAML 时的安全默认值；正常启动由 object_finder.yaml 覆盖。
         parameters = {
+            # 输入/输出话题必须与 D435、MG400 驱动及输入桥的命名保持一致。
             'topics.color': '/camera/camera/color/image_raw',
             'topics.depth': (
                 '/camera/camera/aligned_depth_to_color/image_raw'
@@ -157,20 +178,25 @@ class ObjectFinderNode(Node):
             'topics.command': '/object_finder/command',
             'topics.status': '/object_finder/status',
             'topics.target_point': '/object_finder/target_point',
+            'topics.debug_image': '/object_finder/debug_image',
             'topics.joint_states': '/mg400/joint_states',
+            # base 是所有运动目标的最终坐标系，flange 用于校验末端状态。
             'frames.base': 'mg400_origin_link',
             'frames.flange': 'mg400_end_effector_flange',
+            # RGB、对齐深度和内参时间戳允许的近似同步条件。
             'sync.queue_size': 10,
             'sync.slop_sec': 0.08,
             'sync.maximum_frame_age_sec': 1.0,
             'sync.require_matching_frames': True,
             'tf.timeout_sec': 1.0,
+            # 深度单位、有效范围和目标框中央采样规则，长度单位均为米。
             'depth.scale_16u': 0.001,
             'depth.minimum_m': 0.10,
             'depth.maximum_m': 2.0,
             'depth.minimum_valid_ratio': 0.20,
             'depth.minimum_valid_samples': 25,
             'depth.roi_shrink_ratio': 0.20,
+            # disabled/fixed_bbox/qwen 分别表示禁用、几何联调和真实模型。
             'vision.provider': 'disabled',
             'vision.minimum_confidence': 0.60,
             'vision.selection_policy': 'require_single',
@@ -180,6 +206,7 @@ class ObjectFinderNode(Node):
             'vision.qwen.api_key_env': 'DASHSCOPE_API_KEY',
             'vision.qwen.timeout_sec': 30.0,
             'vision.qwen.max_retries': 2,
+            # 最高级运动联锁默认关闭；两个高度都是相对物体表面的距离。
             'motion.enabled': False,
             'motion.final_standoff_m': 0.05,
             'motion.approach_height_m': 0.15,
@@ -192,9 +219,11 @@ class ObjectFinderNode(Node):
             'motion.cp': 0,
             'motion.action_server_timeout_sec': 3.0,
             'motion.action_result_timeout_sec': 15.0,
+            # MG400_ROS2 驱动提供的三个 Action 名称。
             'actions.mov_j': '/mg400/mov_j',
             'actions.mov_l': '/mg400/mov_l',
             'actions.joint_mov_j': '/mg400/joint_mov_j',
+            # Home 是固定观察位和任务完成返回位，未实测前 configured 必须为 false。
             'home.configured': False,
             'home.mode': 'joint',
             'home.joint_angles_rad': [0.0, 0.0, 0.0, 0.0],
@@ -210,6 +239,7 @@ class ObjectFinderNode(Node):
             'home.yaw_tolerance_rad': 0.035,
             'home.state_max_age_sec': 0.5,
             'home.capture_state_tolerance_sec': 0.25,
+            # 自定义工作区及现场间隙确认是开启真机运动的必要联锁。
             'safety.workspace_configured': False,
             'safety.workspace_bounds': [
                 -0.40,
@@ -234,6 +264,7 @@ class ObjectFinderNode(Node):
             'topics.command',
             'topics.status',
             'topics.target_point',
+            'topics.debug_image',
             'topics.joint_states',
             'frames.base',
             'frames.flange',
@@ -429,17 +460,47 @@ class ObjectFinderNode(Node):
         self._submit_task(message.data)
 
     def _terminal_loop(self) -> None:
-        while rclpy.ok():
+        prompt = '\n请输入要寻找的物体（quit 退出输入）：'
+        print(prompt, end='', flush=True)
+        while rclpy.ok() and not self._shutdown_event.is_set():
             try:
-                query = input('\n请输入要寻找的物体（quit 退出输入）：').strip()
-            except (EOFError, KeyboardInterrupt):
+                readable, _, _ = select.select(
+                    [sys.stdin],
+                    [],
+                    [],
+                    0.2,
+                )
+            except (OSError, ValueError):
                 return
+            if not readable:
+                continue
+            line = sys.stdin.readline()
+            if line == '':
+                return
+            query = line.strip()
             if not query:
+                print(prompt, end='', flush=True)
                 continue
             if query.lower() in {'quit', 'exit'}:
                 self._publish_status('IDLE', '终端输入线程已退出。')
                 return
             self._submit_task(query)
+            print(prompt, end='', flush=True)
+
+    def stop_terminal_input(self) -> None:
+        """Stop and join the interruptible terminal input thread."""
+        self._shutdown_event.set()
+        if self._terminal_thread is not None:
+            deadline = time.monotonic() + 1.0
+            while self._terminal_thread.is_alive():
+                remaining = deadline - time.monotonic()
+                if remaining <= 0.0:
+                    return
+                try:
+                    self._terminal_thread.join(timeout=min(0.2, remaining))
+                except KeyboardInterrupt:
+                    # ros2 launch 可能在清理期间再转发一次 SIGINT。
+                    continue
 
     def _submit_task(self, query: str) -> None:
         normalized_query = query.strip()
@@ -508,6 +569,11 @@ class ObjectFinderNode(Node):
                 policy=self._string_parameter(
                     'vision.selection_policy'
                 ),
+            )
+            self._publish_debug_detection(
+                color_bgr,
+                frame.color,
+                detection,
             )
 
             depth_m = depth_to_meters(
@@ -582,6 +648,43 @@ class ObjectFinderNode(Node):
             self._motion_started_for_task = False
             with self._task_lock:
                 self._task_active = False
+
+    def _publish_debug_detection(
+        self,
+        color_bgr,
+        source_message: Image,
+        detection,
+    ) -> None:
+        """Publish the selected 2-D box without changing source pixels."""
+        debug_image = color_bgr.copy()
+        height, width = debug_image.shape[:2]
+        box = detection.bounding_box.to_pixels(width, height)
+        top_left = (int(round(box.x_min)), int(round(box.y_min)))
+        bottom_right = (int(round(box.x_max)), int(round(box.y_max)))
+        cv2.rectangle(
+            debug_image,
+            top_left,
+            bottom_right,
+            (0, 255, 0),
+            2,
+        )
+        # OpenCV 默认字体不能稳定渲染中文，图上只标数值置信度。
+        cv2.putText(
+            debug_image,
+            f'confidence={detection.confidence:.2f}',
+            (top_left[0], max(18, top_left[1] - 6)),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.55,
+            (0, 255, 0),
+            2,
+            cv2.LINE_AA,
+        )
+        output = self._bridge.cv2_to_imgmsg(
+            debug_image,
+            encoding='bgr8',
+        )
+        output.header = source_message.header
+        self._debug_image_publisher.publish(output)
 
     def _validate_frame_bundle(self, frame: FrameBundle) -> None:
         if not self._bool_parameter('sync.require_matching_frames'):
@@ -1095,6 +1198,9 @@ def main(args=None) -> None:
     except KeyboardInterrupt:
         pass
     finally:
+        # launch 和 rclpy 都可能转发 SIGINT，清理期间忽略重复信号。
+        signal.signal(signal.SIGINT, signal.SIG_IGN)
+        node.stop_terminal_input()
         executor.shutdown()
         node.destroy_node()
         if rclpy.ok():

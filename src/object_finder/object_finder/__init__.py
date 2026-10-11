@@ -1,1 +1,1 @@
-"""Upper-layer object finding package for the MG400 project."""
+"""MG400 上层视觉找物功能包，包含感知、坐标计算、安全检查和任务控制."""

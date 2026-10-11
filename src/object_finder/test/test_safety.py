@@ -1,3 +1,5 @@
+"""运动安全单元测试：覆盖工作区、悬停高度、关节约束和速度范围."""
+
 import pytest
 
 from object_finder.models import SafetyError

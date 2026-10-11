@@ -1,4 +1,4 @@
-"""Deterministic motion safety checks."""
+"""机械臂安全校验：检查 MG400 工作半径、关节限制、工作区和运动参数."""
 
 from dataclasses import dataclass
 import math

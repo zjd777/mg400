@@ -1,3 +1,5 @@
+"""深度定位单元测试：覆盖单位换算、采样阈值、掩码与三维反投影."""
+
 import numpy as np
 import pytest
 

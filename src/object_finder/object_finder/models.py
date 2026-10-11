@@ -1,4 +1,4 @@
-"""Data contracts shared by vision, depth localization and task control."""
+"""公共数据模型：约束视觉、深度定位与任务控制模块之间传递的数据."""
 
 from dataclasses import dataclass
 from typing import Optional

@@ -1,74 +1,103 @@
+# 本文件集中配置找物任务的话题、坐标系、视觉模型、深度筛选和运动安全联锁。
+# 所有距离使用米、角度使用弧度、速度/加速度/CP 使用 MG400 的 0~100 百分比。
 object_finder:
   ros__parameters:
+    # D435 输入、任务指令/状态和 RViz 调试输出话题。
     topics.color: /camera/camera/color/image_raw
+    # 必须使用“对齐到彩色图”的深度，不能换成原始 depth/image_rect_raw。
     topics.depth: /camera/camera/aligned_depth_to_color/image_raw
     topics.camera_info: /camera/camera/color/camera_info
     topics.command: /object_finder/command
     topics.status: /object_finder/status
     topics.target_point: /object_finder/target_point
+    topics.debug_image: /object_finder/debug_image
     topics.joint_states: /mg400/joint_states
 
+    # base 是目标点最终转换到的运动参考系；名称必须与 MG400 URDF 一致。
     frames.base: mg400_origin_link
     frames.flange: mg400_end_effector_flange
 
+    # RGB、深度和内参的近似同步参数；slop_sec 是允许的最大时间差。
     sync.queue_size: 10
     sync.slop_sec: 0.08
+    # 超过该帧龄的图像不参与任务，避免机械臂使用旧画面坐标。
     sync.maximum_frame_age_sec: 1.0
     sync.require_matching_frames: true
 
+    # 查询“拍照时刻”相机到基座 TF 的最长等待时间。
     tf.timeout_sec: 1.0
 
+    # 16UC1 深度值乘此比例转换为米；D435 默认毫米对应 0.001。
     depth.scale_16u: 0.001
+    # 只接受此范围内的目标深度，用于滤除 0 值、飞点和远处背景。
     depth.minimum_m: 0.10
     depth.maximum_m: 2.0
+    # 目标取样区同时满足有效比例和最少样本数，才生成三维坐标。
     depth.minimum_valid_ratio: 0.20
     depth.minimum_valid_samples: 25
+    # 从目标框四边各向内收缩 20%，减少背景深度混入。
     depth.roi_shrink_ratio: 0.20
 
-    # disabled：拒绝任务；fixed_bbox：坐标链路测试；qwen：预留真实模型。
-    vision.provider: disabled
+    # disabled：拒绝任务；fixed_bbox：坐标链路测试；qwen：真实视觉定位。
+    vision.provider: qwen
+    # 低于此置信度的候选会丢弃；当前多个合格候选会要求用户补充描述。
     vision.minimum_confidence: 0.60
     vision.selection_policy: require_single
+    # fixed_bbox 模式使用的归一化 [x_min, y_min, x_max, y_max] 测试框。
     vision.fixed_bbox: [0.35, 0.35, 0.65, 0.65]
-    vision.qwen.model: ""
-    vision.qwen.base_url: ""
+    vision.qwen.model: qwen3-vl-plus
+    # 阿里云百炼北京地域共享接入点；其他地域需替换。
+    vision.qwen.base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+    # 只保存环境变量名，不得在 YAML 中填写密钥本身。
     vision.qwen.api_key_env: DASHSCOPE_API_KEY
     vision.qwen.timeout_sec: 30.0
     vision.qwen.max_retries: 2
 
     # 完成 TF、工作空间和物理间隙验证前，必须保持为 false。
     motion.enabled: false
+    # 最终停在物体表面上方 5 cm；先到 15 cm 预接近点再垂直下降。
     motion.final_standoff_m: 0.05
     motion.approach_height_m: 0.15
+    # radial：J4 朝基座径向；fixed：始终采用 fixed_yaw_rad。
     motion.yaw_policy: radial
     motion.fixed_yaw_rad: 0.0
+    # 关节/直线运动的速度和加速度百分比，初次真机测试应保持低速。
     motion.speed_j: 10
     motion.acc_j: 10
     motion.speed_l: 10
     motion.acc_l: 10
+    # CP 为连续轨迹过渡比例；0 表示不做连续过渡。
     motion.cp: 0
+    # 分别限制等待 Action 服务和等待单段运动结果的时间。
     motion.action_server_timeout_sec: 3.0
     motion.action_result_timeout_sec: 15.0
 
+    # MG400_ROS2 驱动 Action 名称，一般无需修改。
     actions.mov_j: /mg400/mov_j
     actions.mov_l: /mg400/mov_l
     actions.joint_mov_j: /mg400/joint_mov_j
 
+    # Home 同时作为固定拍照位和完成后的返回位；实测填写前保持 false。
     home.configured: false
+    # joint 使用四关节角；pose 使用 [x, y, z, yaw]。
     home.mode: joint
     home.joint_angles_rad: [0.0, 0.0, 0.0, 0.0]
     # 四个物理关节 [J1, J2, J3, J4] 对应的驱动 URDF 关节名。
     home.joint_names: [mg400_j1, mg400_j2_1, mg400_j4_2, mg400_j5]
     home.pose: [0.0, 0.0, 0.0, 0.0]
+    # 到位判断容差及关节状态新鲜度要求。
     home.joint_tolerance_rad: 0.035
     home.position_tolerance_m: 0.01
     home.yaw_tolerance_rad: 0.035
     home.state_max_age_sec: 0.5
     home.capture_state_tolerance_sec: 0.25
 
+    # 实测并填写自定义安全工作区后才能改为 true。
     safety.workspace_configured: false
     # 自定义安全工作区；程序还会强制检查官方 0.440 m 最大工作半径。
     safety.workspace_bounds: [-0.40, 0.40, -0.40, 0.40, -0.10, 0.30]
+    # 仅在现场验证相机、法兰和环境不会碰撞后才可改为 true。
     safety.clearance_verified: false
 
+    # 直接 ros2 run 主节点时允许读 stdin；launch 模式会覆盖为 false。
     terminal.enabled: true
