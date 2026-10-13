@@ -13,7 +13,12 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def build_application_launch(input_mode: str) -> LaunchDescription:
-    """根据 text/voice 输入模式生成其余部分完全一致的启动描述."""
+    """根据 text/voice 输入模式返回整套系统的 ROS LaunchDescription.
+
+    input_mode 只决定输入桥的话题和来源名称；相机、任务节点和运动流程共用。
+    本函数描述要启动的进程，真正启动由 ROS launch 执行返回的描述完成。
+    启动参数使用 LaunchConfiguration，在 launch 运行时才解析实际值。
+    """
     if input_mode not in {'text', 'voice'}:
         raise ValueError(f'Unsupported input mode: {input_mode}')
 
@@ -159,6 +164,7 @@ def build_application_launch(input_mode: str) -> LaunchDescription:
     )
 
     # launch 子进程没有交互 stdin，因此统一从 ROS 话题接收输入。
+    # 下方的 Node 是 launch 动作，不是 rclpy Node 实例；会创建独立进程。
     command_bridge = Node(
         package='object_finder',
         executable='object_finder_command_bridge',
@@ -176,6 +182,7 @@ def build_application_launch(input_mode: str) -> LaunchDescription:
             }
         ],
     )
+    # executable 通过 setup.py 映射到 task_node.main，YAML 覆盖主节点默认参数。
     task_node = Node(
         package='object_finder',
         executable='object_finder_node',

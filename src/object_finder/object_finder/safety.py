@@ -24,7 +24,7 @@ _MG400_JOINT_LIMITS = (
 
 @dataclass(frozen=True)
 class WorkspaceBounds:
-    """Axis-aligned allowed region expressed in the MG400 origin frame."""
+    """MG400 origin 坐标系中的轴对齐允许区间，所有边界单位均为米。"""
 
     x_min: float
     x_max: float
@@ -35,6 +35,11 @@ class WorkspaceBounds:
 
     @classmethod
     def from_sequence(cls, values: Sequence[float]) -> 'WorkspaceBounds':
+        """按 [xmin, xmax, ymin, ymax, zmin, zmax] 读取并校验工作区。
+
+        返回不可变边界对象；元素数量、有限性或每轴大小关系非法时
+        抛出 SafetyError，不代表工作区内的所有轨迹都已验证无碰撞。
+        """
         if len(values) != 6:
             raise SafetyError('safety.workspace_bounds 必须包含 6 个数值。')
         bounds = cls(*[float(value) for value in values])
@@ -49,7 +54,10 @@ class WorkspaceBounds:
         return bounds
 
     def validate(self, x: float, y: float, z: float, name: str) -> None:
-        """Raise if a point falls outside the configured safe region."""
+        """检查米制点是否落在各轴闭区间内，name 用于标识报错对象。
+
+        坐标非有限或越界时抛出 SafetyError；只检查给定点，不采样路径。
+        """
         # 这是用户确认过的保守工作区，不等同于机械臂理论最大可达空间。
         if not all(math.isfinite(value) for value in (x, y, z)):
             raise SafetyError(f'{name}包含非有限坐标。')
@@ -65,7 +73,11 @@ class WorkspaceBounds:
 
 
 def validate_mg400_radial_reach(x: float, y: float) -> None:
-    """Reject points beyond the official 440 mm working radius."""
+    """检查 origin 坐标系米制 XY 的水平半径是否超过 0.440 m。
+
+    非有限值或超半径时抛出 SafetyError；这是必要范围检查，不能
+    单独证明某个高度、末端朝向或整段轨迹在运动学上可达。
+    """
     if not all(math.isfinite(value) for value in (x, y)):
         raise SafetyError('目标水平坐标包含非有限数值。')
     radius = math.hypot(x, y)
@@ -80,7 +92,12 @@ def validate_height_parameters(
     final_standoff_m: float,
     approach_height_m: float,
 ) -> None:
-    """Validate the relative target heights used by the motion sequence."""
+    """检查相对物体表面的米制高度：最终悬停为正，接近高度更高。
+
+    不满足大小关系时抛出 SafetyError；目标基坐标中的绝对高度还需
+    由 WorkspaceBounds.validate 检查。本函数未单独检查 NaN/Inf，
+    完整的参数校验还需保证数值有限。
+    """
     if final_standoff_m <= 0.0:
         raise SafetyError('motion.final_standoff_m 必须大于 0。')
     if approach_height_m <= final_standoff_m:
@@ -90,7 +107,11 @@ def validate_height_parameters(
 
 
 def validate_mg400_joint_angles(values: Sequence[float]) -> None:
-    """Validate a four-joint Home pose using the driver's constraints."""
+    """检查 Home 的四个关节角（弧度），包括 J3-J2 平行连杆约束。
+
+    J4 先归一到 [-π, π]，关节上下限留出 1.05° 余量；J3<=0 时收紧
+    J2 下限。数量、有限性或约束不合格时抛出 SafetyError。
+    """
     if len(values) != 4:
         raise SafetyError('home.joint_angles_rad 必须包含 4 个关节角。')
     angles = tuple(float(value) for value in values)
@@ -127,7 +148,11 @@ def validate_percentage(
     name: str,
     allow_zero: bool = False,
 ) -> None:
-    """Validate a percentage using the MG400 driver's actual limits."""
+    """检查驱动百分比参数是否处于 1~100，allow_zero 时允许 0~100。
+
+    name 用于指出具体配置项；超出范围时抛出 SafetyError。参数已由
+    ROS 整数参数读出，此处仅判断范围，不进行整数类型转换。
+    """
     # 速度/加速度下限为 1；只有连续轨迹参数 CP 允许设置为 0。
     minimum = 0 if allow_zero else 1
     if not minimum <= value <= 100:

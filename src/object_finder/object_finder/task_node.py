@@ -1,4 +1,9 @@
-"""找物任务主节点：同步 RGB-D、调用视觉模型、执行 TF 与安全检查并控制 MG400."""
+"""找物任务主节点：同步 RGB-D、调用视觉模型、执行 TF 与安全检查并控制 MG400.
+
+阅读顺序：main -> __init__ -> _prepare_startup -> _command_callback
+-> _submit_task -> _run_task -> _execute_or_simulate_motion -> _send_action。
+相机回调持续更新最新帧；每次任务使用提交时选定的同一组 RGB-D 消息。
+"""
 
 from dataclasses import dataclass
 import math
@@ -57,27 +62,32 @@ from .vision import (
 
 @dataclass(frozen=True)
 class FrameBundle:
-    """One approximately synchronized RGB-D observation."""
+    """保存一组近似同步的彩色图、对齐深度图和相机内参."""
 
     # 三条消息必须作为同一次观测冻结，任务执行期间不能被新帧替换。
     color: Image
     depth: Image
     camera_info: CameraInfo
-    received_monotonic: float
+    received_monotonic: float  # 本机接收时刻（秒），不是图像采集时间戳。
 
 
 @dataclass(frozen=True)
 class JointStateSnapshot:
-    """Most recently received MG400 joint state."""
+    """保存最新关节状态及本机接收时刻，用于检查反馈是否过期."""
 
     message: JointState
     received_monotonic: float
 
 
 class ObjectFinderNode(Node):
-    """Coordinate perception and motion while enforcing safe defaults."""
+    """协调输入门控、视觉定位、坐标转换和分段运动的 ROS 主节点."""
 
     def __init__(self, *, parameter_overrides=None) -> None:
+        """加载配置并创建 ROS 接口，随后启动等待使能和归位的线程.
+
+        parameter_overrides 用于在测试或调用方覆盖参数；正常 launch 加载 YAML。
+        初始化不会直接接收任务，必须由 _prepare_startup 发布 ready=True。
+        """
         super().__init__(
             'object_finder', parameter_overrides=parameter_overrides,
         )
@@ -92,8 +102,8 @@ class ObjectFinderNode(Node):
         self._task_lock = threading.Lock()
         self._latest_frame: Optional[FrameBundle] = None
         self._latest_joint_state: Optional[JointStateSnapshot] = None
-        self._task_active = False
-        self._input_ready = False
+        self._task_active = False  # 标记已有任务占用执行权，防止运动交叉。
+        self._input_ready = False  # 是否允许接收新任务，通过 ready 话题通知输入端。
         self._latest_robot_mode: Optional[int] = None
         self._robot_mode_received = 0.0
         self._motion_started_for_task = False
@@ -198,6 +208,7 @@ class ObjectFinderNode(Node):
                 )
 
     def _declare_parameters(self) -> None:
+        """声明全部 ROS 参数的默认值，供 YAML 或 parameter_overrides 覆盖."""
         # 这里给出无 YAML 时的安全默认值；正常启动由 object_finder.yaml 覆盖。
         parameters = {
             # 输入/输出话题必须与 D435、MG400 驱动及输入桥的命名保持一致。
@@ -293,6 +304,11 @@ class ObjectFinderNode(Node):
             self.declare_parameter(name, default_value)
 
     def _validate_configuration(self) -> None:
+        """启动前检查参数范围、Home 定义及真机运动联锁.
+
+        非法配置抛出 SafetyError 或 VisionError，使节点拒绝初始化。
+        这里只校验配置，不代表外参或整条运动路径已经完成现场验证。
+        """
         # 配置采用失败关闭策略：不完整或非法参数不能带病运行。
         required_strings = (
             'topics.color',
@@ -426,6 +442,7 @@ class ObjectFinderNode(Node):
                 )
 
     def _configure_rgbd_sync(self) -> None:
+        """订阅彩色图、对齐深度和内参，按时间戳配对后触发 _rgbd_callback."""
         # 彩色图、对齐深度图和内参必须来自近似相同的采集时刻。
         self._color_subscriber = Subscriber(
             self,
@@ -457,6 +474,11 @@ class ObjectFinderNode(Node):
         self._synchronizer.registerCallback(self._rgbd_callback)
 
     def _create_vision_grounder(self):
+        """根据 vision.provider 创建定位后端，返回具有 locate 接口的对象.
+
+        disabled 拒绝定位，fixed_bbox 返回测试框，qwen 调用真实视觉模型。
+        后端的创建与每次任务的 locate 调用是两个不同阶段。
+        """
         # provider 可替换，任务节点不依赖具体千问型号或部署方式。
         qwen_config = QwenProviderConfig(
             model=self._string_parameter('vision.qwen.model'),
@@ -481,6 +503,7 @@ class ObjectFinderNode(Node):
         depth: Image,
         camera_info: CameraInfo,
     ) -> None:
+        """接收同步器配对的三条消息，在锁内更新最新观测供任务选取."""
         # 回调只保存最新完整观测，耗时的视觉推理放到独立任务线程。
         with self._frame_lock:
             self._latest_frame = FrameBundle(
@@ -491,6 +514,7 @@ class ObjectFinderNode(Node):
             )
 
     def _joint_state_callback(self, message: JointState) -> None:
+        """缓存最新关节位置和接收时间，供关节 Home 模式核验."""
         with self._joint_state_lock:
             self._latest_joint_state = JointStateSnapshot(
                 message=message,
@@ -498,16 +522,22 @@ class ObjectFinderNode(Node):
             )
 
     def _robot_mode_callback(self, message: RobotMode) -> None:
+        """缓存机器人当前模式和接收时间，供每段运动前后检查状态."""
         with self._joint_state_lock:
             self._latest_robot_mode = int(message.robot_mode)
             self._robot_mode_received = time.monotonic()
 
     def _set_input_ready(self, ready: bool) -> None:
+        """更新本节点输入门控，并发布 Bool 通知终端客户端和输入桥."""
         # 与输入桥共用的状态：归位和任务期间均不缓存新的找物指令。
         self._input_ready = ready
         self._ready_publisher.publish(Bool(data=ready))
 
     def _require_robot_enabled(self) -> None:
+        """要求机器人反馈新鲜且处于空闲 ENABLE，否则抛出 SafetyError.
+
+        RUNNING 虽然也是使能状态，但不允许作为新一段运动的起始状态。
+        """
         with self._joint_state_lock:
             mode = self._latest_robot_mode
             age = time.monotonic() - self._robot_mode_received
@@ -517,7 +547,11 @@ class ObjectFinderNode(Node):
             raise SafetyError(f'MG400 未处于空闲使能状态，robot_mode={mode}。')
 
     def _home_reached(self) -> bool:
-        """Check the current measured Home pose, rejecting stale feedback."""
+        """用当前反馈判断是否到 Home，返回 bool；缺失或过期反馈则报错.
+
+        joint 模式比较四个物理关节角；pose 模式比较最新法兰 TF 的位置和 yaw。
+        此处检查当前位姿，拍照时刻的位姿由 _validate_observation_pose 检查。
+        """
         if self._string_parameter('home.mode') == 'joint':
             with self._joint_state_lock:
                 snapshot = self._latest_joint_state
@@ -576,6 +610,7 @@ class ObjectFinderNode(Node):
         )
 
     def _wait_for_home(self, timeout_sec: float) -> None:
+        """轮询空闲使能状态与 Home 到位结果；超时或关闭时抛出 MotionError."""
         deadline = time.monotonic() + timeout_sec
         last_error = '当前位置与 Home 不一致'
         while not self._shutdown_event.is_set() and rclpy.ok():
@@ -591,6 +626,10 @@ class ObjectFinderNode(Node):
         raise MotionError('系统正在关闭，Home 确认已中止。')
 
     def _wait_for_robot_idle(self) -> None:
+        """等待 Action 结果之后的新 ENABLE 反馈，并要求空闲稳定至少 0.1 秒.
+
+        ERROR、DISABLED 或确认超时会抛出 MotionError，阻止后续运动。
+        """
         # Action 结果和 robot_mode 分属不同话题，允许末尾 RUNNING -> ENABLE 延迟。
         # 不能复用运动开始前的 ENABLE；必须有结果之后收到的新状态并稳定一小段时间。
         minimum_received = time.monotonic()
@@ -623,7 +662,11 @@ class ObjectFinderNode(Node):
         raise MotionError('系统正在关闭，不再执行下一段运动。')
 
     def _refresh_home_observation(self) -> None:
-        """Discard motion-time frames and wait for a fresh Home observation."""
+        """到 Home 后等待稳定、清除旧帧，再等待并核验一组新 RGB-D.
+
+        以 ROS 采集时间戳筛选新帧，并检查数据尺寸、坐标系和拍照位姿。
+        超时或关闭时抛出异常，不开放下一次输入。
+        """
         if self._shutdown_event.wait(self._float_parameter('home.settle_sec')):
             raise MotionError('系统正在关闭，已停止等待图像。')
         # 必须在归位稳定后重新取图，不能复用移动中拍到的 RGB-D。
@@ -654,7 +697,11 @@ class ObjectFinderNode(Node):
         raise MotionError('系统正在关闭，已停止等待图像。')
 
     def _prepare_startup(self) -> None:
-        """Wait for enable, home if needed, then release both input modes."""
+        """在启动线程中等待使能，必要时归位并取新图，最后开放输入.
+
+        真机模式失败时发布 STARTUP_FAILED 并保持输入关闭。
+        dry-run 跳过使能、归位和新帧等待；图像可用性由 _submit_task 检查。
+        """
         try:
             if self._bool_parameter('motion.enabled'):
                 self._publish_status('WAITING_ENABLE', '等待 MG400 使能和法兰状态。')
@@ -700,9 +747,15 @@ class ObjectFinderNode(Node):
             )
 
     def _command_callback(self, message: String) -> None:
+        """接收统一 command 话题的字符串，将其交给 _submit_task 门控."""
         self._submit_task(message.data)
 
     def _terminal_loop(self) -> None:
+        """直接运行主节点时读取终端输入，并交给同一个任务提交入口.
+
+        launch 会关闭这一内置入口，改用独立的 text_input.py 客户端。
+        此处 quit 仅退出输入线程，主节点仍由 ROS Executor 运行。
+        """
         prompt = '\n请输入要寻找的物体（quit 退出输入）：'
         prompt_shown = False
         while rclpy.ok() and not self._shutdown_event.is_set():
@@ -738,7 +791,11 @@ class ObjectFinderNode(Node):
             prompt_shown = False
 
     def stop_terminal_input(self) -> None:
-        """Stop workers before destroying their ROS publishers and clients."""
+        """设置关闭事件，并为每个工作线程最多等待一秒结束.
+
+        由 main 的清理路径调用；等待时间有限，不能保证 HTTP 请求已结束，
+        也不代表已经停止机械臂运动。
+        """
         self._shutdown_event.set()
         for worker in (
             self._terminal_thread, self._startup_thread, self._task_thread,
@@ -757,6 +814,11 @@ class ObjectFinderNode(Node):
                     continue
 
     def _submit_task(self, query: str) -> None:
+        """检查忙碌状态、输入门控和帧龄，选定观测后启动一次任务线程.
+
+        query 是目标文字。拒绝时通过状态话题说明原因；接受后先关闭输入。
+        这里只选取 FrameBundle 的引用，后续相机回调不会替换任务中的引用。
+        """
         normalized_query = query.strip()
         if not normalized_query:
             self._publish_status('REJECTED', '目标描述不能为空。')
@@ -806,6 +868,12 @@ class ObjectFinderNode(Node):
         self._task_thread.start()
 
     def _run_task(self, query: str, frame: FrameBundle) -> None:
+        """执行一次找物任务：二维定位 -> 深度 -> 基座点 -> 安全检查与运动.
+
+        query 和 frame 均来自提交时选定的数据；耗时的模型请求在此线程执行。
+        最后的 finally 释放任务占用权，并根据成功与是否开始运动决定开放输入。
+        失败时不会在这里自动补发返回 Home 的运动。
+        """
         self._motion_started_for_task = False
         succeeded = False
         try:
@@ -823,6 +891,7 @@ class ObjectFinderNode(Node):
             # 真机模式必须确认图像是在固定观察/Home 位置拍摄的。
             if self._bool_parameter('motion.enabled'):
                 self._validate_observation_pose(frame)
+            # locate 返回候选列表；select_single_detection 再筛选为唯一目标。
             detection = select_single_detection(
                 self._vision_grounder.locate(color_bgr, query),
                 minimum_confidence=self._float_parameter(
@@ -838,6 +907,7 @@ class ObjectFinderNode(Node):
                 detection,
             )
 
+            # 模型只提供二维框；深度和相机内参负责生成真实米制三维点。
             depth_m = depth_to_meters(
                 depth_raw,
                 frame.depth.encoding,
@@ -869,11 +939,12 @@ class ObjectFinderNode(Node):
 
             # 此点仍属于相机光学坐标系，不能直接作为 MG400 目标。
             optical_point = PointStamped()
-            optical_point.header = frame.depth.header
+            optical_point.header = frame.depth.header  # 保留光学帧名和拍照时刻。
             optical_point.point.x = localized.x
             optical_point.point.y = localized.y
             optical_point.point.z = localized.z
             base_point = self._transform_to_base(optical_point)
+            # 发布的是物体表面点；法兰最终悬停点还需要在其 Z 上增加间隙。
             self._target_publisher.publish(base_point)
 
             self._publish_status(
@@ -896,7 +967,7 @@ class ObjectFinderNode(Node):
                 'FAILED',
                 f'{error} {failure_action}',
             )
-        except Exception as error:  # defensive boundary for physical safety
+        except Exception as error:  # 捕获未预期异常，阻止继续下发后续动作。
             self.get_logger().error(f'任务发生未预期错误：{error!r}')
             failure_action = (
                 '不再发送后续运动命令，请确认机械臂当前状态。'
@@ -934,7 +1005,10 @@ class ObjectFinderNode(Node):
         source_message: Image,
         detection,
     ) -> None:
-        """Publish the selected 2-D box without changing source pixels."""
+        """复制彩色图并绘制选中的目标框和置信度，发布到 RViz 调试话题.
+
+        source_message 提供原图时间戳和帧名；绘图不修改用于定位的原数组。
+        """
         debug_image = color_bgr.copy()
         height, width = debug_image.shape[:2]
         box = detection.bounding_box.to_pixels(width, height)
@@ -966,6 +1040,11 @@ class ObjectFinderNode(Node):
         self._debug_image_publisher.publish(output)
 
     def _validate_frame_bundle(self, frame: FrameBundle) -> None:
+        """检查 RGB、对齐深度和内参的帧名及分辨率是否一致.
+
+        不一致时抛出 SafetyError；关闭 require_matching_frames 后跳过检查。
+        这里不重新检查采集时间或帧龄，近似同步由 message_filters 完成。
+        """
         if not self._bool_parameter('sync.require_matching_frames'):
             return
         color_frame = frame.color.header.frame_id
@@ -997,6 +1076,10 @@ class ObjectFinderNode(Node):
             )
 
     def _transform_to_base(self, point: PointStamped) -> PointStamped:
+        """按 point 的拍照时间查询 TF，将相机三维点转换到基座坐标系.
+
+        输入和输出位置单位均为米；无法取得历史 TF 时抛出 SafetyError。
+        """
         try:
             # 使用消息时间戳查询 TF，防止机械臂移动后坐标发生漂移。
             transform = self._tf_buffer.lookup_transform(
@@ -1015,6 +1098,10 @@ class ObjectFinderNode(Node):
         return do_transform_point(point, transform)
 
     def _validate_observation_pose(self, frame: FrameBundle) -> None:
+        """确认选定图像是在配置的 Home 观察位拍摄，不在位则抛出 SafetyError.
+
+        pose 模式查询拍照时刻的法兰 TF；joint 模式转交关节快照校验。
+        """
         mode = self._string_parameter('home.mode')
         if mode == 'joint':
             self._validate_observation_joint_state(frame)
@@ -1076,6 +1163,11 @@ class ObjectFinderNode(Node):
         self,
         frame: FrameBundle,
     ) -> None:
+        """从最新 JointState 提取四个物理关节，与 Home 角度比较.
+
+        同时检查接收新鲜度，以及关节时间戳与拍照时刻的差值（秒）。
+        当前只保存最新快照，并没有按拍照时间保存关节历史。
+        """
         with self._joint_state_lock:
             snapshot = self._latest_joint_state
         if snapshot is None:
@@ -1133,6 +1225,7 @@ class ObjectFinderNode(Node):
 
     @staticmethod
     def _angular_distance(first: float, second: float) -> float:
+        """返回两角的最短绝对角距离（弧度），处理跨越正负 pi 的情况."""
         return abs(math.atan2(
             math.sin(first - second),
             math.cos(first - second),
@@ -1143,6 +1236,12 @@ class ObjectFinderNode(Node):
         query: str,
         surface_point: PointStamped,
     ) -> None:
+        """由基座系表面点生成法兰接近/悬停位姿，并执行任务运动序列.
+
+        先检查半径和端点工作区。dry-run 发布规划后返回；真机模式依次
+        接近、下降、抬升、归位，并在取得新的 Home 图像后报告成功。
+        任意步骤抛出异常都会回到 _run_task 的失败处理。
+        """
         final_standoff = self._float_parameter(
             'motion.final_standoff_m'
         )
@@ -1217,6 +1316,7 @@ class ObjectFinderNode(Node):
         self,
         workspace_configured: bool,
     ) -> WorkspaceBounds:
+        """核验真机所需联锁及速度范围，返回用于端点检查的工作区边界."""
         # 三个联锁必须由用户在完成实物验证后显式打开。
         missing = []
         if not workspace_configured:
@@ -1245,6 +1345,10 @@ class ObjectFinderNode(Node):
         self,
         workspace: WorkspaceBounds,
     ) -> None:
+        """检查 Home 定义是否合法：关节模式检查角度，位姿模式检查坐标.
+
+        pose 的顺序为 [x, y, z, yaw]，单位米/弧度；非法配置抛出 SafetyError。
+        """
         mode = self._string_parameter('home.mode')
         if mode == 'joint':
             values = list(
@@ -1274,6 +1378,10 @@ class ObjectFinderNode(Node):
         raise SafetyError(f'不支持的 home.mode：{mode}')
 
     def _validate_action_servers(self) -> None:
+        """在第一段运动前确认完整任务所需的 Action Server 均可用.
+
+        总是需要 MovJ、MovL；joint Home 模式还需要 JointMovJ。
+        """
         timeout = self._float_parameter(
             'motion.action_server_timeout_sec'
         )
@@ -1289,6 +1397,7 @@ class ObjectFinderNode(Node):
                 raise MotionError(f'{name} Action 服务不可用。')
 
     def _target_yaw(self, x: float, y: float) -> float:
+        """计算目标 yaw（弧度）：radial 朝基座径向，fixed 采用配置固定角."""
         policy = self._string_parameter('motion.yaw_policy')
         if policy == 'radial':
             # 径向 yaw 通常可使末端旋转关节保持较小角度。
@@ -1304,6 +1413,10 @@ class ObjectFinderNode(Node):
         z: float,
         yaw: float,
     ) -> PoseStamped:
+        """将基座系 x/y/z（米）和 yaw（弧度）封装为运动目标 PoseStamped.
+
+        姿态只编码绕 Z 轴的旋转，不生成 roll 或 pitch 的运动自由度。
+        """
         pose = PoseStamped()
         pose.header.frame_id = self._base_frame
         pose.header.stamp = self.get_clock().now().to_msg()
@@ -1316,6 +1429,7 @@ class ObjectFinderNode(Node):
         return pose
 
     def _send_mov_j(self, pose: PoseStamped) -> None:
+        """组装位姿目标及关节速度参数，并通过 _send_action 等待 MovJ 完成."""
         goal = MovJ.Goal()
         goal.pose = pose
         goal.set_speed_j = True
@@ -1329,6 +1443,7 @@ class ObjectFinderNode(Node):
         self._send_action(self._mov_j_client, goal, 'MovJ')
 
     def _send_mov_l(self, pose: PoseStamped) -> None:
+        """组装位姿目标及直线速度参数，并通过 _send_action 等待 MovL 完成."""
         goal = MovL.Goal()
         goal.pose = pose
         goal.set_speed_l = True
@@ -1342,6 +1457,7 @@ class ObjectFinderNode(Node):
         self._send_action(self._mov_l_client, goal, 'MovL')
 
     def _send_home(self) -> None:
+        """按 Home 模式发送 JointMovJ 或 MovJ；到位核验由调用方另行执行."""
         mode = self._string_parameter('home.mode')
         if mode == 'joint':
             angles = list(
@@ -1381,6 +1497,11 @@ class ObjectFinderNode(Node):
         goal: Any,
         action_name: str,
     ) -> None:
+        """发送一个 Action 目标，等待接收与结果，再确认机器人空闲.
+
+        本函数在工作线程中等待，ROS Executor 负责处理 Future 完成回调。
+        目标被拒绝、执行失败或超时时抛出 MotionError；不会可靠停机或自动重试。
+        """
         if self._shutdown_event.is_set():
             raise MotionError('系统正在关闭，不再发送运动命令。')
         self._require_robot_enabled()
@@ -1420,6 +1541,7 @@ class ObjectFinderNode(Node):
 
     @staticmethod
     def _format_action_error_ids(result: Any) -> str:
+        """将驱动结果中的控制器和各伺服错误码整理成可读日志文本."""
         # 把驱动返回的控制器/伺服报警码带到终端，方便按手册排障。
         error_id = getattr(result, 'error_id', None)
         if error_id is None:
@@ -1435,6 +1557,10 @@ class ObjectFinderNode(Node):
         return ', '.join(entries) if entries else '错误码为空'
 
     def _wait_for_future(self, future, timeout_sec: float, name: str) -> None:
+        """通过完成事件等待 ROS Future；响应异常、超时或关闭时抛出 MotionError.
+
+        timeout_sec 为本机等待上限，name 仅用于错误提示；超时不会取消目标。
+        """
         completed = threading.Event()
         future.add_done_callback(lambda unused: completed.set())
         deadline = time.monotonic() + timeout_sec
@@ -1450,6 +1576,7 @@ class ObjectFinderNode(Node):
             raise MotionError(f'{name} 调用异常：{future.exception()}')
 
     def _publish_status(self, state: str, message: str) -> None:
+        """把状态和说明格式化为 [STATE] 文本，同时写日志和发布状态话题."""
         text = f'[{state}] {message}'
         self.get_logger().info(text)
         output = String()
@@ -1461,25 +1588,34 @@ class ObjectFinderNode(Node):
         name: str,
         allow_zero: bool = False,
     ) -> int:
+        """读取并检查 MG400 百分比参数；速度/加速度为 1~100，CP 可允许 0."""
         value = self._int_parameter(name)
         validate_percentage(value, name, allow_zero=allow_zero)
         return value
 
     def _string_parameter(self, name: str) -> str:
+        """按名称读取 ROS 参数并转换为字符串，供话题、帧名和策略使用."""
         return str(self.get_parameter(name).value)
 
     def _float_parameter(self, name: str) -> float:
+        """按名称读取浮点参数；距离、角度、时间单位由相应参数定义决定."""
         return float(self.get_parameter(name).value)
 
     def _int_parameter(self, name: str) -> int:
+        """按名称读取整数参数，用于队列长度、样本数量和速度百分比等."""
         return int(self.get_parameter(name).value)
 
     def _bool_parameter(self, name: str) -> bool:
+        """按名称读取布尔开关，用于运动联锁、输入和校验条件."""
         return bool(self.get_parameter(name).value)
 
 
 def main(args=None) -> None:
-    """Run the object finder with an executor that can service actions."""
+    """ROS 可执行入口：创建主节点，运行 Executor，并在退出时回收资源.
+
+    入口由 setup.py 的 object_finder_node 指向；工作线程等待 Action 时，
+    Executor 继续处理 ROS 回调，退出时先通知工作线程再销毁节点。
+    """
     rclpy.init(args=args)
     node = ObjectFinderNode()
     executor = MultiThreadedExecutor(num_threads=4)

@@ -17,7 +17,12 @@ def depth_to_meters(
     encoding: str,
     depth_scale: float,
 ) -> np.ndarray:
-    """Convert a ROS depth image to a float64 array in meters."""
+    """把二维 ROS 深度图统一转为 float64 米制数组，不在此处筛选坏点。
+
+    16UC1/MONO16 的原始值乘以 depth_scale（米/原始单位）；32FC1
+    按 ROS 常用约定直接视为米。非单通道、不支持的编码或 16 位图的
+    scale 不为正时抛出 DepthError。
+    """
     if depth_image.ndim != 2:
         raise DepthError('深度图必须是单通道图像。')
 
@@ -44,7 +49,16 @@ def localize_depth_region(
     minimum_valid_ratio: float = 0.2,
     minimum_valid_samples: int = 1,
 ) -> LocalizedPoint:
-    """Estimate the median 3-D point inside a detection's central region."""
+    """在目标框中心取有效深度，反投影后输出相机光学坐标系中的点。
+
+    depth_m 单位为米，必须与检测图像对齐；intrinsics 的焦距/主点
+    单位为像素，mask（可选）须与深度图同尺寸。roi_shrink_ratio 是
+    每侧收缩比例，例如 0.2 保留约 60% 的宽和高，而非保留 80%。
+
+    输出 XYZ 单位为米，光学坐标轴为右 X、下 Y、前 Z；pixel_u/v 和
+    有效样本统计用于诊断。参数、框、掩码或有效深度不合格时失败。
+    本方法假设内参已校验，后续由任务节点用 TF 转换到机械臂坐标。
+    """
     if depth_m.ndim != 2:
         raise DepthError('深度数组必须是二维数组。')
     validate_depth_parameters(
@@ -90,6 +104,8 @@ def localize_depth_region(
         valid &= region_mask
 
     sample_count = int(np.count_nonzero(valid))
+    # 有效比例只表示传感器有可用深度，不证明这些像素都属于目标物体；
+    # 没有前景 mask 时，框内的背景/桌面也可能通过下面的范围筛选。
     valid_ratio = sample_count / candidate_count if candidate_count else 0.0
     if (
         sample_count < minimum_valid_samples
@@ -109,6 +125,8 @@ def localize_depth_region(
     x_values = (pixel_u - intrinsics.cx) * z_values / intrinsics.fx
     y_values = (pixel_v - intrinsics.cy) * z_values / intrinsics.fy
 
+    # 分别对 X、Y、Z 和像素坐标取中值，而不是挑出某一个原始像素。
+    # 因此输出是区域表面的统计估计，并不保证来自同一个深度样本。
     # 中值比均值更不容易被少量飞点和深度空洞边缘影响。
     return LocalizedPoint(
         x=float(np.median(x_values)),
@@ -128,7 +146,11 @@ def validate_depth_parameters(
     minimum_valid_ratio: float,
     minimum_valid_samples: int,
 ) -> None:
-    """Validate depth sampling thresholds independently of an image."""
+    """校验深度范围（米）、ROI 收缩比例和有效样本门槛，不依赖图像。
+
+    收缩比例须在 [0, 0.5)，有效比例在 (0, 1]，有效样本数至少为 1；
+    浮点阈值非有限或范围关系非法时抛出 DepthError。
+    """
     values = (
         roi_shrink_ratio,
         minimum_depth_m,

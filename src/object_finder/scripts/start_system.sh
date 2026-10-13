@@ -78,10 +78,12 @@ enable_requested=false
 cleanup_started=false
 
 launch_group_running() {
+    # 检查本次 launch 的进程组是否还有成员，不改变进程运行状态。
     kill -0 -- "-${application_pgid}" 2>/dev/null
 }
 
 cleanup() {
+    # 由 EXIT/信号触发：先请求失能，再回收本次 launch 的整组进程。
     # 防止信号触发退出时重复执行清理流程。
     if [[ "${cleanup_started}" == 'true' ]]; then
         return

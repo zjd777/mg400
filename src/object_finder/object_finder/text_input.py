@@ -15,9 +15,14 @@ from .readiness import ready_qos
 
 
 class TextInputNode(Node):
-    """Publish repeated terminal input and print task status messages."""
+    """在终端显示任务状态，并在任务节点就绪时发布文字指令。"""
 
     def __init__(self, *, parameter_overrides=None) -> None:
+        """创建输入发布器与状态订阅，校验首次等待 READY 的超时时间。
+
+        parameter_overrides 可覆盖节点参数。ready 负责控制是否可提交任务，
+        startup_failed 负责让首次启动等待在收到归位失败状态后及时结束。
+        """
         super().__init__(
             'object_finder_text_input',
             parameter_overrides=parameter_overrides,
@@ -54,7 +59,11 @@ class TextInputNode(Node):
         )
 
     def publish_command(self, command: str) -> bool:
-        """Publish one non-empty command from the terminal."""
+        """清理并校验一条终端指令；成功发布返回 True，被拒绝返回 False。
+
+        发布目标是输入桥的话题，而不是任务节点。发布后立即关闭本地
+        ready，等任务节点再次发出 READY，避免用户连续提交多个任务。
+        """
         normalized = command.strip()
         if not normalized:
             return False
@@ -76,15 +85,21 @@ class TextInputNode(Node):
         return True
 
     def _status_callback(self, message: String) -> None:
+        """显示任务节点的状态文本，并识别 STARTUP_FAILED 以终止启动等待。"""
         if message.data.startswith('[STARTUP_FAILED]'):
             self.startup_failed = True
         print(f'\n{message.data}', flush=True)
 
     def _ready_callback(self, message: Bool) -> None:
+        """同步任务节点的输入门控；终端是否显示提示、是否允许发布都使用它。"""
         self.ready = message.data
 
     def wait_until_ready(self) -> bool:
-        """Wait for startup homing before presenting the first input prompt."""
+        """处理 ROS 回调直到首次 READY，成功返回 True，超时或启动失败返回 False。
+
+        monotonic 计时不受系统时钟调整影响；spin_once 让状态和就绪订阅
+        在等待期间继续更新，避免单纯阻塞等待却收不到 READY。
+        """
         deadline = time.monotonic() + float(
             self.get_parameter('ready_timeout_sec').value
         )
@@ -100,7 +115,11 @@ class TextInputNode(Node):
 
 
 def _run_input(mode: str, args=None) -> int:
-    """Run an interruptible terminal loop alongside ROS callbacks."""
+    """运行文字输入或语音状态监视；返回进程退出码 0、1 或 130。
+
+    mode='text' 时交替处理 ROS 回调和终端输入，'voice' 时仅显示状态，
+    等待外部 ASR 发布文本。首次等待失败返回 1，Ctrl+C 返回 130。
+    """
     rclpy.init(args=args)
     node = TextInputNode()
     prompt = '请输入要寻找的物体（quit 退出）：'
@@ -118,6 +137,7 @@ def _run_input(mode: str, args=None) -> int:
             if node.ready and not prompt_shown:
                 print(prompt, end='', flush=True)
                 prompt_shown = True
+            # 短时间轮询 stdin，使终端等待输入时仍能及时处理任务状态回调。
             readable, _, _ = select.select([sys.stdin], [], [], 0.1)
             if not readable:
                 continue
@@ -127,6 +147,7 @@ def _run_input(mode: str, args=None) -> int:
             command = line.strip()
             if command.lower() in {'quit', 'exit'}:
                 break
+            # 发布成功后等下一次 READY 再提示；校验失败但仍就绪时立即再提示。
             if node.publish_command(command) or node.ready:
                 prompt_shown = False
     except (KeyboardInterrupt, ExternalShutdownException):
@@ -140,12 +161,12 @@ def _run_input(mode: str, args=None) -> int:
 
 
 def main(args=None) -> int:
-    """Run terminal input only after the robot has returned to Home."""
+    """文字模式入口：等待归位和相机就绪后，反复读取并提交终端指令。"""
     return _run_input('text', args)
 
 
 def voice_main(args=None) -> int:
-    """Wait for Home and display task status for the external ASR interface."""
+    """语音模式入口：等待 READY 并显示状态；语音识别由外部 ASR 节点完成。"""
     return _run_input('voice', args)
 
 

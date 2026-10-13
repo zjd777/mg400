@@ -24,6 +24,11 @@ class RobotPowerClient(Node):
     }
 
     def __init__(self, operation: str) -> None:
+        """建立机器人模式订阅和上/下使能服务客户端，读取等待与重试参数。
+
+        operation 用于生成节点名，实际选择 enable/disable 的位置在 _run。
+        初始化不直接改变伺服状态，必须随后调用 enable() 或 disable()。
+        """
         super().__init__(f'object_finder_{operation}_robot')
         self.declare_parameter('total_timeout_sec', 30.0)
         self.declare_parameter('call_timeout_sec', 3.0)
@@ -41,7 +46,7 @@ class RobotPowerClient(Node):
         self._validate_parameters()
 
         self._latest_mode: Optional[int] = None
-        self._latest_mode_time = 0.0
+        self._latest_mode_time = 0.0  # 本地接收时刻，用来拒绝超过 1 秒的旧状态。
         # MG400 驱动以 BEST_EFFORT 发布实时状态，订阅端必须使用兼容 QoS。
         mode_qos = QoSProfile(
             depth=1,
@@ -64,6 +69,7 @@ class RobotPowerClient(Node):
         )
 
     def _validate_parameters(self) -> None:
+        """确保总等待、单次调用和重试间隔都是正有限数；否则抛出 ValueError。"""
         for name, value in (
             ('total_timeout_sec', self._total_timeout),
             ('call_timeout_sec', self._call_timeout),
@@ -78,7 +84,12 @@ class RobotPowerClient(Node):
         request: Any,
         deadline: float,
     ) -> Tuple[Optional[Any], str]:
-        """在总截止时间内调用一个服务，并返回响应或错误说明."""
+        """等待服务可用并异步发出 request，返回 (响应, 错误文本)。
+
+        client 决定调用哪个 ROS 服务，deadline 是 monotonic 的总截止时刻。
+        失败时响应为 None；成功时错误文本为空。spin_until_future_complete
+        在等待服务响应时继续处理本节点的机器人模式等回调。
+        """
         remaining = deadline - time.monotonic()
         if remaining <= 0.0:
             return None, '等待服务超时'
@@ -92,6 +103,7 @@ class RobotPowerClient(Node):
             timeout_sec=min(self._call_timeout, remaining),
         )
         if not future.done():
+            # 取消本地 Future 的等待；这不会撤销控制器已经收到的服务请求。
             future.cancel()
             return None, f'服务 {client.srv_name} 响应超时'
         if future.exception() is not None:
@@ -99,12 +111,16 @@ class RobotPowerClient(Node):
         return future.result(), ''
 
     def _on_mode(self, message: RobotModeMsg) -> None:
-        """保存 MG400 实时状态话题中的最新模式."""
+        """缓存最新 robot_mode 与本地接收时刻，供使能/失能流程判断状态新鲜度。"""
         self._latest_mode = int(message.robot_mode)
         self._latest_mode_time = time.monotonic()
 
     def _get_mode(self, deadline: float) -> Tuple[Optional[int], str]:
-        """等待一个新鲜的实时状态，避免调用可能阻塞的 Dashboard 查询."""
+        """返回 1 秒内接收到的模式，最多等待 1 秒且不超过总 deadline。
+
+        返回 (模式, '') 或 (None, 错误文本)。已有新鲜缓存时立即返回，
+        否则通过 spin_once 等待话题回调，不额外调用 Dashboard 查询服务。
+        """
         wait_deadline = min(deadline, time.monotonic() + 1.0)
         while rclpy.ok() and time.monotonic() < wait_deadline:
             now = time.monotonic()
@@ -120,12 +136,17 @@ class RobotPowerClient(Node):
         return None, '尚未收到 /mg400/robot_mode 实时状态'
 
     def _pause_before_retry(self, deadline: float) -> None:
+        """在剩余时间内暂停一个重试间隔，避免连续调用服务；此处不处理回调。"""
         remaining = deadline - time.monotonic()
         if remaining > 0.0:
             time.sleep(min(self._retry_interval, remaining))
 
     def enable(self) -> bool:
-        """仅在未使能时发送 EnableRobot，并确认最终状态."""
+        """确认伺服使能，成功返回 True，ERROR 或总等待超时返回 False。
+
+        已经处于 ENABLE/RUNNING/PAUSE/JOG 时直接成功；只有 DISABLED
+        才发送 EnableRobot。服务接受请求后继续查模式，状态确认才算完成。
+        """
         deadline = time.monotonic() + self._total_timeout
         last_error = 'MG400 服务尚未就绪'
 
@@ -175,7 +196,11 @@ class RobotPowerClient(Node):
         return False
 
     def disable(self) -> bool:
-        """发送 DisableRobot，并确认机器人最终进入 DISABLED 状态."""
+        """请求失能并等待 DISABLED，确认成功返回 True，总等待超时返回 False。
+
+        已经失能时不重复请求；没有新鲜模式时先重试等待，其他已知模式
+        下调用 DisableRobot。服务返回成功仍需等待实际状态变为 DISABLED。
+        """
         deadline = time.monotonic() + self._total_timeout
         last_error = 'MG400 服务尚未就绪'
 
@@ -212,6 +237,7 @@ class RobotPowerClient(Node):
 
 
 def _run(operation: str, args=None) -> int:
+    """创建一次性客户端并执行上/下使能，返回 0 成功、1 失败或 130 中断。"""
     rclpy.init(args=args)
     node = RobotPowerClient(operation)
     try:
@@ -226,12 +252,12 @@ def _run(operation: str, args=None) -> int:
 
 
 def main(args=None) -> int:
-    """运行一次状态感知的使能流程."""
+    """object_finder_enable_robot 入口：执行使能流程并返回退出码。"""
     return _run('enable', args)
 
 
 def disable_main(args=None) -> int:
-    """运行一次状态感知的失能流程."""
+    """object_finder_disable_robot 入口：执行失能流程并返回退出码。"""
     return _run('disable', args)
 
 

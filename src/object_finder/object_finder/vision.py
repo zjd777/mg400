@@ -23,17 +23,22 @@ from .models import BoundingBox, Detection, VisionError
 
 # 视觉接口只负责“文字 + 图像 -> 目标框/掩码”，不允许生成机器人动作。
 class VisionGrounder(ABC):
-    """Interface implemented by Qwen or any future grounding backend."""
+    """视觉后端的统一接口：输入 BGR 图像和文字，输出图像空间候选列表。"""
 
     @abstractmethod
     def locate(self, image_bgr: np.ndarray, query: str) -> Sequence[Detection]:
-        """Return all candidates matching *query* in *image_bgr*."""
+        """定位 query 描述的所有候选；无法可靠定位时由实现抛出 VisionError。
+
+        返回 Detection 列表，框坐标可以是像素或归一化坐标；这里不选择
+        唯一目标，也不计算三维位置，后续交给选择器和深度模块处理。
+        """
 
 
 class DisabledVisionGrounder(VisionGrounder):
-    """Safe default used until a real model is configured."""
+    """禁用视觉后端：始终报告未配置，用于阻止误启动目标定位流程。"""
 
     def locate(self, image_bgr: np.ndarray, query: str) -> Sequence[Detection]:
+        """忽略输入并抛出 VisionError，使任务在产生运动目标前结束。"""
         # 未选择真实模型时采用失败关闭策略，绝不返回猜测目标。
         del image_bgr, query
         raise VisionError(
@@ -43,13 +48,15 @@ class DisabledVisionGrounder(VisionGrounder):
 
 
 class FixedBoundingBoxGrounder(VisionGrounder):
-    """Deterministic dry-run provider for testing RGB-D geometry."""
+    """固定框测试后端：便于验证深度和 TF，不能证明图像中存在目标。"""
 
     def __init__(self, bounding_box: BoundingBox, confidence: float = 1.0):
+        """保存测试框和置信度；框合法性由工厂或后续像素转换检查。"""
         self._bounding_box = bounding_box
         self._confidence = float(confidence)
 
     def locate(self, image_bgr: np.ndarray, query: str) -> Sequence[Detection]:
+        """以 query 为标签返回一个固定框候选；图像维度不足时失败。"""
         # 仅用于验证 RGB-D、TF 和坐标计算，不代表真实目标识别结果。
         if image_bgr.ndim < 2:
             raise VisionError('输入图像无效。')
@@ -76,7 +83,11 @@ class QwenProviderConfig:
     max_retries: int
 
     def validate(self) -> None:
-        """Reject incomplete or unsafe provider settings."""
+        """校验模型名、HTTPS 地址、密钥环境变量名和重试/超时参数。
+
+        timeout_sec 的单位是秒，max_retries 不包含首次请求。
+        配置不满足约束时抛出 VisionError；本方法不会发送网络请求。
+        """
         if not self.model.strip():
             raise VisionError('vision.qwen.model 不能为空。')
         if not self.base_url.strip():
@@ -100,13 +111,21 @@ class QwenProviderConfig:
 
 
 class QwenVisionGrounder(VisionGrounder):
-    """Visual grounding through Qwen's OpenAI-compatible HTTP API."""
+    """通过千问的兼容 HTTP 接口请求二维定位，再解析为 Detection 列表。"""
 
     def __init__(self, config: QwenProviderConfig):
+        """先校验配置并保存；API Key 在每次 locate 时从环境变量读取。"""
         config.validate()
         self._config = config
 
     def locate(self, image_bgr: np.ndarray, query: str) -> Sequence[Detection]:
+        """执行一次视觉定位：检查文字/密钥 → 编码图像 → 请求 → 解析候选。
+
+        image_bgr 必须是 uint8 三通道 BGR 图像，query 最长 500 个字符。
+        返回的框归一化到 [0, 1]；空候选列表是合法的“未找到”响应，
+        由 select_single_detection 决定是否继续。输入、网络或解析失败
+        会抛出 VisionError；此方法本身不控制机械臂。
+        """
         # Key 只通过环境变量注入，不允许从模型输入或响应中回显。
         normalized_query = query.strip()
         if not normalized_query:
@@ -136,7 +155,12 @@ class QwenVisionGrounder(VisionGrounder):
         return _parse_qwen_detections(content, normalized_query)
 
     def _post_json(self, payload: dict, api_key: str) -> dict:
-        """POST one request, retrying only transient transport failures."""
+        """发送 JSON 请求并返回 API 响应对象，临时 HTTP/连接错误可重试。
+
+        最大尝试次数为 max_retries + 1，每次等待使用 timeout_sec。
+        不可重试错误、重试耗尽或非 JSON 响应转为 VisionError；退避等待
+        发生在调用此函数的任务线程中，不会直接占用图像订阅回调。
+        """
         base_url = self._config.base_url.rstrip('/')
         if base_url.endswith('/chat/completions'):
             endpoint = base_url
@@ -192,7 +216,10 @@ class QwenVisionGrounder(VisionGrounder):
 
 
 def _encode_jpeg_data_url(image_bgr: np.ndarray) -> str:
-    """Encode a ROS/OpenCV BGR image without writing it to disk."""
+    """把 uint8 BGR 图像编码为 JPEG Base64 data URL，供视觉请求内嵌使用。
+
+    不写磁盘；类型、通道数、尺寸不合法或编码失败时抛出 VisionError。
+    """
     if not isinstance(image_bgr, np.ndarray):
         raise VisionError('彩色图像类型无效。')
     if (
@@ -219,7 +246,11 @@ def _make_qwen_payload(
     image_data_url: str,
     query: str,
 ) -> dict:
-    """Create a deterministic visual-grounding request."""
+    """组装包含模型、图像和 query 的请求字典，要求返回全部二维候选。
+
+    提示词约定 bbox_2d 为 [0, 1000] 相对坐标；temperature=0 减少
+    输出变化，但结果仍须经过 _parse_qwen_detections 校验。
+    """
     target_json = json.dumps(query, ensure_ascii=False)
     prompt = (
         '请在图像中定位目标：' + target_json + '\n'
@@ -260,7 +291,7 @@ def _make_qwen_payload(
 
 
 def _extract_assistant_content(response: dict) -> str:
-    """Extract text content from an OpenAI-compatible response."""
+    """读取首条 choices/message/content；结构缺失或内容为空时失败。"""
     try:
         content = response['choices'][0]['message']['content']
     except (KeyError, IndexError, TypeError) as exc:
@@ -274,7 +305,12 @@ def _parse_qwen_detections(
     content: str,
     requested_label: str,
 ) -> Sequence[Detection]:
-    """Convert the untrusted model JSON into validated data contracts."""
+    """把模型 JSON 文本转为已检查的 Detection 列表，空列表原样返回。
+
+    检查列表结构、框顺序、有限数值和 [0, 1] 置信度，将 [0, 1000]
+    框坐标除以 1000 存为归一化坐标。缺少 label 时用 requested_label，
+    任意一个候选非法都会抛出 VisionError，整个结果不再进入深度定位。
+    """
     try:
         document = json.loads(content)
     except json.JSONDecodeError as exc:
@@ -332,6 +368,7 @@ def _parse_qwen_detections(
                 label=label.strip(),
                 confidence=confidence,
                 bounding_box=BoundingBox(
+                    # 此处只归一化；实际像素尺寸在深度定位时才会用到。
                     x_min / 1000.0,
                     y_min / 1000.0,
                     x_max / 1000.0,
@@ -344,7 +381,10 @@ def _parse_qwen_detections(
 
 
 def _read_http_error_detail(exc: error.HTTPError) -> str:
-    """Return a bounded provider error without exposing request headers."""
+    """提取服务端错误摘要：最多读 2048 字节，最多返回 500 个字符。
+
+    只读响应正文，不展示请求头；无法解析时返回通用错误描述。
+    """
     try:
         raw_detail = exc.read(2048).decode('utf-8', errors='replace')
         document = json.loads(raw_detail)
@@ -361,7 +401,12 @@ def create_vision_grounder(
     fixed_bbox: List[float],
     qwen_config: QwenProviderConfig,
 ) -> VisionGrounder:
-    """Construct a provider from ROS parameter values."""
+    """根据 ROS 参数创建 disabled、fixed_bbox 或 qwen 视觉后端。
+
+    fixed_bbox 要有四个 [x_min, y_min, x_max, y_max] 归一化坐标；
+    工厂用 1000×1000 测试图检查框能否转为像素。配置非法或后端名
+    不受支持时抛出 VisionError，不在创建阶段调用模型。
+    """
     normalized_provider = provider.strip().lower()
     if normalized_provider == 'disabled':
         return DisabledVisionGrounder()
@@ -385,7 +430,12 @@ def select_single_detection(
     minimum_confidence: float,
     policy: str,
 ) -> Detection:
-    """Validate provider output and select one unambiguous candidate."""
+    """按 minimum_confidence 过滤候选，并只允许一个明确目标继续执行。
+
+    minimum_confidence 位于 [0, 1]；当前只实现 require_single 策略。
+    返回唯一 Detection，空候选、多个合格候选或非法输出均抛出
+    VisionError；框的像素范围检查留给 BoundingBox.to_pixels。
+    """
     if not math.isfinite(minimum_confidence) or not (
         0.0 <= minimum_confidence <= 1.0
     ):

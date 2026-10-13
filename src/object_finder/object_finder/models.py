@@ -8,28 +8,32 @@ import numpy as np
 
 # 所有可预期的任务失败都继承该异常，任务节点捕获后会停止下发后续动作。
 class ObjectFinderError(RuntimeError):
-    """Base class for expected task failures."""
+    """可预期任务失败的基类，供任务节点统一捕获和发布错误状态。"""
 
 
 class VisionError(ObjectFinderError):
-    """Raised when the configured vision provider cannot locate a target."""
+    """视觉配置、模型响应或候选选择无法支持可靠定位时抛出的异常。"""
 
 
 class DepthError(ObjectFinderError):
-    """Raised when a reliable 3-D point cannot be recovered."""
+    """深度图、相机内参或区域采样无法产生可靠三维点时抛出的异常。"""
 
 
 class SafetyError(ObjectFinderError):
-    """Raised when a requested motion has not passed safety validation."""
+    """工作区、运动参数或联锁条件未通过安全校验时抛出的异常。"""
 
 
 class MotionError(ObjectFinderError):
-    """Raised when an MG400 action is rejected, aborted or times out."""
+    """MG400 动作被拒绝、执行失败、被取消或等待超时时抛出的异常。"""
 
 
 @dataclass(frozen=True)
 class BoundingBox:
-    """Axis-aligned bounding box, in pixels or normalized coordinates."""
+    """图像轴对齐框：[左、上、右、下]，normalized 标记是否为归一化坐标。
+
+    normalized=True 时通常使用 [0, 1]，否则单位为像素；此类不在
+    构造时校验，使用 to_pixels 时才转换、裁剪并检查有效尺寸。
+    """
 
     x_min: float
     y_min: float
@@ -38,7 +42,11 @@ class BoundingBox:
     normalized: bool = False
 
     def to_pixels(self, width: int, height: int) -> 'BoundingBox':
-        """Return a clipped pixel-space bounding box."""
+        """按图像宽高把框转为像素坐标，并裁剪到 [0, width/height]。
+
+        返回新的 normalized=False 框，边界仍允许浮点像素坐标；
+        尺寸非正、坐标非有限或裁剪后宽/高小于 2 像素时失败。
+        """
         if width <= 0 or height <= 0:
             raise VisionError('图像尺寸无效。')
 
@@ -70,7 +78,11 @@ class BoundingBox:
 
 @dataclass(frozen=True)
 class Detection:
-    """A semantically grounded object candidate."""
+    """视觉候选：标签、[0, 1] 置信度、目标框及可选同尺寸前景掩码。
+
+    数据类本身不校验字段，视觉解析器和候选选择器负责检查；mask
+    是图像空间数据，深度定位会将非零值当作允许参与采样的像素。
+    """
 
     # LLM/视觉模型只允许产生图像空间结果，不能在这里携带机械臂坐标。
     label: str
@@ -81,7 +93,7 @@ class Detection:
 
 @dataclass(frozen=True)
 class CameraIntrinsics:
-    """Pinhole camera intrinsics used for depth deprojection."""
+    """针孔相机内参：fx/fy 为焦距，cx/cy 为主点，四者单位均为像素。"""
 
     fx: float
     fy: float
@@ -90,7 +102,12 @@ class CameraIntrinsics:
 
     @classmethod
     def from_camera_matrix(cls, values) -> 'CameraIntrinsics':
-        """Create intrinsics from a ROS CameraInfo K matrix."""
+        """从 ROS CameraInfo.k 的 9 个行优先元素提取 fx、fy、cx、cy。
+
+        K = [[fx, 0, cx], [0, fy, cy], [0, 0, 1]]；长度错误、提取值
+        非有限或焦距非正时抛出 DepthError。这里不处理镜头畸变，
+        调用方须提供与所用图像/对齐深度对应的内参。
+        """
         if len(values) != 9:
             raise DepthError('CameraInfo.k 必须包含 9 个元素。')
         intrinsics = cls(
@@ -116,7 +133,11 @@ class CameraIntrinsics:
 
 @dataclass(frozen=True)
 class LocalizedPoint:
-    """A robust target surface estimate in an optical coordinate frame."""
+    """区域中值表面点：XYZ 为米，使用相机光学坐标轴（右、下、前）。
+
+    pixel_u/v 为参与采样像素的中值位置，valid_ratio 为有效深度
+    比例，sample_count 为有效深度数量；它们供任务状态和调试使用。
+    """
 
     # x/y/z 属于相机光学坐标系；pixel_u/pixel_v 用于定位结果诊断。
     x: float

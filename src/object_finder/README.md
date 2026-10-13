@@ -4,13 +4,10 @@
 
 MG400 视觉找物任务的上层原型节点。当前版本已经连通文字输入、千问
 视觉定位、D435 深度、TF 坐标转换、运动安全门控和 MG400 Action 接口，
-但尚未完成准确外参标定与整机安全验收。
-当前现场 YAML 已按用户确认打开真机运动，速度/加速度为 5%；
-不加载 YAML 的节点默认仍禁止运动。
+但尚未完成实机标定与整机安全验收，默认禁止真机运动。
 
 > **安全警告：** 当前代码不能代替机械臂控制器急停、碰撞检测或人工监护。
-> 当前一键脚本会使能，并在未到 Home 时自动移动归位，之后才显示输入提示。
-> 启动前清空归位路径、保持急停可用；手工外参和路径碰撞问题仍需继续验证。
+> 在“待提供的信息”全部确认以前，不要把 `motion.enabled` 改为 `true`。
 
 ## 当前状态
 
@@ -20,7 +17,7 @@ MG400 视觉找物任务的上层原型节点。当前版本已经连通文字�
 | D435 彩色、对齐深度和相机内参 | 已接入，等待实机话题核对 |
 | 千问 VL 二维目标框 | 已实现接口，等待真实 API 和现场图片验收 |
 | 深度反投影与 TF 基座坐标 | 已实现，外参仍是手工临时值 |
-| MG400 启动归位、接近、下降、抬升、返回 Home | 已实现；现场 YAML 已启用低速运动 |
+| MG400 接近、下降、抬升、返回 Home | 已实现代码，默认由安全联锁禁用 |
 | 多个同类物体 | 当前拒绝任务并要求补充描述 |
 | ASR 语音识别 | 未实现，只预留 `/object_finder/asr_text` |
 | 语音播报 TTS | 未实现，当前只输出终端和状态话题 |
@@ -64,55 +61,12 @@ source /root/ros2_ws/install/setup.bash
 
 ```bash
 cd /root/ros2_ws
-source /opt/ros/humble/setup.bash
-source /root/ros2_ws/install/setup.bash
-PYTHONPATH=/root/ros2_ws/src/object_finder:${PYTHONPATH} \
+PYTHONPATH=/root/ros2_ws/src/object_finder \
   python3 -m pytest -q src/object_finder/test
 ```
 
-测试覆盖目标框、Qwen 响应校验、深度、安全边界，以及模拟 ROS Action/TF
-的启动归位、连续任务、失败门控和中文编码校验。Home 流程测试在独立
-ROS domain 197 和测试命名空间运行，不连接真机。
-仍未覆盖真实 API、D435、MG400 硬件、标定误差和碰撞路径。
-
-## Home 和任务循环
-
-当前 Home 与固定拍照位相同：
-
-```yaml
-home.configured: true
-home.mode: pose
-home.pose: [0.350, 0.000, 0.150, 0.000]
-home.auto_on_startup: true
-```
-
-顺序为 `mg400_origin_link` 下法兰中心的 `[x, y, z, yaw]`，单位米/弧度，
-对应 MG400 RViz 控制面板的 `x350 y0 z150 r0`。这不是相机位置或物体坐标；
-`home.mode=pose` 时旧的 `home.joint_angles_rad` 不参与判断和归位。
-
-```text
-启动硬件 → 使能 → 检查实时法兰 TF
-  ├─ 已在 Home：不重复运动
-  └─ 未在 Home：低速 MovJ 归位并核验到位
-→ 等待相机稳定、获取新的 RGB-D → READY，开放输入
-→ 收到指令，关闭输入 → 定位、接近、下降、报告找到
-→ 抬升 → 返回 Home → 核验到位、重新取图 → READY，等待下一次输入
-```
-
-Home 位置误差容差为 0.01 m，yaw 容差为 0.035 rad。
-启动等待使能/实时状态最多 60 秒，单段 Action 结果最多 30 秒，
-返回到位及新图像各最多 5 秒；到位稳定等待 0.3 秒。
-
-- 归位、任务执行及返回期间的文字/ASR 结果会被拒绝，不缓存到下一次执行。
-- 感知失败且机械臂仍在 Home 时，可重新输入；运动失败、返回失败或报警时
-  暂停输入，不自动发送新的归位命令，需要人工检查后重启。
-- 启动准备失败不会开放输入，查看 `[STARTUP_FAILED]` 和启动日志。
-- `motion.enabled=false` 是 dry-run：不会启动归位或发送运动 Action。
-
-`/object_finder/ready` 发布 `std_msgs/msg/Bool`，`true` 才能接收任务；
-使用可靠、Transient Local QoS，新启动的输入节点能收到最新状态。
-未来 ASR 节点也应订阅这个话题，只在 `true` 时开始录音/识别。
-目前没有麦克风/ASR 实现，只能保证未就绪的识别文字不会触发任务。
+单元测试覆盖目标框解析、Qwen 响应校验、深度反投影和部分安全边界，
+尚未覆盖真实 Qwen API、D435、MG400 Action、TF 标定误差和碰撞路径。
 
 ## 启动方式
 
@@ -122,9 +76,8 @@ MG400 RobotStatePublisher、相机静态 TF、任务节点和 RViz。
 
 `start_robot_driver` 与 `motion.enabled` 是两层不同开关：前者只决定是否
 连接驱动，后者才决定找物节点能否下发动作。一键脚本会把
-`start_robot_driver` 设为 `true`；当前 YAML 的 `motion.enabled=true`
-会允许启动归位和找物运动。如仅调试图像，应使用 `motion.enabled=false`
-的独立配置文件。
+`start_robot_driver` 设为 `true`，但配置文件中的 `motion.enabled=false`
+仍会阻止找物运动。
 
 ### 文字输入
 
@@ -189,16 +142,15 @@ RViz 默认展示 MG400 模型与关节状态、完整 TF 树、D435 点云、
 ### 一键启动脚本
 
 文字脚本会同时启动机械臂驱动、D435、TF、RViz 和任务节点，
-等待 MG400 连接并调用 `/mg400/enable_robot`，随后检查/返回 Home，
-准备好新图像后才在当前终端开放文字输入。输入 `quit` 或 Ctrl+C 时脚本会
-先尝试取消使能，再关闭整套节点：
+等待 MG400 连接并调用 `/mg400/enable_robot`，然后在当前终端进入
+文字输入。输入 `quit` 时脚本会先尝试取消使能，再关闭整套节点：
 
 ```bash
 /root/ros2_ws/src/object_finder/scripts/start_text_system.sh
 ```
 
-语音脚本使用相同的使能、启动归位和退出失能流程，终端显示任务状态；
-Home 就绪后才接收 ASR 向 `/object_finder/asr_text` 发布的文字：
+语音脚本启动同一套硬件，并等待 ASR 向
+`/object_finder/asr_text` 发布文字：
 
 ```bash
 /root/ros2_ws/src/object_finder/scripts/start_voice_system.sh
@@ -213,13 +165,11 @@ MG400_IP_ADDRESS=192.168.1.10 \
 
 脚本后面还可追加任意 launch 参数，后面的参数会覆盖脚本默认值。
 
-如只调试相机，应先准备一份 `motion.enabled=false` 的参数文件，
-再关闭自动使能并指定该配置（路径替换成实际文件）：
+如只调试相机而不希望机械臂进入使能状态，可执行：
 
 ```bash
 OBJECT_FINDER_AUTO_ENABLE=false \
-  /root/ros2_ws/src/object_finder/scripts/start_text_system.sh \
-  start_robot_driver:=false object_finder_config:=/绝对路径/dry_run.yaml
+  /root/ros2_ws/src/object_finder/scripts/start_text_system.sh
 ```
 
 自动使能不会绕过找物运动联锁；只要 `motion.enabled=false`，任务仍然只会
@@ -232,8 +182,6 @@ OBJECT_FINDER_AUTO_ENABLE=false \
 ```
 
 遇到相机、驱动或 RViz 启动失败时应先查看该日志。
-语音日志为 `/tmp/object_finder_voice_launch.log`。
-两个脚本共享 `start_system.sh` 和进程锁，不允许同时控制同一台机械臂。
 
 ## 模型与主要参数
 
@@ -253,8 +201,8 @@ export DASHSCOPE_API_KEY
 
 未设置环境变量或 API 调用失败时，任务会安全失败，不会下发机械臂动作。
 需要验证深度与 TF 链路时，可临时把 `vision.provider` 改成
-`fixed_bbox`，并同时把 `motion.enabled` 改为 `false`；节点会使用
-配置中的归一化边界框，只输出规划坐标。
+`fixed_bbox`，节点会使用配置中的归一化边界框。由于
+`motion.enabled=false`，默认只会输出规划坐标。
 
 深度定位同时要求有效深度比例和最少有效样本数。使用目标掩码时，
 有效比例只在掩码内部计算，避免小目标被掩码外背景像素错误稀释。
@@ -273,9 +221,7 @@ export DASHSCOPE_API_KEY
 | `motion.final_standoff_m` | `0.05` | 法兰中心停在可见表面上方 5 cm |
 | `motion.approach_height_m` | `0.15` | 垂直下降前的高处接近距离 |
 | `motion.yaw_policy` | `radial` | 径向 yaw；需要固定 J4 时改为 `fixed` |
-| `home.mode` | `pose` | 使用基座系法兰笛卡尔位姿定义观察/Home 位 |
-| `home.pose` | `[0.350, 0, 0.150, 0]` | `[x, y, z, yaw]`，米/弧度 |
-| `home.auto_on_startup` | `true` | 启动使能后，不在 Home 时先归位 |
+| `home.mode` | `joint` | 使用四个物理关节角定义观察/Home 位 |
 | `safety.workspace_bounds` | 临时值 | 基座坐标系中的保守长方体工作区 |
 
 `fixed_bbox` 只用于验证 RGB-D 和 TF 数据链，绝不能与
@@ -289,11 +235,9 @@ export DASHSCOPE_API_KEY
 | 输入 | `/object_finder/asr_text` | `std_msgs/msg/String` | 未来 ASR 输出 |
 | 内部 | `/object_finder/command` | `std_msgs/msg/String` | 统一找物指令 |
 | 输出 | `/object_finder/status` | `std_msgs/msg/String` | 状态与终端播报文本 |
-| 输出 | `/object_finder/ready` | `std_msgs/msg/Bool` | 到 Home 且准备好时开放文字/ASR 输入 |
 | 输出 | `/object_finder/target_point` | `geometry_msgs/msg/PointStamped` | 基座坐标系目标表面点 |
 | 输出 | `/object_finder/debug_image` | `sensor_msgs/msg/Image` | 带目标框的调试图像 |
 | 输入 | `/mg400/joint_states` | `sensor_msgs/msg/JointState` | 观察位校验和机器人模型 |
-| 输入 | `/mg400/robot_mode` | `mg400_msgs/msg/RobotMode` | 新鲜的空闲使能状态核验 |
 
 ## 真机运动联锁
 
@@ -354,11 +298,10 @@ prefix，需要同步修改 `home.joint_names`。
 4. 当前没有软件急停或可靠运动取消。MG400 ROS 2 驱动的 Action cancel
    仍标有“不能停止实际运动”的待办项。因此运动开始后即使上层超时，
    当前动作也可能继续，不能保证立即“保持不动”。
-5. 已把 `/mg400/robot_mode` 的新鲜度和空闲使能状态纳入运动前联锁。
-   `/mg400/mg400_connected` 和 `/mg400/error_id` 还没有独立持续监控；
-   仍依赖 Action 的运动结果、错误码和控制器自身保护。
-6. Home 已确认、现场已确认急停和 5 cm 间隙，并采用保守工作区。
-   这些确认不能替代完整路径碰撞检测，尤其是启动位置到 Home 的 MovJ 路径。
+5. 节点尚未把 `/mg400/mg400_connected`、`/mg400/robot_mode` 和
+   `/mg400/error_id` 纳入运动前联锁，目前主要依赖 Action 服务和目标结果。
+6. Home、工作区和 `clearance_verified` 仍是未确认值；四个联锁开关不能
+   在没有实物测量的情况下直接改成 `true`。
 7. 视觉只使用单帧和二维框中央深度，没有分割、桌面平面剔除、运动前
    二次确认或动态目标跟踪。杯口、透明/反光物体和背景深度可能造成偏差。
 8. Qwen 返回的 confidence 是模型自报值，不能视为标定过的检测概率。
@@ -398,8 +341,8 @@ API Key 不需要再次提供：
 控制器 IP：
 硬件/固件版本：
 ROS 驱动连接、使能和清错是否已实测：
-固定观察/Home：已设置基座系法兰 [0.350,0,0.150,0]（米/弧度）
-是否需要调整观察位或当前位置到 Home 的安全归位路径：
+固定观察/Home 关节角 [J1,J2,J3,J4]：
+关节角单位（degree 或 radian）：
 J4 是否允许自动改变 yaw：
 
 [D435 与安装]
